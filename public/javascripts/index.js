@@ -1,4 +1,7 @@
 $(document).ready(function() {
+	var itemInfo = {};
+	var selectedItem;
+
 	$('#add').click(function(e) {
 		//e.preventDefault();
 		var tr = document.createElement('tr');
@@ -14,8 +17,11 @@ $(document).ready(function() {
 		select.classList.add('form-control','priority');
 		td.appendChild(select);
 		tr.appendChild(td);
-		$('.table-row:last').after(tr);
 
+		td = document.createElement('td');
+		td.innerHTML = '<input type="number" class="form-control max" value=30/>';
+		tr.appendChild(td);
+		$('.table-row:last').after(tr);
 
 	});
 	$('#submit').click(function(e) {
@@ -24,19 +30,72 @@ $(document).ready(function() {
 		$('.table-row').each(function(tr) {
 			var criteria = {};
 			criteria.name = $(this).find('.criteria-name').val();
-			criteria.priority = $(this).find('.priority').val();
-			allCriterias.push(criteria);
+			if(criteria.name != ""){
+				criteria.priority = $(this).find('.priority').val();
+				criteria.max = $(this).find('.max').val();
+				allCriterias.push(criteria);
+			}
 		});
 		$.ajax({
 			type: 'POST',
 			url: '/submit',
 			data: {data: allCriterias},
             success: function(data) {
-            	if(data)
-                	console.log(data);
+            	displayResults(JSON.parse(data));
             }
 		});
 	});
+
+	function displayResults(data) {
+		if(data.success) {
+			itemInfo = {
+				meal: [],
+				vegetable: [],
+				fruit: [],
+				beverage: []
+			};
+			console.log(data.result);
+			$('.items-list').html('');
+			data.result.forEach(function(item, idx) {
+				var selector = '#' + item.type;
+				var li = document.createElement('li');
+				li.classList.add('item');
+				var a = document.createElement('a');
+				a.innerHTML = item.name;
+				li.appendChild(a);
+				$(selector).append(li);
+				$(li).data('item-info', item);
+				// $(selector).append('<li class="item"><a>'+item.name+'</a></li>');
+				// itemInfo[item.type].push(item);
+			});
+		}
+		else
+			console.log("Error getting data"); 
+	}
+
+	function displayInfo(item) {
+		$('#info-list').html("");
+		for(var key in item) {
+			if(item[key] != null || item[key] != '')
+				$('#info-list').append('<li>' + key + ': ' + item[key] + '</li>');
+		}
+		$('#item-info-popup').css('display', 'block');
+	}
+
+	$('#item-info-popup').click(function(e) {
+		$(this).css('display', 'none');
+	});
+
+	$('body').on('click', 'li.item', function(e) {
+		//Get item clicked index and corresponding item info
+		// var index = $(this).index();
+		// var parentID = $(this).parent().attr('id');
+		// var info = itemInfo[parentID][index];
+		console.log($(this).index());
+		console.log($(this).data('item-info'));
+		displayInfo($(this).data('item-info'));
+	});
+
 
 	$('#get').click(function(e) {
 		// console.log("fetching items");
@@ -44,12 +103,8 @@ $(document).ready(function() {
 			type: 'Get',
 			url: '/getItems',
 			success: function(data) {
-				display(JSON.parse(data));
+				displayResults(JSON.parse(data));
 			}
 		});
 	});
-
-	function display(data) {
-		console.log(data.result); 
-	}
 });

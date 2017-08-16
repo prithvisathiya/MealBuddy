@@ -13,3 +13,24 @@ a {
 button {
 	margin-right: 5px;
 }
+
+a:hover {
+	cursor: pointer;
+}
+
+ul {
+	list-style-type: none;
+}
+#item-info-popup {
+	position: fixed;
+	z-index: 1;
+	height: 60%;
+	width: 50%;
+	border: 2px solid black;
+	border-radius: 5px;
+	background-color: lightgrey;
+	display: none;
+}
+#item-info-popup:click {
+	display: none;
+}

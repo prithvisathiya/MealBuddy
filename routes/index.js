@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var format = require('string-format');
 
 var connection = mysql.createConnection({
 	host: 'localhost',
@@ -18,19 +19,28 @@ connection.connect(function(err) {
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
-});
+}); 
 
 router.post('/submit', function(req, res, next) {
-  var all = req.body.data;
-
-  if(all) {
-  	res.send('success from server');
-  }
-  
-  all.forEach(function(el, idx) {
-	console.log(el.name + ": " + el.priority);
-  });
-  
+	var all = req.body.data;
+	var query = 'Select *, ifnull(calcium, "N/A") as calcium2 from items where 1=1 ';
+	query += ' ';
+	all.forEach(function(el, idx) {
+		console.log(el.name + ": " + el.max);
+		query += 'and `' + el.name + '` < ' + el.max + ' '; 
+	});
+	console.log(query);
+	connection.query(query, function(err, rows) {
+		if(err) {
+			console.log('Error retrieving from items');
+			res.write(JSON.stringify({"success": false}));
+		}
+		else {
+			// console.log(rows);
+			res.write(JSON.stringify({"success": true, "result": rows}));
+		}
+		res.end();
+	});
 });
 
 router.get('/getItems', function(req, res, next) {

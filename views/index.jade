@@ -2,35 +2,63 @@ extends layout
 
 block content
   script(src="/javascripts/index.js")
-  .main.container
-    .row
-      .col-md-6.col-md-offset-3
-        h1.display-4.m-b-2 Criterias
-        //- register form
-        form#criteria-form
-          table#criteriaTable.form-group
-            tr.table-row
-                td
-                    input.form-control.criteria-name(type='text', placeholder='potassium, cholestrol, etc...', value='postassium')
-                td
-                    select.form-control.priority
-                      option(value='none') 
-                      option(value='high') High
-                      option(value='medium', selected='selected') Medium
-                      option(value='low') Low
-            tr.table-row
-                td
-                    input.form-control.criteria-name(type='text', value='sugar')
-                td
-                    select.form-control.priority
-                      option(value='none') 
-                      option(value='high', selected='selected') High
-                      option(value='medium') Medium
-                      option(value='low') Low
-          
-          button#add.btn.btn-primary(type="button") Add
-          
-          button#submit.btn.btn-primary(type="button") Submit
-          
-          button#get.btn.btn-primary(type="button") Get
+  #item-info-popup
+    ul#info-list
+  .main.container 
+    h1.display-4.m-b-2 Criterias
+    //- register form
+    form#criteria-form
+      table#criteriaTable.form-group
+        tr.table-row
+          td
+            input.form-control.criteria-name(type='text', placeholder='potassium, cholestrol, etc...', value='fat')
+          td
+            select.form-control.priority
+              option(value='none') 
+              option(value='high') High
+              option(value='medium', selected='selected') Medium
+              option(value='low') Low
+          td
+            input.form-control.max(type='number', value=50)
+
+        tr.table-row
+          td
+            input.form-control.criteria-name(type='text', value='sugar')
+          td
+            select.form-control.priority
+              option(value='none') 
+              option(value='high', selected='selected') High
+              option(value='medium') Medium
+              option(value='low') Low
+          td
+            input.form-control.max(type='number', value=30)
+      
+      button#add.btn.btn-primary(type="button") Add
+      
+      button#submit.btn.btn-primary(type="button") Submit
+      
+      button#get.btn.btn-primary(type="button") Get
+
+
+  h2 Suggestions
+
+  #appetizerContainer
+    .list-group-item.list-group-item-success Appetizers
+    ul#appetizer.items-list
+  #mealContainer
+    .list-group-item.list-group-item-info Meals
+    ul#meal.items-list
+  #vegetableContainer
+    .list-group-item.list-group-item-warning Vegetable
+    ul#vegetable.items-list
+  #fruitContainer
+    .list-group-item.list-group-item-danger Fruits
+    ul#fruit.items-list
+  #beverageContainer
+    .list-group-item.list-group-item-info Beverages
+    ul#beverage.items-list
+  #dessertContainer
+    .list-group-item.list-group-item-success Desserts
+    ul#dessert.items-list
+
 
