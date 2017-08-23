@@ -11,9 +11,13 @@ block content
       table#criteriaTable.form-group
         tr.table-row
           td
-            input.form-control.criteria-name(type='text', placeholder='potassium, cholestrol, etc...', value='fat')
+            select.form-control.selectpicker.criteria-name(type='text', title='potassium, cholestrol, etc...', data-live-search='true', data-width="300px")
+              option(value='fat') fat
+              option(value='potassium') potassium
+              option(value='sugar') sugar
+              option(value='fat') calories
           td
-            select.form-control.priority
+            select.form-control.selectpicker.priority
               option(value='none') 
               option(value='high') High
               option(value='medium', selected='selected') Medium
@@ -23,9 +27,13 @@ block content
 
         tr.table-row
           td
-            input.form-control.criteria-name(type='text', value='sugar')
+            select.form-control.selectpicker.criteria-name(type='text', title='potassium, cholestrol, etc...', data-live-search='true', data-width="300px")
+              option(value='fat') fat
+              option(value='potassium') potassium
+              option(value='sugar') sugar
+              option(value='fat') calories
           td
-            select.form-control.priority
+            select.form-control.selectpicker.priority
               option(value='none') 
               option(value='high', selected='selected') High
               option(value='medium') Medium
@@ -35,9 +43,9 @@ block content
       
       button#add.btn.btn-primary(type="button") Add
       
-      button#submit.btn.btn-primary(type="button") Submit
+      button#submit.btn.btn-warning(type="button") Submit
       
-      button#get.btn.btn-primary(type="button") Get
+      button#get.btn.btn-success(type="button") Get
 
 
   h2 Suggestions

@@ -10,6 +10,12 @@ a {
 .form-control {
 	/*width: 50%;*/
 }
+.criteria-name {
+	width: 30%;
+}
+.table-row td {
+	padding-right: 10px;
+}
 button {
 	margin-right: 5px;
 }
@@ -23,7 +29,7 @@ ul {
 }
 #item-info-popup {
 	position: fixed;
-	z-index: 1;
+	z-index: 5;
 	height: 60%;
 	width: 50%;
 	border: 2px solid black;

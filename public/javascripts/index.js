@@ -2,26 +2,39 @@ $(document).ready(function() {
 	var itemInfo = {};
 	var selectedItem;
 
+	var criteriaList = ['fat', 'sugar', 'potassium', 'calories'];
+	var priorityList = ['High', 'Medium', 'Low'];
+	// $('.selectpicker').selectpicker('mobile');
 	$('#add').click(function(e) {
 		//e.preventDefault();
 		var tr = document.createElement('tr');
 		tr.classList.add('table-row');
 		var td = document.createElement('td');
-		var input = document.createElement('input');
-		input.classList.add('form-control','criteria-name');
-		td.appendChild(input);
-		tr.appendChild(td);
-
-		td = document.createElement('td');
 		var select = document.createElement('select');
-		select.classList.add('form-control','priority');
+		select.classList.add('form-control','criteria-name', 'selectpicker');
+		$(select).attr('data-live-search', true);
+		$(select).attr('data-width', '300px');
+		$(select).attr('title', 'potassium, cholestrol, etc...');
+		criteriaList.forEach(function(c) {
+			$(select).append('<option value="'+c+'">'+c+'</option>');
+		});
 		td.appendChild(select);
 		tr.appendChild(td);
 
 		td = document.createElement('td');
-		td.innerHTML = '<input type="number" class="form-control max" value=30/>';
+		select = document.createElement('select');
+		select.classList.add('form-control','priority');
+		priorityList.forEach(function(p) {
+			$(select).append('<option value="'+p+'">'+p+'</option>');
+		});
+		td.appendChild(select);
+		tr.appendChild(td);
+
+		td = document.createElement('td');
+		td.innerHTML = '<input type="number" class="form-control max" value="30"/>';
 		tr.appendChild(td);
 		$('.table-row:last').after(tr);
+		$(".selectpicker").selectpicker('refresh');
 
 	});
 	$('#submit').click(function(e) {
@@ -29,21 +42,24 @@ $(document).ready(function() {
 		var allCriterias = [];
 		$('.table-row').each(function(tr) {
 			var criteria = {};
-			criteria.name = $(this).find('.criteria-name').val();
+			criteria.name = $(this).find('select.criteria-name').val();
 			if(criteria.name != ""){
 				criteria.priority = $(this).find('.priority').val();
 				criteria.max = $(this).find('.max').val();
 				allCriterias.push(criteria);
 			}
 		});
-		$.ajax({
-			type: 'POST',
-			url: '/submit',
-			data: {data: allCriterias},
-            success: function(data) {
-            	displayResults(JSON.parse(data));
-            }
-		});
+		if(allCriterias.length > 0) {
+			$.ajax({
+				type: 'POST',
+				url: '/submit',
+				data: {data: allCriterias},
+	            success: function(data) {
+	            	displayResults(JSON.parse(data));
+	            }
+			});
+		}
+		
 	});
 
 	function displayResults(data) {
