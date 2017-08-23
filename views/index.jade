@@ -11,13 +11,15 @@ block content
       table#criteriaTable.form-group
         tr.table-row
           td
+            span.glyphicon.glyphicon-remove
+          td
             select.form-control.selectpicker.criteria-name(type='text', title='potassium, cholestrol, etc...', data-live-search='true', data-width="300px")
               option(value='fat') fat
               option(value='potassium') potassium
               option(value='sugar') sugar
               option(value='fat') calories
           td
-            select.form-control.selectpicker.priority
+            select.form-control.selectpicker.priority(data-width="100px")
               option(value='none') 
               option(value='high') High
               option(value='medium', selected='selected') Medium
@@ -27,13 +29,15 @@ block content
 
         tr.table-row
           td
+            span.glyphicon.glyphicon-remove
+          td
             select.form-control.selectpicker.criteria-name(type='text', title='potassium, cholestrol, etc...', data-live-search='true', data-width="300px")
               option(value='fat') fat
               option(value='potassium') potassium
               option(value='sugar') sugar
               option(value='fat') calories
           td
-            select.form-control.selectpicker.priority
+            select.form-control.selectpicker.priority(data-width="100px")
               option(value='none') 
               option(value='high', selected='selected') High
               option(value='medium') Medium
@@ -41,11 +45,11 @@ block content
           td
             input.form-control.max(type='number', value=30)
       
-      button#add.btn.btn-primary(type="button") Add
+      button#add.btn.btn-success(type="button") Add
       
-      button#submit.btn.btn-warning(type="button") Submit
+      button#submit.btn.btn-primary(type="button") Submit
       
-      button#get.btn.btn-success(type="button") Get
+      //- button#get.btn.btn-success(type="button") Get
 
 
   h2 Suggestions

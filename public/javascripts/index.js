@@ -5,33 +5,37 @@ $(document).ready(function() {
 	var criteriaList = ['fat', 'sugar', 'potassium', 'calories'];
 	var priorityList = ['High', 'Medium', 'Low'];
 	// $('.selectpicker').selectpicker('mobile');
+
+	$('#criteriaTable').on('click', '.glyphicon-remove', function(e) {
+		console.log($(this).parents('tr').index());
+		$(this).parents('tr').remove();
+	});
 	$('#add').click(function(e) {
 		//e.preventDefault();
-		var tr = document.createElement('tr');
-		tr.classList.add('table-row');
-		var td = document.createElement('td');
-		var select = document.createElement('select');
-		select.classList.add('form-control','criteria-name', 'selectpicker');
-		$(select).attr('data-live-search', true);
-		$(select).attr('data-width', '300px');
-		$(select).attr('title', 'potassium, cholestrol, etc...');
+		var tr = DOMcreator({name:'tr', classlist:['table-row']}); 
+		var td = DOMcreator({name:'td', inner:'<span class="glyphicon glyphicon-remove"></span>'});
+		tr.appendChild(td);
+
+		td = DOMcreator({name:'td'});
+		var select = DOMcreator({ name:'select',
+			classlist:['form-control','criteria-name', 'selectpicker'], 
+			attr:{"data-live-search":true, "data-width":"300px", "title":"potassium, cholestrol, etc..."}
+		});
 		criteriaList.forEach(function(c) {
 			$(select).append('<option value="'+c+'">'+c+'</option>');
 		});
 		td.appendChild(select);
 		tr.appendChild(td);
 
-		td = document.createElement('td');
-		select = document.createElement('select');
-		select.classList.add('form-control','priority');
+		td = DOMcreator({name:'td'});
+		select = DOMcreator({name:'select', classlist:['form-control','priority']});
 		priorityList.forEach(function(p) {
 			$(select).append('<option value="'+p+'">'+p+'</option>');
 		});
 		td.appendChild(select);
 		tr.appendChild(td);
 
-		td = document.createElement('td');
-		td.innerHTML = '<input type="number" class="form-control max" value="30"/>';
+		td = DOMcreator({name:'td', inner:'<input type="number" class="form-control max" value="30"/>'});
 		tr.appendChild(td);
 		$('.table-row:last').after(tr);
 		$(".selectpicker").selectpicker('refresh');
@@ -112,6 +116,24 @@ $(document).ready(function() {
 		displayInfo($(this).data('item-info'));
 	});
 
+
+	//HELPER FUNCTIONS
+	function DOMcreator(req) {
+		//req = {name:string, classlist:array, attr:object, inner:string}
+		var dom = document.createElement(req.name);
+		if(req.classlist) {
+			req.classlist.forEach(function(c) {
+				dom.classList.add(c);
+			});
+		}
+		if(req.attr) {
+			for(var key in req.attr) {
+				$(dom).attr(key, req.attr[key]);
+			}
+		}
+		if(req.inner) dom.innerHTML = req.inner;
+		return dom;
+	}
 
 	$('#get').click(function(e) {
 		// console.log("fetching items");
