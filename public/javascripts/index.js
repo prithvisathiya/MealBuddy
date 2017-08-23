@@ -49,7 +49,7 @@ $(document).ready(function() {
 				allCriterias.push(criteria);
 			}
 		});
-		if(allCriterias.length > 0) {
+		if(allCriterias.length > 0) { 
 			$.ajax({
 				type: 'POST',
 				url: '/submit',
