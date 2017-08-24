@@ -4,6 +4,16 @@ block content
   script(src="/javascripts/index.js")
   #item-info-popup
     ul#info-list
+
+  #myModal.modal.fade(tabindex='-1', role='dialog')
+    .modal-dialog.modal-sm(role='document')
+      .modal-content
+        .modal-header
+          h4.modal-title Food
+        .modal-body
+        .modal-footer
+          button.btn.btn-default(type='button', data-dismiss='modal') Close
+          button.btn.btn-primary(type='button') Add To MealCart
   .main.container 
     h1.display-4.m-b-2 Criterias
     //- register form

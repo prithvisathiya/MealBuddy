@@ -23,7 +23,16 @@ router.get('/', function(req, res, next) {
 
 router.post('/submit', function(req, res, next) {
 	var all = req.body.data;
-	var query = 'Select *, ifnull(calcium, "N/A") as calcium2 from items where 1=1 ';
+	var query = 'Select name, ifnull(servingsize,"N/A") as servingsize, ' +
+	'ifnull(calories, "N/A") as calories, ' +
+	'ifnull(fat, "N/A") as fat, ' +
+	'ifnull(sugar, "N/A") as sugar, ' +
+	'ifnull(potassium, "N/A") as potassium, ' +
+	'ifnull(calcium, "N/A") as calcium, ' +
+	'ifnull(phosphorous, "N/A") as phosphorous, ' +
+	'ifnull(type, "N/A") as type, ' +
+	'ifnull(cuisine, "N/A") as cuisine ' +
+	'from items where 1=1 ';
 	query += ' ';
 	all.forEach(function(el, idx) {
 		console.log(el.name + ": " + el.max);
@@ -32,7 +41,7 @@ router.post('/submit', function(req, res, next) {
 	console.log(query);
 	connection.query(query, function(err, rows) {
 		if(err) {
-			console.log('Error retrieving from items');
+			console.log('DB: Error retrieving from items');
 			res.write(JSON.stringify({"success": false}));
 		}
 		else {
@@ -47,7 +56,7 @@ router.get('/getItems', function(req, res, next) {
 	// console.log("fetching items from db")
 	var data = [{"name": "something", "calories": 5},{"name": "nothing", "calories": 25}];
 	connection.query('Select * from items', function(err, rows) {
-		if(err) console.log('Error retrieving from items');
+		if(err) console.log('DB: Error retrieving from items');
 		else {
 			console.log(rows);
 			res.send(JSON.stringify({"result": rows}));

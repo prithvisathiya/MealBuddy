@@ -10,12 +10,27 @@ $(document).ready(function() {
 		console.log($(this).parents('tr').index());
 		$(this).parents('tr').remove();
 	});
+
+	$('body').on('click', 'li.item', function(e) {
+		//Get item clicked index and corresponding item info
+		// var index = $(this).index();
+		// var parentID = $(this).parent().attr('id');
+		// var info = itemInfo[parentID][index];
+		console.log($(this).index());
+		console.log($(this).data('item-info'));
+		displayInfo($(this).data('item-info'));
+	});
+
+	$('#item-info-popup').click(function(e) {
+		$(this).css('display', 'none');
+	});
+
 	$('#add').click(function(e) {
-		//e.preventDefault();
 		var tr = DOMcreator({name:'tr', classlist:['table-row']}); 
+		//Add remove button
 		var td = DOMcreator({name:'td', inner:'<span class="glyphicon glyphicon-remove"></span>'});
 		tr.appendChild(td);
-
+		//Add criteria dropdown search
 		td = DOMcreator({name:'td'});
 		var select = DOMcreator({ name:'select',
 			classlist:['form-control','criteria-name', 'selectpicker'], 
@@ -26,7 +41,7 @@ $(document).ready(function() {
 		});
 		td.appendChild(select);
 		tr.appendChild(td);
-
+		//Add priority dropdown
 		td = DOMcreator({name:'td'});
 		select = DOMcreator({name:'select', classlist:['form-control','priority']});
 		priorityList.forEach(function(p) {
@@ -34,7 +49,7 @@ $(document).ready(function() {
 		});
 		td.appendChild(select);
 		tr.appendChild(td);
-
+		//Add criteria value
 		td = DOMcreator({name:'td', inner:'<input type="number" class="form-control max" value="30"/>'});
 		tr.appendChild(td);
 		$('.table-row:last').after(tr);
@@ -66,6 +81,7 @@ $(document).ready(function() {
 		
 	});
 
+	//HELPER FUNCTIONS
 	function displayResults(data) {
 		if(data.success) {
 			itemInfo = {
@@ -78,46 +94,32 @@ $(document).ready(function() {
 			$('.items-list').html('');
 			data.result.forEach(function(item, idx) {
 				var selector = '#' + item.type;
-				var li = document.createElement('li');
-				li.classList.add('item');
-				var a = document.createElement('a');
-				a.innerHTML = item.name;
+				var li = DOMcreator({name:'li', classlist:['item']});
+				var a = DOMcreator({name:'a', inner:item.name});
 				li.appendChild(a);
 				$(selector).append(li);
 				$(li).data('item-info', item);
-				// $(selector).append('<li class="item"><a>'+item.name+'</a></li>');
-				// itemInfo[item.type].push(item);
 			});
 		}
 		else
-			console.log("Error getting data"); 
+			console.log("Server:Error getting data"); 
 	}
 
 	function displayInfo(item) {
 		$('#info-list').html("");
+		$('.modal-body').html("");
+		$('.modal-title').text(item.name);
 		for(var key in item) {
-			if(item[key] != null || item[key] != '')
-				$('#info-list').append('<li>' + key + ': ' + item[key] + '</li>');
+			if(key == 'name' || key == 'id') continue;
+			if(item[key] != 'null' && item[key] != '') {
+				// $('#info-list').append('<p>' + key + ': ' + item[key] + '</p>');
+				$('.modal-body').append('<p>' + key + ': ' + item[key] + '</p>');
+			}
 		}
-		$('#item-info-popup').css('display', 'block');
+		// $('#item-info-popup').css('display', 'block');
+		$('#myModal').modal('show');
 	}
 
-	$('#item-info-popup').click(function(e) {
-		$(this).css('display', 'none');
-	});
-
-	$('body').on('click', 'li.item', function(e) {
-		//Get item clicked index and corresponding item info
-		// var index = $(this).index();
-		// var parentID = $(this).parent().attr('id');
-		// var info = itemInfo[parentID][index];
-		console.log($(this).index());
-		console.log($(this).data('item-info'));
-		displayInfo($(this).data('item-info'));
-	});
-
-
-	//HELPER FUNCTIONS
 	function DOMcreator(req) {
 		//req = {name:string, classlist:array, attr:object, inner:string}
 		var dom = document.createElement(req.name);
@@ -127,9 +129,7 @@ $(document).ready(function() {
 			});
 		}
 		if(req.attr) {
-			for(var key in req.attr) {
-				$(dom).attr(key, req.attr[key]);
-			}
+			for(var key in req.attr) $(dom).attr(key, req.attr[key]);
 		}
 		if(req.inner) dom.innerHTML = req.inner;
 		return dom;
