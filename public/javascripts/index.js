@@ -2,21 +2,11 @@ $(document).ready(function() {
 	var itemInfo = {};
 	var currentItem;
 	var selectedItem;
-	var myCart = [];
+	var myCart = 0;
 
 	var criteriaList = ['fat', 'sugar', 'potassium', 'calories'];
 	var priorityList = ['High', 'Medium', 'Low'];
 	// $('.selectpicker').selectpicker('mobile');
-
-	$('#criteriaTable').on('click', '.glyphicon-remove', function(e) {
-		console.log($(this).parents('tr').index());
-		$(this).parents('tr').remove();
-	});
-
-	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
-		$('.selectpicker').selectpicker('mobile');
-		$('.selectpicker').selectpicker('refresh');
-	}
 
 
 	$('#add').click(function(e) {
@@ -74,6 +64,22 @@ $(document).ready(function() {
 		}
 		
 	});
+
+	$('#criteriaTable').on('click', '.glyphicon-remove', function(e) {
+		console.log($(this).parents('tr').index());
+		$(this).parents('tr').remove();
+	});
+
+	$('#cartItems').on('click', '.glyphicon-remove', function(e) {
+		var item = $(this).data('item-info');
+		console.log(item);
+		$(this).parents('tr').remove();
+		removeFromMealCart(item);
+	});
+	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+		$('.selectpicker').selectpicker('mobile');
+		$('.selectpicker').selectpicker('refresh');
+	}
 	$('body').on('click', 'li.item a', function(e) {
 		//Get clicked item info
 		console.log($(this).data('item-info'));
@@ -89,7 +95,7 @@ $(document).ready(function() {
 	});
 
 	$('#mealCart').click(function(e) {
-		if(myCart.length == 0) {
+		if(myCart == 0) {
 			$('#noItems').show();
 			$('#cartNutritionCount').hide();
 		}
@@ -139,8 +145,10 @@ $(document).ready(function() {
 	}
 
 	function addToMealCart(item) {
-		myCart.push(item);
-		$('#cartItems').append('<p>' + item.name + '</p>');
+		var tr = DOMcreator({name:'tr', inner:'<td class="glyphicon glyphicon-remove"></td><td>' + item.name +'</td>'})
+		// $('#cartItems').append('<p>' + item.name + '</p>');
+		$(tr).find('td:first').data('item-info', item);
+		$('#cartItems').append(tr);
 
 		for(var key in item) {
 			var selector = '#cart' + key.toUpperCase();
@@ -153,7 +161,30 @@ $(document).ready(function() {
 				$(selector).html(item[key]);
 			}
 		}
-		
+		myCart += 1;
+	}
+
+	function removeFromMealCart(item) {
+		myCart -= 1;
+		if(myCart == 1) {
+			var remItem = $('#cartItems').find('tr td:first').data('item-info');
+			for(var key in remItem) {
+				var selector = '#cart' + key.toUpperCase();
+				$(selector).html(remItem[key]);
+			}
+			return;
+		}
+		for(var key in item) {
+			var selector = '#cart' + key.toUpperCase();
+			if($(selector).html() && isNumeric($(selector).html()) && isNumeric(item[key])) {
+				var after = parseInt($(selector).html()) - parseInt(item[key]);
+				$(selector).html(after);
+			}
+		}
+		if(myCart == 0) {
+			$('#noItems').show();
+			$('#cartNutritionCount').hide();
+		}
 	}
 
 	function DOMcreator(req) {
