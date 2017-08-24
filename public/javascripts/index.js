@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	var itemInfo = {};
+	var currentItem;
 	var selectedItem;
 
 	var criteriaList = ['fat', 'sugar', 'potassium', 'calories'];
@@ -11,19 +12,6 @@ $(document).ready(function() {
 		$(this).parents('tr').remove();
 	});
 
-	$('body').on('click', 'li.item', function(e) {
-		//Get item clicked index and corresponding item info
-		// var index = $(this).index();
-		// var parentID = $(this).parent().attr('id');
-		// var info = itemInfo[parentID][index];
-		console.log($(this).index());
-		console.log($(this).data('item-info'));
-		displayInfo($(this).data('item-info'));
-	});
-
-	$('#item-info-popup').click(function(e) {
-		$(this).css('display', 'none');
-	});
 
 	$('#add').click(function(e) {
 		var tr = DOMcreator({name:'tr', classlist:['table-row']}); 
@@ -43,7 +31,7 @@ $(document).ready(function() {
 		tr.appendChild(td);
 		//Add priority dropdown
 		td = DOMcreator({name:'td'});
-		select = DOMcreator({name:'select', classlist:['form-control','priority']});
+		select = DOMcreator({name:'select', classlist:['form-control','priority', 'selectpicker']});
 		priorityList.forEach(function(p) {
 			$(select).append('<option value="'+p+'">'+p+'</option>');
 		});
@@ -80,6 +68,33 @@ $(document).ready(function() {
 		}
 		
 	});
+	$('body').on('click', 'li.item a', function(e) {
+		//Get clicked item info
+		console.log($(this).data('item-info'));
+		displayInfo($(this).data('item-info'));
+	});
+
+	$('#item-info-popup').click(function(e) {
+		$(this).css('display', 'none');
+	});
+
+	$('#addMealCart').click(function(e) {
+		addToMealCart(currentItem);
+	});
+
+	$('#mealCart').click(function(e) {
+		$('#cartItems').html("");
+		var cartItems = $(this).data('items');
+		if(cartItems) {
+			cartItems.forEach(function(item) {
+				$('#cartItems').append('<p>' + item.name + '</p>');
+			});
+		} else {
+			$('#cartItems').html("None");
+		}
+		
+		$('#cartModal').modal('show');
+	});
 
 	//HELPER FUNCTIONS
 	function displayResults(data) {
@@ -98,7 +113,7 @@ $(document).ready(function() {
 				var a = DOMcreator({name:'a', inner:item.name});
 				li.appendChild(a);
 				$(selector).append(li);
-				$(li).data('item-info', item);
+				$(a).data('item-info', item);
 			});
 		}
 		else
@@ -106,18 +121,23 @@ $(document).ready(function() {
 	}
 
 	function displayInfo(item) {
-		$('#info-list').html("");
-		$('.modal-body').html("");
-		$('.modal-title').text(item.name);
+		currentItem = item;
+		$('#itemInfoDesc').html("");
+		$('#itemInfoImage').html("");
+		$('#item-modal-title').text(item.name);
 		for(var key in item) {
 			if(key == 'name' || key == 'id') continue;
 			if(item[key] != 'null' && item[key] != '') {
-				// $('#info-list').append('<p>' + key + ': ' + item[key] + '</p>');
-				$('.modal-body').append('<p>' + key + ': ' + item[key] + '</p>');
+				$('#itemInfoDesc').append('<p>' + key + ': ' + item[key] + '</p>');
 			}
 		}
-		// $('#item-info-popup').css('display', 'block');
-		$('#myModal').modal('show');
+		$('#itemModal').modal('show');
+	}
+
+	function addToMealCart(item) {
+		var items = $('#mealCart').data('items') || [];
+		items.push(item);
+		$('#mealCart').data('items', items);
 	}
 
 	function DOMcreator(req) {
@@ -135,14 +155,4 @@ $(document).ready(function() {
 		return dom;
 	}
 
-	$('#get').click(function(e) {
-		// console.log("fetching items");
-		$.ajax({
-			type: 'Get',
-			url: '/getItems',
-			success: function(data) {
-				displayResults(JSON.parse(data));
-			}
-		});
-	});
 });

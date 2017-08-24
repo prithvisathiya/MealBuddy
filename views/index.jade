@@ -2,20 +2,12 @@ extends layout
 
 block content
   script(src="/javascripts/index.js")
-  #item-info-popup
-    ul#info-list
-
-  #myModal.modal.fade(tabindex='-1', role='dialog')
-    .modal-dialog.modal-sm(role='document')
-      .modal-content
-        .modal-header
-          h4.modal-title Food
-        .modal-body
-        .modal-footer
-          button.btn.btn-default(type='button', data-dismiss='modal') Close
-          button.btn.btn-primary(type='button') Add To MealCart
+  nav.navbar.navbar-default.navbar-fixed-top
+    h1#MealBuddy MealBuddy
+    button#mealCart.btn.btn-default(type='button') MealCart
+  h2.display-4.m-b-2 Criterias
   .main.container 
-    h1.display-4.m-b-2 Criterias
+    
     //- register form
     form#criteria-form
       table#criteriaTable.form-group
@@ -83,4 +75,30 @@ block content
     .list-group-item.list-group-item-success Desserts
     ul#dessert.items-list
 
+  #item-info-popup
+    ul#info-list
+
+  #itemModal.modal.fade(tabindex='-1', role='dialog')
+    .modal-dialog.modal-sm(role='document')
+      .modal-content
+        .modal-header
+          h4#item-modal-title.modal-title Food
+        .modal-body
+          .row
+            img#itemInfoImage.img-thumbnail(src="images/food.jpg")
+            #itemInfoDesc
+        .modal-footer
+          button.btn.btn-default(type='button', data-dismiss='modal') Close
+          button#addMealCart.btn.btn-primary(type='button', data-dismiss='modal') Add To MealCart
+  
+  #cartModal.modal.fade(tabindex='-1', role='dialog')
+    .modal-dialog.modal-sm(role='document')
+      .modal-content
+        .modal-header
+          h4#cart-modal-title.modal-title Your Cart
+        .modal-body
+          #cartItems
+          #cartNutritionCount
+        .modal-footer
+          button.btn.btn-default(type='button', data-dismiss='modal') Close
 
