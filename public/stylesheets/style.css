@@ -15,6 +15,21 @@ nav {
 	float: right;
 	display: inline-block;
 }
+#cartModalBody {
+	width: 100%;
+}
+#cartItems {
+	display: inline-block;
+	width: 40%
+	margin:5px;
+	border: 2px solid gray;
+}
+#cartNutritionCount {
+	display: inline-block;
+	width: 50%
+	margin:5px;
+	border: 2px solid gray;
+}
 a {
   color: #00B7FF;
 }

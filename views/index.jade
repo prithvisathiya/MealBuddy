@@ -96,9 +96,29 @@ block content
       .modal-content
         .modal-header
           h4#cart-modal-title.modal-title Your Cart
-        .modal-body
+        #cartModalBody.modal-body
           #cartItems
-          #cartNutritionCount
+            p#noItems No item in MealCart yet. You can add from suggestions to you Meal Cart
+          table#cartNutritionCount
+            tr
+              td Calories
+              td#cartCALORIES N/A
+            tr
+              td Fat
+              td#cartFAT N/A
+            tr
+              td Sugar
+              td#cartSUGAR N/A
+            tr
+              td Potassium
+              td#cartPOTASSIUM N/A
+            tr
+              td Calcium
+              td#cartCALCIUM N/A
+            tr
+              td Phosphorous
+              td#cartPHOSPHOROUS N/A
+
         .modal-footer
           button.btn.btn-default(type='button', data-dismiss='modal') Close
 

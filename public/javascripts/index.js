@@ -2,6 +2,7 @@ $(document).ready(function() {
 	var itemInfo = {};
 	var currentItem;
 	var selectedItem;
+	var myCart = [];
 
 	var criteriaList = ['fat', 'sugar', 'potassium', 'calories'];
 	var priorityList = ['High', 'Medium', 'Low'];
@@ -11,6 +12,11 @@ $(document).ready(function() {
 		console.log($(this).parents('tr').index());
 		$(this).parents('tr').remove();
 	});
+
+	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+		$('.selectpicker').selectpicker('mobile');
+		$('.selectpicker').selectpicker('refresh');
+	}
 
 
 	$('#add').click(function(e) {
@@ -83,16 +89,14 @@ $(document).ready(function() {
 	});
 
 	$('#mealCart').click(function(e) {
-		$('#cartItems').html("");
-		var cartItems = $(this).data('items');
-		if(cartItems) {
-			cartItems.forEach(function(item) {
-				$('#cartItems').append('<p>' + item.name + '</p>');
-			});
-		} else {
-			$('#cartItems').html("None");
+		if(myCart.length == 0) {
+			$('#noItems').show();
+			$('#cartNutritionCount').hide();
 		}
-		
+		else {
+			$('#noItems').hide();
+			$('#cartNutritionCount').show();
+		}
 		$('#cartModal').modal('show');
 	});
 
@@ -135,9 +139,21 @@ $(document).ready(function() {
 	}
 
 	function addToMealCart(item) {
-		var items = $('#mealCart').data('items') || [];
-		items.push(item);
-		$('#mealCart').data('items', items);
+		myCart.push(item);
+		$('#cartItems').append('<p>' + item.name + '</p>');
+
+		for(var key in item) {
+			var selector = '#cart' + key.toUpperCase();
+			if($(selector).html() && isNumeric($(selector).html())) {
+				if(isNumeric(item[key])) {
+					var after = parseInt($(selector).html()) + parseInt(item[key]);
+					$(selector).html(after);
+				}
+			}else {
+				$(selector).html(item[key]);
+			}
+		}
+		
 	}
 
 	function DOMcreator(req) {
@@ -153,6 +169,10 @@ $(document).ready(function() {
 		}
 		if(req.inner) dom.innerHTML = req.inner;
 		return dom;
+	}
+
+	function isNumeric(arg) {
+		return !isNaN(arg);
 	}
 
 });
