@@ -4,7 +4,7 @@ block content
   script(src="/javascripts/index.js")
   nav.navbar.navbar-default.navbar-fixed-top
     h1#MealBuddy MealBuddy
-    button#mealCart.btn.btn-default(type='button') MealCart
+    button#mealCart.btn.btn-default.glyphicon.glyphicon-shopping-cart(type='button')
   h2.display-4.m-b-2 Criterias
   .main.container 
     
@@ -56,30 +56,30 @@ block content
 
   h2 Suggestions
 
-  #appetizerContainer
-    .list-group-item.list-group-item-success Appetizers
+  #appetizerContainer Appetizers
+    hr(width="50%")
     ul#appetizer.items-list
-  #mealContainer
-    .list-group-item.list-group-item-info Meals
+  #mealContainer Meals
+    hr(width="50%")
     ul#meal.items-list
-  #vegetableContainer
-    .list-group-item.list-group-item-warning Vegetable
+  #vegetableContainer Vegetables
+    hr(width="50%")
     ul#vegetable.items-list
-  #fruitContainer
-    .list-group-item.list-group-item-danger Fruits
+  #fruitContainer Fruits
+    hr(width="50%")
     ul#fruit.items-list
-  #beverageContainer
-    .list-group-item.list-group-item-info Beverages
+  #beverageContainer Beverages
+    hr(width="50%")
     ul#beverage.items-list
-  #dessertContainer
-    .list-group-item.list-group-item-success Desserts
+  #dessertContainer Desserts
+    hr(width="50%")
     ul#dessert.items-list
 
   #item-info-popup
     ul#info-list
 
   #itemModal.modal.fade(tabindex='-1', role='dialog')
-    .modal-dialog.modal-sm(role='document')
+    .modal-dialog(role='document')
       .modal-content
         .modal-header
           h4#item-modal-title.modal-title Food
@@ -92,14 +92,14 @@ block content
           button#addMealCart.btn.btn-primary(type='button', data-dismiss='modal') Add To MealCart
   
   #cartModal.modal.fade(tabindex='-1', role='dialog')
-    .modal-dialog.modal-sm(role='document')
+    .modal-dialog(role='document')
       .modal-content
         .modal-header
           h4#cart-modal-title.modal-title Your Cart
         #cartModalBody.modal-body
           p#noItems No item in MealCart yet. You can add from suggestions to you Meal Cart
           table#cartItems  
-          
+
           table#cartNutritionCount
             tr
               td Calories
