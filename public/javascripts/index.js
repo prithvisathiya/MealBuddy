@@ -28,6 +28,17 @@ $(document).ready(function() {
 		});
 		td.appendChild(select);
 		tr.appendChild(td);
+		//Add criteria range type
+		td = DOMcreator({name:'td'});
+		select = DOMcreator({name:'select', classlist:['form-control','selectpicker','range-type']});
+		td.appendChild(select);
+		tr.appendChild(td);
+		//Add criteria min
+		td = DOMcreator({name:'td', inner:'<input type="number" class="form-control range1"/>'});
+		tr.appendChild(td);
+		//Add criteria max
+		td = DOMcreator({name:'td', inner:'<input type="number" class="form-control range2"/>'});
+		tr.appendChild(td);
 		//Add priority dropdown
 		td = DOMcreator({name:'td'});
 		select = DOMcreator({name:'select', classlist:['form-control','priority', 'selectpicker']});
@@ -36,9 +47,9 @@ $(document).ready(function() {
 		});
 		td.appendChild(select);
 		tr.appendChild(td);
-		//Add criteria value
-		td = DOMcreator({name:'td', inner:'<input type="number" class="form-control max" value="30"/>'});
-		tr.appendChild(td);
+		
+
+		//Add the new row to criteria form and refresh to take changes
 		$('.table-row:last').after(tr);
 		$(".selectpicker").selectpicker('refresh');
 
