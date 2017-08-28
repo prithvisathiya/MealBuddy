@@ -3,10 +3,11 @@ extends layout
 block content
   script(src="/javascripts/index.js")
   nav.navbar.navbar-default.navbar-fixed-top
-    h1#MealBuddy MealBuddy
-    button#mealCart.btn.btn-default.glyphicon.glyphicon-shopping-cart(type='button')
+    .container-fluid
+      h1#MealBuddy MealBuddy
+      button#mealCart.btn.btn-default.glyphicon.glyphicon-shopping-cart(type='button')
   h2.display-4.m-b-2 Criterias
-  .main.container 
+  .main.container-fluid 
     
     //- register form
     form#criteria-form
@@ -15,37 +16,52 @@ block content
           td
             span.glyphicon.glyphicon-remove
           td
-            select.form-control.selectpicker.criteria-name(type='text', title='potassium, cholestrol, etc...', data-live-search='true', data-width="300px")
+            select.form-control.selectpicker.criteria-name(type='text', title='potassium, cholestrol, etc...', data-live-search='true', data-width="100%")
               option(value='fat') fat
               option(value='potassium') potassium
               option(value='sugar') sugar
               option(value='fat') calories
           td
-            select.form-control.selectpicker.priority(data-width="100px")
+            select.form-control.selectpicker.range-type
+              option(value='lt') Less than
+              option(value='between') Between
+              option(value='gt') Greater than
+          td
+            input.form-control.range1(type='number', size='5', value=30)
+          td
+            input.form-control.range2(type='number', size=5, value=50)
+          td
+            select.form-control.selectpicker.priority(data-width="100%")
               option(value='none') 
               option(value='high') High
               option(value='medium', selected='selected') Medium
               option(value='low') Low
-          td
-            input.form-control.max(type='number', value=50)
 
         tr.table-row
           td
             span.glyphicon.glyphicon-remove
           td
-            select.form-control.selectpicker.criteria-name(type='text', title='potassium, cholestrol, etc...', data-live-search='true', data-width="300px")
+            select.form-control.selectpicker.criteria-name(type='text', title='potassium, cholestrol, etc...', data-live-search='true', data-width="100%")
               option(value='fat') fat
               option(value='potassium') potassium
               option(value='sugar') sugar
               option(value='fat') calories
           td
-            select.form-control.selectpicker.priority(data-width="100px")
+            select.form-control.selectpicker.range-type
+              option(value='lt') Less than
+              option(value='between') Between
+              option(value='gt') Greater than
+          td
+            input.form-control.range1(type='number', size='5', value=30)
+          td
+            input.form-control.range2(type='number', size='5', value=30) 
+          td
+            select.form-control.selectpicker.priority(data-width="100%")
               option(value='none') 
               option(value='high', selected='selected') High
               option(value='medium') Medium
               option(value='low') Low
-          td
-            input.form-control.max(type='number', value=30)
+          
       
       button#add.btn.btn-success(type="button") Add
       

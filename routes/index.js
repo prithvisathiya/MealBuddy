@@ -33,19 +33,24 @@ router.post('/submit', function(req, res, next) {
 	'ifnull(type, "N/A") as type, ' +
 	'ifnull(cuisine, "N/A") as cuisine ' +
 	'from items where 1=1 ';
-	query += ' ';
 	all.forEach(function(el, idx) {
-		console.log(el.name + ": " + el.max);
-		query += 'and `' + el.name + '` < ' + el.max + ' '; 
+		if(el.max == Infinity) {
+			query += 'and `' + el.name + '` > ' + el.min + ' '; 
+		}else {
+			query += 'and `' + el.name + '` between ' + el.min + ' and ' + el.max + ' '; 
+		}
+		console.log(el.name + ' min: ' + el.min + ' max: ' + el.max);
+		
 	});
 	console.log(query);
 	connection.query(query, function(err, rows) {
 		if(err) {
+			console.log(err);
 			console.log('DB: Error retrieving from items');
 			res.write(JSON.stringify({"success": false}));
 		}
 		else {
-			// console.log(rows);
+			console.log('Number of rows retrieved: ' + rows.length);
 			res.write(JSON.stringify({"success": true, "result": rows}));
 		}
 		res.end();

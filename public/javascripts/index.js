@@ -8,6 +8,9 @@ $(document).ready(function() {
 	var priorityList = ['High', 'Medium', 'Low'];
 	// $('.selectpicker').selectpicker('mobile');
 
+	//set the tool bar to the right width of the screen
+	var windowWidth = $(window).width();
+	$('nav').css('width', windowWidth);
 
 	$('#add').click(function(e) {
 		var tr = DOMcreator({name:'tr', classlist:['table-row']}); 
@@ -44,14 +47,29 @@ $(document).ready(function() {
 		e.preventDefault();
 		var allCriterias = [];
 		$('.table-row').each(function(tr) {
+			var row = $(this);
 			var criteria = {};
-			criteria.name = $(this).find('select.criteria-name').val();
+			criteria.name = row.find('select.criteria-name').val();
 			if(criteria.name != ""){
-				criteria.priority = $(this).find('.priority').val();
-				criteria.max = $(this).find('.max').val();
+				var rangeType = row.find('select.range-type').val();
+				switch(rangeType){
+					case 'lt':
+						criteria.min = 0;
+						criteria.max = parseInt(row.find('.range1').val());
+						break;
+					case 'between':
+						criteria.min = parseInt(row.find('.range1').val());
+						criteria.max = parseInt(row.find('.range2').val());
+						break;
+					default:
+						criteria.min = parseInt(row.find('.range1').val());
+						criteria.max = Infinity;
+				}
+				criteria.priority = row.find('select.priority').val();
 				allCriterias.push(criteria);
 			}
 		});
+		console.log(allCriterias);
 		if(allCriterias.length > 0) { 
 			$.ajax({
 				type: 'POST',
@@ -77,13 +95,24 @@ $(document).ready(function() {
 		removeFromMealCart(item);
 	});
 	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
-		$('.selectpicker').selectpicker('mobile');
+		// $('.selectpicker').selectpicker('mobile');
 		$('.selectpicker').selectpicker('refresh');
 	}
 	$('body').on('click', 'li.item a', function(e) {
 		//Get clicked item info
 		console.log($(this).data('item-info'));
 		displayInfo($(this).data('item-info'));
+	});
+
+	$('body').on('change', 'select.range-type', function(e) {
+		switch($(this).val()) {
+			case 'between':
+				$(this).parents('tr').find('input.range2').show();
+				break;
+			default:
+				$(this).parents('tr').find('input.range2').hide();
+
+		}
 	});
 
 	$('#item-info-popup').click(function(e) {
@@ -205,5 +234,11 @@ $(document).ready(function() {
 	function isNumeric(arg) {
 		return !isNaN(arg);
 	}
+
+});
+
+$(window).resize(function() {
+	var windowWidth = $(window).width();
+	$('nav').css('width', windowWidth);
 
 });
