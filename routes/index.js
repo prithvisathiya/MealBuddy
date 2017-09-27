@@ -29,9 +29,9 @@ function getReqQuery(req) {
 		var min = (parseInt(req.min) - parseInt(req.min) * dev[req.priority]);
 		return 'and `' + req.name + '` > ' + min + ' '; 
 	}else {
-		console.log(typeof(req.max));
 		var min = (parseInt(req.min) - parseInt(req.min) * dev[req.priority]);
 		var max = (parseInt(req.max) + parseInt(req.max) * dev[req.priority]);
+		console.log(min + " " + max);
 		return 'and `' + req.name + '` between ' + min + ' and ' + max + ' '; 
 	}
 } 

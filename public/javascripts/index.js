@@ -6,6 +6,7 @@ $(document).ready(function() {
 
 	var criteriaList = ['fat', 'sugar', 'potassium', 'calories'];
 	var priorityList = ['High', 'Medium', 'Low'];
+	var rangeTypes = {'lt': 'Less than', 'between': 'Between', 'gt': 'Greater than'};
 	// $('.selectpicker').selectpicker('mobile');
 
 	//set the tool bar to the right width of the screen
@@ -31,19 +32,22 @@ $(document).ready(function() {
 		//Add criteria range type
 		td = DOMcreator({name:'td'});
 		select = DOMcreator({name:'select', classlist:['form-control','selectpicker','range-type']});
+		for(var key in rangeTypes) {
+			$(select).append('<option value="'+key+'">'+rangeTypes[key]+'</option>');
+		}
 		td.appendChild(select);
 		tr.appendChild(td);
 		//Add criteria min
 		td = DOMcreator({name:'td', inner:'<input type="number" class="form-control range1"/>'});
 		tr.appendChild(td);
 		//Add criteria max
-		td = DOMcreator({name:'td', inner:'<input type="number" class="form-control range2"/>'});
+		td = DOMcreator({name:'td', inner:'<input type="number" class="form-control range2" hidden/>'});
 		tr.appendChild(td);
 		//Add priority dropdown
 		td = DOMcreator({name:'td'});
 		select = DOMcreator({name:'select', classlist:['form-control','priority', 'selectpicker']});
 		priorityList.forEach(function(p) {
-			$(select).append('<option value="'+p+'">'+p+'</option>');
+			$(select).append('<option value="'+p.toLowerCase()+'">'+p+'</option>');
 		});
 		td.appendChild(select);
 		tr.appendChild(td);
@@ -124,10 +128,10 @@ $(document).ready(function() {
 	$('body').on('change', 'select.range-type', function(e) {
 		switch($(this).val()) {
 			case 'between':
-				$(this).parents('tr').find('input.range2').show();
+				$(this).parents('tr').find('input.range2').removeAttr('hidden');
 				break;
 			default:
-				$(this).parents('tr').find('input.range2').hide();
+				$(this).parents('tr').find('input.range2').attr('hidden', true);
 
 		}
 	});

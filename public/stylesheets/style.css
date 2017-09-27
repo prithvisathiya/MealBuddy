@@ -20,6 +20,9 @@ nav {
 	opacity: .8;
 	padding: 5px !important;
 }
+[hidden] {
+	display: none !important;
+}
 #MealBuddy {
 	display: inline-block;
 	color: maroon;
