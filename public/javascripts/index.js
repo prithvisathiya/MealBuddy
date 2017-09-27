@@ -63,6 +63,8 @@ $(document).ready(function() {
 			criteria.name = row.find('select.criteria-name').val();
 			if(criteria.name != ""){
 				var rangeType = row.find('select.range-type').val();
+				var priority = row.find('select.priority').val();
+				criteria.priority = priority;
 				switch(rangeType){
 					case 'lt':
 						criteria.min = 0;
@@ -71,12 +73,16 @@ $(document).ready(function() {
 					case 'between':
 						criteria.min = parseInt(row.find('.range1').val());
 						criteria.max = parseInt(row.find('.range2').val());
+						if(criteria.min > criteria.max) {
+							var temp = criteria.min;
+							criteria.min = criteria.max;
+							criteria.max = temp;
+						}
 						break;
 					default:
 						criteria.min = parseInt(row.find('.range1').val());
 						criteria.max = Infinity;
 				}
-				criteria.priority = row.find('select.priority').val();
 				allCriterias.push(criteria);
 			}
 		});
