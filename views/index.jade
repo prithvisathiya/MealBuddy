@@ -102,6 +102,7 @@ block content
         .modal-body
           .row
             img#itemInfoImage.img-thumbnail(src="images/food.jpg")
+            #itemInfoCriteriaDesc
             #itemInfoDesc
         .modal-footer
           button.btn.btn-default(type='button', data-dismiss='modal') Close
@@ -115,7 +116,7 @@ block content
         #cartModalBody.modal-body
           p#noItems No item in MealCart yet. You can add from suggestions to you Meal Cart
           table#cartItems  
-
+          #cartCriteriaDesc
           table#cartNutritionCount
             tr
               td Calories

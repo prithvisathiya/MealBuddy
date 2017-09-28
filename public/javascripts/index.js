@@ -2,9 +2,11 @@ $(document).ready(function() {
 	var itemInfo = {};
 	var currentItem;
 	var selectedItem;
+	var allCriterias = [];
+	var criteriaNames = [];
 	var myCart = 0;
 
-	var criteriaList = ['fat', 'sugar', 'potassium', 'calories'];
+	var ddlCriteriaList = ['fat', 'sugar', 'potassium', 'calories'];
 	var priorityList = ['High', 'Medium', 'Low'];
 	var rangeTypes = {'lt': 'Less than', 'between': 'Between', 'gt': 'Greater than'};
 	// $('.selectpicker').selectpicker('mobile');
@@ -22,9 +24,9 @@ $(document).ready(function() {
 		td = DOMcreator({name:'td'});
 		var select = DOMcreator({ name:'select',
 			classlist:['form-control','criteria-name', 'selectpicker'], 
-			attr:{"data-live-search":true, "data-width":"300px", "title":"potassium, cholestrol, etc..."}
+			attr:{"data-live-search":true, "data-width":"100%", "title":"potassium, cholestrol, etc..."}
 		});
-		criteriaList.forEach(function(c) {
+		ddlCriteriaList.forEach(function(c) {
 			$(select).append('<option value="'+c+'">'+c+'</option>');
 		});
 		td.appendChild(select);
@@ -60,7 +62,8 @@ $(document).ready(function() {
 	});
 	$('#submit').click(function(e) {
 		e.preventDefault();
-		var allCriterias = [];
+		allCriterias = [];
+		criteriaNames = [];
 		$('.table-row').each(function(tr) {
 			var row = $(this);
 			var criteria = {};
@@ -88,6 +91,7 @@ $(document).ready(function() {
 						criteria.max = Infinity;
 				}
 				allCriterias.push(criteria);
+				criteriaNames.push(criteria.name);
 			}
 		});
 		console.log(allCriterias);
@@ -106,6 +110,10 @@ $(document).ready(function() {
 
 	$('#criteriaTable').on('click', '.glyphicon-remove', function(e) {
 		console.log($(this).parents('tr').index());
+		var name = $(this).parents('tr').find('select.criteria-name').val();
+		if(criteriaNames.includes(name)) {
+			criteriaNames.splice(criteriaNames.indexOf(name), 1);
+		}
 		$(this).parents('tr').remove();
 	});
 
@@ -148,13 +156,22 @@ $(document).ready(function() {
 		if(myCart == 0) {
 			$('#noItems').show();
 			$('#cartNutritionCount').hide();
+			$('#cartCriteriaDesc').hide();
 		}
 		else {
 			$('#noItems').hide();
 			$('#cartNutritionCount').show();
+			$('#cartCriteriaDesc').show();
+			$('#cartCriteriaDesc').html("");
+			criteriaNames.forEach(function(name) {
+				var selector = '#cart' + name.toUpperCase();
+				$('#cartCriteriaDesc').append('<p>' + name + ': ' + $(selector).html() + '</p>');
+			});
 		}
 		$('#cartModal').modal('show');
 	});
+
+
 
 	//HELPER FUNCTIONS
 	function displayResults(data) {
@@ -182,15 +199,21 @@ $(document).ready(function() {
 
 	function displayInfo(item) {
 		currentItem = item;
+		$('#itemInfoCriteriaDesc').html("");
 		$('#itemInfoDesc').html("");
 		$('#itemInfoImage').html("");
 		$('#item-modal-title').text(item.name);
 		for(var key in item) {
 			if(key == 'name' || key == 'id') continue;
 			if(item[key] != 'null' && item[key] != '') {
+				
 				$('#itemInfoDesc').append('<p>' + key + ': ' + item[key] + '</p>');
 			}
 		}
+		criteriaNames.forEach(function(key) {
+			$('#itemInfoCriteriaDesc').append('<p>' + key + ': ' + item[key] + '</p>');
+		});
+		
 		$('#itemModal').modal('show');
 	}
 
@@ -211,6 +234,11 @@ $(document).ready(function() {
 				$(selector).html(item[key]);
 			}
 		}
+		// $('#cartCriteriaDesc').html("");
+		// criteriaNames.forEach(function(name) {
+		// 	var selector = '#cart' + name.toUpperCase();
+		// 	$('#cartCriteriaDesc').append('<p>' + name + ': ' + $(selector).html() + '</p>');
+		// });
 		myCart += 1;
 	}
 
@@ -222,18 +250,24 @@ $(document).ready(function() {
 				var selector = '#cart' + key.toUpperCase();
 				$(selector).html(remItem[key]);
 			}
-			return;
-		}
-		for(var key in item) {
-			var selector = '#cart' + key.toUpperCase();
-			if($(selector).html() && isNumeric($(selector).html()) && isNumeric(item[key])) {
-				var after = parseInt($(selector).html()) - parseInt(item[key]);
-				$(selector).html(after);
+		}else {
+			for(var key in item) {
+				var selector = '#cart' + key.toUpperCase();
+				if($(selector).html() && isNumeric($(selector).html()) && isNumeric(item[key])) {
+					var after = parseInt($(selector).html()) - parseInt(item[key]);
+					$(selector).html(after);
+				}
 			}
 		}
+		$('#cartCriteriaDesc').html("");
+		criteriaNames.forEach(function(name) {
+			var selector = '#cart' + name.toUpperCase();
+			$('#cartCriteriaDesc').append('<p>' + name + ': ' + $(selector).html() + '</p>');
+		});
 		if(myCart == 0) {
 			$('#noItems').show();
 			$('#cartNutritionCount').hide();
+			$('#cartCriteriaDesc').hide();
 		}
 	}
 
