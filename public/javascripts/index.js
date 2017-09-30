@@ -15,6 +15,16 @@ $(document).ready(function() {
 	var windowWidth = $(window).width();
 	$('nav').css('width', windowWidth);
 
+
+	//Attach previous cart if exists
+	if(sessionStorage.cartItems) {
+		var attachCartItems = JSON.parse(sessionStorage.cartItems);
+		var i = JSON.parse(sessionStorage.cartItemsNames);
+		i.forEach(function(n) {
+			addToMealCart(attachCartItems[n], true);
+		});
+	}
+
 	$('#add').click(function(e) {
 		var tr = DOMcreator({name:'tr', classlist:['table-row']}); 
 		//Add remove button
@@ -149,7 +159,7 @@ $(document).ready(function() {
 	});
 
 	$('#addMealCart').click(function(e) {
-		addToMealCart(currentItem);
+		addToMealCart(currentItem, false);
 	});
 
 	$('#mealCart').click(function(e) {
@@ -217,7 +227,7 @@ $(document).ready(function() {
 		$('#itemModal').modal('show');
 	}
 
-	function addToMealCart(item) {
+	function addToMealCart(item, onReload) {
 		var tr = DOMcreator({name:'tr', inner:'<td class="glyphicon glyphicon-remove"></td><td>' + item.name +'</td>'})
 		// $('#cartItems').append('<p>' + item.name + '</p>');
 		$(tr).find('td:first').data('item-info', item);
@@ -234,16 +244,30 @@ $(document).ready(function() {
 				$(selector).html(item[key]);
 			}
 		}
-		// $('#cartCriteriaDesc').html("");
-		// criteriaNames.forEach(function(name) {
-		// 	var selector = '#cart' + name.toUpperCase();
-		// 	$('#cartCriteriaDesc').append('<p>' + name + ': ' + $(selector).html() + '</p>');
-		// });
+
 		myCart += 1;
+		$('#cartQuantity').html(myCart);
+		if(!onReload){
+			if(sessionStorage.cartItems) {
+				var itemsNames = JSON.parse(sessionStorage.cartItemsNames);
+				itemsNames.push(item.name);
+				sessionStorage.cartItemsNames = JSON.stringify(itemsNames);
+				var items = JSON.parse(sessionStorage.cartItems);
+				items[item.name] = item;
+				sessionStorage.cartItems = JSON.stringify(items);
+			} else {
+				var itemsNames = [item.name];
+				sessionStorage.cartItemsNames = JSON.stringify(itemsNames);
+				var items = {};
+				items[item.name] = item;
+				sessionStorage.cartItems = JSON.stringify(items);
+			}
+		}
 	}
 
 	function removeFromMealCart(item) {
 		myCart -= 1;
+		$('#cartQuantity').html(myCart);
 		if(myCart == 1) {
 			var remItem = $('#cartItems').find('tr td:first').data('item-info');
 			for(var key in remItem) {
@@ -268,6 +292,14 @@ $(document).ready(function() {
 			$('#noItems').show();
 			$('#cartNutritionCount').hide();
 			$('#cartCriteriaDesc').hide();
+		}
+		var itemsNames = JSON.parse(sessionStorage.cartItemsNames);
+		itemsNames.splice(itemsNames.indexOf(item.name), 1)
+		sessionStorage.cartItemsNames = JSON.stringify(itemsNames);
+		if(!itemsNames.includes(item.name)) {
+			var items = JSON.parse(sessionStorage.cartItems);
+			delete items[item.name];
+			sessionStorage.cartItems = JSON.stringify(items);
 		}
 	}
 

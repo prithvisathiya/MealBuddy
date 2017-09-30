@@ -5,7 +5,9 @@ block content
   nav.navbar.navbar-default.navbar-fixed-top
     .container-fluid
       h1#MealBuddy MealBuddy
-      button#mealCart.btn.btn-default.glyphicon.glyphicon-shopping-cart(type='button')
+      button#mealCart.btn.btn-default
+        .glyphicon.glyphicon-shopping-cart(type='button', style='display:inline-block;')
+        p#cartQuantity(style='display:inline-block;') 0  
   h2.display-4.m-b-2 Criterias
   .main.container-fluid 
     
