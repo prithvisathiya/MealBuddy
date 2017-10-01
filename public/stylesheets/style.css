@@ -23,6 +23,7 @@ nav {
 [hidden] {
 	display: none !important;
 }
+
 #MealBuddy {
 	display: inline-block;
 	color: maroon;
@@ -31,6 +32,11 @@ nav {
 	float: right;
 	display: inline-block;
 	vertical-align: middle;
+}
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 .modal-content {
 	color: darkgray;

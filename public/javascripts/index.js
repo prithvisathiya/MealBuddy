@@ -160,7 +160,17 @@ $(document).ready(function() {
 	});
 
 	$('#addMealCart').click(function(e) {
-		addToMealCart(currentItem, false);
+		var count = $('#countToAdd').val();
+		if(count == "") {
+			alert('Please enter How Many to add to MealCart');
+			return;
+		}else if(parseInt(count) < 0) {
+			alert('Please enter a number greater than 0');
+			return;
+		}else {
+			$('#itemModal').modal('hide');
+			addToMealCart(currentItem, false);
+		}
 	});
 
 	$('#mealCart').click(function(e) {
