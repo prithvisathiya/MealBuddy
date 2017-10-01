@@ -34,7 +34,6 @@ block content
             input.form-control.range2(type='number', size=5, value=50, hidden=true)
           td
             select.form-control.selectpicker.priority(data-width="100%")
-              option(value='none') 
               option(value='high') High
               option(value='medium', selected='selected') Medium
               option(value='low') Low
@@ -59,7 +58,6 @@ block content
             input.form-control.range2(type='number', size='5', value=30, hidden=true) 
           td
             select.form-control.selectpicker.priority(data-width="100%")
-              option(value='none') 
               option(value='high', selected='selected') High
               option(value='medium') Medium
               option(value='low') Low
@@ -93,9 +91,6 @@ block content
     hr(width="50%")
     ul#dessert.items-list
 
-  #item-info-popup
-    ul#info-list
-
   #itemModal.modal.fade(tabindex='-1', role='dialog')
     .modal-dialog(role='document')
       .modal-content
@@ -107,8 +102,10 @@ block content
             #itemInfoCriteriaDesc
             #itemInfoDesc
         .modal-footer
-          button.btn.btn-default(type='button', data-dismiss='modal') Close
-          button#addMealCart.btn.btn-primary(type='button', data-dismiss='modal') Add To MealCart
+          button.btn.btn-danger.modalButtons(type='button', data-dismiss='modal') Close
+          button#addMealCart.btn.btn-primary.modalButtons(type='button', data-dismiss='modal') Add To MealCart
+          p.modalButtons How Many?
+          input#countToAdd.form-control.modalButtons(type='number', size='1' value=1)
   
   #cartModal.modal.fade(tabindex='-1', role='dialog')
     .modal-dialog(role='document')
@@ -140,5 +137,5 @@ block content
               td#cartPHOSPHOROUS N/A
 
         .modal-footer
-          button.btn.btn-default(type='button', data-dismiss='modal') Close
+          button.btn.btn-danger.modalButtons(type='button', data-dismiss='modal') Close
 

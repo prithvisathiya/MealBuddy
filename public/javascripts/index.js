@@ -13,8 +13,12 @@ $(document).ready(function() {
 
 	//set the tool bar to the right width of the screen
 	var windowWidth = $(window).width();
-	$('nav').css('width', windowWidth);
-
+	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+		$('.selectpicker').selectpicker('mobile');
+		$('.selectpicker').selectpicker('refresh');
+	} else {
+		$('nav').css('width', windowWidth);
+	}
 
 	//Attach previous cart if exists
 	if(sessionStorage.cartItems) {
@@ -133,10 +137,7 @@ $(document).ready(function() {
 		$(this).parents('tr').remove();
 		removeFromMealCart(item);
 	});
-	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
-		// $('.selectpicker').selectpicker('mobile');
-		$('.selectpicker').selectpicker('refresh');
-	}
+
 	$('body').on('click', 'li.item a', function(e) {
 		//Get clicked item info
 		console.log($(this).data('item-info'));
@@ -212,6 +213,7 @@ $(document).ready(function() {
 		$('#itemInfoCriteriaDesc').html("");
 		$('#itemInfoDesc').html("");
 		$('#itemInfoImage').html("");
+		$('#countToAdd').val(1);
 		$('#item-modal-title').text(item.name);
 		for(var key in item) {
 			if(key == 'name' || key == 'id') continue;
@@ -228,39 +230,43 @@ $(document).ready(function() {
 	}
 
 	function addToMealCart(item, onReload) {
-		var tr = DOMcreator({name:'tr', inner:'<td class="glyphicon glyphicon-remove"></td><td>' + item.name +'</td>'})
-		// $('#cartItems').append('<p>' + item.name + '</p>');
-		$(tr).find('td:first').data('item-info', item);
-		$('#cartItems').append(tr);
+		var num = parseInt($('#countToAdd').val());
+		for(var i = 0; i < num; i++) {
+			var tr = DOMcreator({name:'tr', inner:'<td class="glyphicon glyphicon-remove"></td><td>' + item.name +'</td>'})
+			// $('#cartItems').append('<p>' + item.name + '</p>');
+			$(tr).find('td:first').data('item-info', item);
+			$('#cartItems').append(tr);
 
-		for(var key in item) {
-			var selector = '#cart' + key.toUpperCase();
-			if($(selector).html() && isNumeric($(selector).html())) {
-				if(isNumeric(item[key])) {
-					var after = parseInt($(selector).html()) + parseInt(item[key]);
-					$(selector).html(after);
+
+			for(var key in item) {
+				var selector = '#cart' + key.toUpperCase();
+				if($(selector).html() && isNumeric($(selector).html())) {
+					if(isNumeric(item[key])) {
+						var after = parseInt($(selector).html()) + parseInt(item[key]);
+						$(selector).html(after);
+					}
+				}else {
+					$(selector).html(item[key]);
 				}
-			}else {
-				$(selector).html(item[key]);
 			}
-		}
 
-		myCart += 1;
-		$('#cartQuantity').html(myCart);
-		if(!onReload){
-			if(sessionStorage.cartItems) {
-				var itemsNames = JSON.parse(sessionStorage.cartItemsNames);
-				itemsNames.push(item.name);
-				sessionStorage.cartItemsNames = JSON.stringify(itemsNames);
-				var items = JSON.parse(sessionStorage.cartItems);
-				items[item.name] = item;
-				sessionStorage.cartItems = JSON.stringify(items);
-			} else {
-				var itemsNames = [item.name];
-				sessionStorage.cartItemsNames = JSON.stringify(itemsNames);
-				var items = {};
-				items[item.name] = item;
-				sessionStorage.cartItems = JSON.stringify(items);
+			myCart += 1;
+			$('#cartQuantity').html(myCart);
+			if(!onReload){
+				if(sessionStorage.cartItems) {
+					var itemsNames = JSON.parse(sessionStorage.cartItemsNames);
+					itemsNames.push(item.name);
+					sessionStorage.cartItemsNames = JSON.stringify(itemsNames);
+					var items = JSON.parse(sessionStorage.cartItems);
+					items[item.name] = item;
+					sessionStorage.cartItems = JSON.stringify(items);
+				} else {
+					var itemsNames = [item.name];
+					sessionStorage.cartItemsNames = JSON.stringify(itemsNames);
+					var items = {};
+					items[item.name] = item;
+					sessionStorage.cartItems = JSON.stringify(items);
+				}
 			}
 		}
 	}

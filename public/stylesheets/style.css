@@ -115,16 +115,11 @@ ul {
 	padding: 10px;
 	border: 2px solid grey;
 }
-#item-info-popup {
-	position: fixed;
-	z-index: 5;
-	height: 60%;
-	width: 50%;
-	border: 2px solid black;
-	border-radius: 5px;
-	background-color: lightgrey;
-	display: none;
+
+.modalButtons   {
+	float: left;
 }
-#item-info-popup:click {
-	display: none;
+#countToAdd {
+	width: 60px;
 }
+
