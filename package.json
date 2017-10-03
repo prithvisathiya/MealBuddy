@@ -14,6 +14,7 @@
     "mongoose": "^4.11.4",
     "morgan": "~1.8.1",
     "mysql": "^2.14.1",
+    "nodemon": "^1.12.1",
     "semantic-ui": "^2.2.13",
     "serve-favicon": "~2.4.2",
     "string-format": "^0.5.0"
