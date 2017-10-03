@@ -162,7 +162,7 @@ $(document).ready(function() {
 	$('#addMealCart').click(function(e) {
 		var count = $('#countToAdd').val();
 		if(count == "") {
-			alert('Please enter How Many to add to MealCart');
+			alert('Please enter a valid number for How Many to add to MealCart');
 			return;
 		}else if(parseInt(count) < 0) {
 			alert('Please enter a number greater than 0');
@@ -213,6 +213,7 @@ $(document).ready(function() {
 				$(selector).append(li);
 				$(a).data('item-info', item);
 			});
+			$('.collapse').collapse('show');
 		}
 		else
 			console.log("Server:Error getting data"); 
@@ -222,7 +223,6 @@ $(document).ready(function() {
 		currentItem = item;
 		$('#itemInfoCriteriaDesc').html("");
 		$('#itemInfoDesc').html("");
-		$('#itemInfoImage').html("");
 		$('#countToAdd').val(1);
 		$('#item-modal-title').text(item.name);
 		for(var key in item) {
@@ -235,6 +235,8 @@ $(document).ready(function() {
 		criteriaNames.forEach(function(key) {
 			$('#itemInfoCriteriaDesc').append('<p>' + key + ': ' + item[key] + '</p>');
 		});
+		var path = 'images/' + item.imagePath;
+		$('#itemInfoImage').attr('src', path);
 		
 		$('#itemModal').modal('show');
 	}

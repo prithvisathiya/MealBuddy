@@ -72,25 +72,79 @@ block content
 
   h2 Suggestions
 
-  #appetizerContainer Appetizers
-    hr(width="50%")
-    ul#appetizer.items-list
-  #mealContainer Meals
-    hr(width="50%")
-    ul#meal.items-list
-  #vegetableContainer Vegetables
-    hr(width="50%")
-    ul#vegetable.items-list
-  #fruitContainer Fruits
-    hr(width="50%")
-    ul#fruit.items-list
-  #beverageContainer Beverages
-    hr(width="50%")
-    ul#beverage.items-list
-  #dessertContainer Desserts
-    hr(width="50%")
-    ul#dessert.items-list
+  //- #appetizerContainer Appetizers
+  //-   hr(width="50%")
+  //-   ul#appetizer.items-list
+  //- #mealContainer Meals
+  //-   hr(width="50%")
+  //-   ul#meal.items-list
+  //- #vegetableContainer Vegetables
+  //-   hr(width="50%")
+  //-   ul#vegetable.items-list
+  //- #fruitContainer Fruits
+  //-   hr(width="50%")
+  //-   ul#fruit.items-list
+  //- #beverageContainer Beverages
+  //-   hr(width="50%")
+  //-   ul#beverage.items-list
+  //- #dessertContainer Desserts
+  //-   hr(width="50%")
+  //-   ul#dessert.items-list
 
+  .panel-group
+    .panel.panel-default
+      .panel-heading
+        .panel-title
+          a(data-toggle='collapse', href='#collapse1') Appetizers
+        hr(width="50%")
+      #collapse1.panel-collapse.collapse
+        ul#appetizer.items-list
+  .panel-group
+    .panel.panel-default
+      .panel-heading
+        .panel-title
+          a(data-toggle='collapse', href='#collapse2') Meals
+        hr(width="50%")
+      #collapse2.panel-collapse.collapse
+        ul#meal.items-list
+  .panel-group
+    .panel.panel-default
+      .panel-heading
+        .panel-title
+          a(data-toggle='collapse', href='#collapse3') Vegetables
+        hr(width="50%")
+      #collapse3.panel-collapse.collapse
+        ul#vegetable.items-list
+  .panel-group
+    .panel.panel-default
+      .panel-heading
+        .panel-title
+          a(data-toggle='collapse', href='#collapse4') Fruits
+        hr(width="50%")
+      #collapse4.panel-collapse.collapse
+        ul#fruit.items-list
+  .panel-group
+    .panel.panel-default
+      .panel-heading
+        .panel-title
+          a(data-toggle='collapse', href='#collapse5') Beverages
+        hr(width="50%")
+      #collapse5.panel-collapse.collapse
+        ul#beverage.items-list
+  .panel-group
+    .panel.panel-default
+      .panel-heading
+        .panel-title
+          a(data-toggle='collapse', href='#collapse6') Desserts
+        hr(width="50%")
+      #collapse6.panel-collapse.collapse
+        ul#dessert.items-list
+
+
+
+
+
+  //- Item Modal and Cart Modal
   #itemModal.modal.fade(tabindex='-1', role='dialog')
     .modal-dialog(role='document')
       .modal-content
@@ -98,7 +152,7 @@ block content
           h4#item-modal-title.modal-title Food
         .modal-body
           .row
-            img#itemInfoImage.img-thumbnail(src="images/food.jpg")
+            img#itemInfoImage.img-thumbnail(src="images/default_item_image.jpg")
             #itemInfoCriteriaDesc
             #itemInfoDesc
         .modal-footer

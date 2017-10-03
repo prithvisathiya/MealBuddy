@@ -3,7 +3,7 @@ html {
 }
 body {
 	height: 100%;
-	background-image: url('../images/food3.jpg');
+	background-image: url('../images/food1.jpg');
 	background-size: cover;        
 	background-position: 0px 0px;              /* <------ */
     background-repeat: no-repeat;
@@ -101,6 +101,18 @@ ul {
 .items-list {
 	background-color: white;
 	opacity: .8;
+}
+
+.panel-group {
+	margin-bottom: 1px !important;
+}
+.panel-default > .panel-heading, .panel {
+	color: white;
+	background-color: rgba(0,0,0,0) !important;
+	border-color: rgba(0,0,0,0) !important;
+}
+.panel-heading {
+	padding: 0px !important;
 }
 
 #itemInfoImage {

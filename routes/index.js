@@ -20,19 +20,20 @@ mysqlConnection.connect(function(err) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+	console.log(req.connection.remoteAddress); 
+	res.render('index', { title: 'MealBuddy' });
 }); 
 
 function getReqQuery(req) {
 	var dev = {"low" : .2, "medium" : .1, "high" : 0};
 	if(req.max == Infinity) {
 		var min = (parseInt(req.min) - parseInt(req.min) * dev[req.priority]);
-		return 'and `' + req.name + '` > ' + min + ' '; 
+		return 'and ' + mysql.escape(req.name) + ' > ' + mysql.escape(min) + ' '; 
 	}else {
 		var min = (parseInt(req.min) - parseInt(req.min) * dev[req.priority]);
 		var max = (parseInt(req.max) + parseInt(req.max) * dev[req.priority]);
 		console.log(min + " " + max);
-		return 'and `' + req.name + '` between ' + min + ' and ' + max + ' '; 
+		return 'and ' + mysql.escape(req.name) + ' between ' + mysql.escape(min) + ' and ' + mysql.escape(max) + ' '; 
 	}
 } 
 
@@ -46,7 +47,8 @@ router.post('/submit', function(req, res, next) {
 	'ifnull(calcium, "N/A") as calcium, ' +
 	'ifnull(phosphorous, "N/A") as phosphorous, ' +
 	'ifnull(type, "N/A") as type, ' +
-	'ifnull(cuisine, "N/A") as cuisine ' +
+	'ifnull(cuisine, "N/A") as cuisine, ' +
+	'imagePath ' +
 	'from items where 1=1 ';
 	all.forEach(function(el, idx) {
 		query += getReqQuery(el);
