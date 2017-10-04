@@ -61,6 +61,7 @@ router.post('/submit', function(req, res, next) {
 	pool.connect(function(err, client, done) {
 		if(err) {
 			console.log('Error connecting to pg DB');
+			console.log(err);
 			res.write(JSON.stringify({"success": false, "error": err}));
 			res.end();
 		} else {
