@@ -215,21 +215,23 @@ $(document).ready(function() {
 			});
 			$('.collapse').collapse('show');
 		}
-		else
-			console.log("Server:Error getting data"); 
+		else{
+			console.log(data.error);  
+		}
 	}
 
 	function displayInfo(item) {
 		currentItem = item;
 		$('#itemInfoCriteriaDesc').html("");
-		$('#itemInfoDesc').html("");
+		$('#itemInfoDesc').html(""); 
 		$('#countToAdd').val(1);
 		$('#item-modal-title').text(item.name);
 		for(var key in item) {
 			if(key == 'name' || key == 'id') continue;
-			if(item[key] != 'null' && item[key] != '') {
-				
+			if(item[key] != null) {
 				$('#itemInfoDesc').append('<p>' + key + ': ' + item[key] + '</p>');
+			}else {
+				$('#itemInfoDesc').append('<p>' + key + ': --</p>');
 			}
 		}
 		criteriaNames.forEach(function(key) {

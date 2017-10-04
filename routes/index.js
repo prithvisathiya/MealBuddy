@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var pg = require('pg');
 var mongoose = require('mongoose');
 var format = require('string-format');
 
@@ -10,63 +11,74 @@ var mysqlConnection = mysql.createConnection({
 	password: 'password',
 	database: 'Foods'
 });
-
 mysqlConnection.connect(function(err) {
 	if (err) {
-		console.log('Error connecting to DB');
-	}else console.log('Connection to DB successful'); 
+		console.log('Error connecting to mysql DB');
+	}else console.log('Connection to mysql DB successful'); 
 });
+
+var pgConnString = process.env.DATABASE_URL || 'postgres://localhost:5432/prithvisathiya';
+var pool = new pg.Pool(pgConnString);
 
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	console.log(req.connection.remoteAddress); 
-	res.render('index', { title: 'MealBuddy' });
+	res.render('index', { title: 'MealBuddy' }); 
 }); 
 
 function getReqQuery(req) {
 	var dev = {"low" : .2, "medium" : .1, "high" : 0};
 	if(req.max == Infinity) {
 		var min = (parseInt(req.min) - parseInt(req.min) * dev[req.priority]);
-		return 'and ' + mysql.escape(req.name) + ' > ' + mysql.escape(min) + ' '; 
+		return 'and ' + req.name + ' > ' + mysql.escape(min) + ' '; 
 	}else {
 		var min = (parseInt(req.min) - parseInt(req.min) * dev[req.priority]);
-		var max = (parseInt(req.max) + parseInt(req.max) * dev[req.priority]);
+		var max = (parseInt(req.max) + parseInt(req.max) * dev[req.priority]); 
 		console.log(min + " " + max);
-		return 'and ' + mysql.escape(req.name) + ' between ' + mysql.escape(min) + ' and ' + mysql.escape(max) + ' '; 
+		return 'and ' + req.name + ' between ' + mysql.escape(min) + ' and ' + mysql.escape(max) + ' '; 
 	}
 } 
 
 router.post('/submit', function(req, res, next) {
 	var all = req.body.data;
-	var query = 'Select name, ifnull(servingsize,"N/A") as servingsize, ' +
-	'ifnull(calories, "N/A") as calories, ' +
-	'ifnull(fat, "N/A") as fat, ' +
-	'ifnull(sugar, "N/A") as sugar, ' +
-	'ifnull(potassium, "N/A") as potassium, ' +
-	'ifnull(calcium, "N/A") as calcium, ' +
-	'ifnull(phosphorous, "N/A") as phosphorous, ' +
-	'ifnull(type, "N/A") as type, ' +
-	'ifnull(cuisine, "N/A") as cuisine, ' +
-	'imagePath ' +
-	'from items where 1=1 ';
+	var query = "Select name, coalesce(servingsize,null) as servingsize, " +
+	"coalesce(calories, null) as calories, " +
+	"coalesce(fat, null) as fat, " +
+	"coalesce(sugar, null) as sugar, " +
+	"coalesce(potassium, null) as potassium, " +
+	"coalesce(calcium, null) as calcium, " +
+	"coalesce(phosphorous, null) as phosphorous, " +
+	"coalesce(type, null) as type, " +
+	"coalesce(cuisine, null) as cuisine, " +
+	"imagePath " +
+	"from items where 1=1 "; 
 	all.forEach(function(el, idx) {
 		query += getReqQuery(el);
 		console.log(el.name + ' min: ' + el.min + ' max: ' + el.max);
 		
 	});
 	console.log(query);
-	mysqlConnection.query(query, function(err, rows) {
+	pool.connect(function(err, client, done) {
 		if(err) {
-			console.log(err);
-			console.log('DB: Error retrieving from items');
-			res.write(JSON.stringify({"success": false}));
+			console.log('Error connecting to pg DB');
+			res.write(JSON.stringify({"success": false, "error": err}));
+			res.end();
+		} else {
+			console.log('Connection to pg DB successful');
+			client.query(query, function(err, result) {
+				if(err) {
+					console.log(err);
+					console.log('DB: Error retrieving from items');
+					res.write(JSON.stringify({"success": false, "error": err}));
+				}
+				else {
+					console.log('Number of rows retrieved: ' + result.rows.length);
+					res.write(JSON.stringify({"success": true, "result": result.rows}));
+				}
+				res.end();
+				done()
+			});
 		}
-		else {
-			console.log('Number of rows retrieved: ' + rows.length);
-			res.write(JSON.stringify({"success": true, "result": rows}));
-		}
-		res.end();
 	});
 });
 

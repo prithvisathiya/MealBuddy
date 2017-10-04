@@ -15,6 +15,7 @@
     "morgan": "~1.8.1",
     "mysql": "^2.14.1",
     "nodemon": "^1.12.1",
+    "pg": "^7.3.0",
     "semantic-ui": "^2.2.13",
     "serve-favicon": "~2.4.2",
     "string-format": "^0.5.0"
