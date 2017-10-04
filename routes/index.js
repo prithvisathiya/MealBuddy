@@ -5,18 +5,15 @@ var pg = require('pg');
 var mongoose = require('mongoose');
 var format = require('string-format');
 
-var mysqlConnection = mysql.createConnection({
-	host: 'localhost',
-	user: 'root',
-	password: 'password',
-	database: 'Foods'
-});
-mysqlConnection.connect(function(err) {
-	if (err) {
-		console.log('Error connecting to mysql DB');
-	}else console.log('Connection to mysql DB successful'); 
-});
-
+// var mysqlConnection = mysql.createConnection({
+// 	host: 'localhost',user: 'root',password: 'password',database: 'Foods'
+// });
+// mysqlConnection.connect(function(err) {
+// 	if (err) {console.log('Error connecting to mysql DB');}
+// 	else console.log('Connection to mysql DB successful'); 
+// });
+console.log('db url is : ' + process.env.DATABASE_URL);
+console.log('db env is : ' + process.env.NODE_ENV);
 var pgConnString = process.env.DATABASE_URL || 'postgres://localhost:5432/prithvisathiya';
 var pool = new pg.Pool(pgConnString);
 
