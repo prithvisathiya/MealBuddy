@@ -17,7 +17,6 @@ body {
 }
 
 nav {
-	opacity: .8;
 	padding: 5px !important;
 }
 [hidden] {
@@ -34,35 +33,10 @@ nav {
 	vertical-align: middle;
 }
 input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
     -webkit-appearance: none;
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
-.modal-content {
-	color: darkgray;
-}
-.modal-dialog{
-    overflow-y: initial !important
-}
-.modal-body{
-    height: 500px;
-    overflow-y: auto;
-}
-#cartModalBody {
-	width: 100%;
-}
-#cartItems {
-	display: inline-block;
-	width: 40%
-	margin:5px;
-	border: 2px solid gray;
-}
-#cartNutritionCount {
-	display: inline-block;
-	width: 50%
-	margin:5px;
-	border: 2px solid gray;
-}
+
 a {
   color: orange;
 }
@@ -75,17 +49,21 @@ hr {
 .glyphicon-remove:hover {
 	cursor: pointer;
 }
-.form-control {
-	/*width: 50%;*/
-	/*opacity: .;*/
+.form-control, button {
+	border-radius: 20px !important;
+	/*background-color: rgba(256,256,256,.8) !important;*/
 }
-.criteria-name {
-	width: 30%;
+
+.range1, .range2{
+	width: 70px;
 }
 .table-row td {
-	padding-right: 10px;
+	padding: 5px;
 }
-button {
+.table-row {
+	margin-bottom: 5px;
+}
+.btn {
 	margin-right: 5px;
 }
 
@@ -96,6 +74,30 @@ a:hover {
 
 ul {
 	list-style-type: none;
+}
+
+.card {
+	color: black;
+	background-color: white;
+	width: 200px;
+	/*height: 300px;*/
+	margin: 10px;
+	vertical-align: top;
+	display: inline-block;
+	box-shadow: 0 0 3px #ccc;
+}
+.card:hover {
+	cursor: pointer;
+}
+.card img {
+	width: 200px;
+	height: 200px;
+}
+.card-block {
+	padding: 5px;
+}
+.card-text {
+	text-overflow: ellipsis;
 }
 
 .items-list {
@@ -132,6 +134,32 @@ ul {
 	text-align: center;
 	padding: 10px;
 	border: 2px solid grey;
+}
+
+.modal-content {
+	color: darkgray;
+}
+.modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body{
+    height: 500px;
+    overflow-y: auto;
+}
+#cartModalBody {
+	width: 100%;
+}
+#cartItems {
+	display: inline-block;
+	width: 40%
+	margin:5px;
+	border: 2px solid gray;
+}
+#cartNutritionCount {
+	display: inline-block;
+	width: 50%
+	margin:5px;
+	border: 2px solid gray;
 }
 
 .modalButtons   {

@@ -10,21 +10,19 @@ block content
         p#cartQuantity(style='display:inline-block;') 0  
   h2.display-4.m-b-2 Criterias
   .main.container-fluid 
-    
-    //- register form
     form#criteria-form
       table#criteriaTable.form-group
         tr.table-row
           td
             span.glyphicon.glyphicon-remove
           td
-            select.form-control.selectpicker.criteria-name(type='text', title='potassium, cholestrol, etc...', data-live-search='true', data-width="100%")
+            select.form-control.selectpicker.criteria-name(type='text', title='fat, sugar, etc...', data-live-search='true', data-width="200px")
               option(value='fat') fat
               option(value='potassium') potassium
               option(value='sugar') sugar
               option(value='calories') calories
           td
-            select.form-control.selectpicker.range-type
+            select.form-control.selectpicker.range-type(data-width="130px")
               option(value='lt') Less than
               option(value='between') Between
               option(value='gt') Greater than
@@ -33,7 +31,7 @@ block content
           td
             input.form-control.range2(type='number', size=5, value=50, hidden=true)
           td
-            select.form-control.selectpicker.priority(data-width="100%")
+            select.form-control.selectpicker.priority(data-width="130px")
               option(value='high') High
               option(value='medium', selected='selected') Medium
               option(value='low') Low
@@ -42,13 +40,13 @@ block content
           td
             span.glyphicon.glyphicon-remove
           td
-            select.form-control.selectpicker.criteria-name(type='text', title='potassium, cholestrol, etc...', data-live-search='true', data-width="100%")
+            select.form-control.selectpicker.criteria-name(type='text', title='fat, sugar, etc...', data-live-search='true', data-width="200px")
               option(value='fat') fat
               option(value='potassium') potassium
               option(value='sugar') sugar
               option(value='calories') calories
           td
-            select.form-control.selectpicker.range-type
+            select.form-control.selectpicker.range-type(data-width="130px")
               option(value='lt') Less than
               option(value='between') Between
               option(value='gt') Greater than
@@ -57,90 +55,162 @@ block content
           td
             input.form-control.range2(type='number', size='5', value=30, hidden=true) 
           td
-            select.form-control.selectpicker.priority(data-width="100%")
+            select.form-control.selectpicker.priority(data-width="130px")
               option(value='high', selected='selected') High
               option(value='medium') Medium
               option(value='low') Low
           
+      select#cuisine-type.form-control.selectpicker(type='text', data-live-search='true', data-width="200px")
+        option(value='0') No Preference
+        option(value='1') Thai
+        option(value='2') Italian
+        option(value='3') Indian
+    br
+    button#add.btn.btn-success(type="button") Add
+    button#submit.btn.btn-primary(type="button") Submit
       
-      button#add.btn.btn-success(type="button") Add
-      
-      button#submit.btn.btn-primary(type="button") Submit
-      
-      //- button#get.btn.btn-success(type="button") Get
 
 
   h2 Suggestions
 
-  //- #appetizerContainer Appetizers
-  //-   hr(width="50%")
-  //-   ul#appetizer.items-list
-  //- #mealContainer Meals
-  //-   hr(width="50%")
-  //-   ul#meal.items-list
-  //- #vegetableContainer Vegetables
-  //-   hr(width="50%")
-  //-   ul#vegetable.items-list
-  //- #fruitContainer Fruits
-  //-   hr(width="50%")
-  //-   ul#fruit.items-list
-  //- #beverageContainer Beverages
-  //-   hr(width="50%")
-  //-   ul#beverage.items-list
-  //- #dessertContainer Desserts
-  //-   hr(width="50%")
-  //-   ul#dessert.items-list
+  ul.nav.nav-pills
+    li.active 
+      a(href='#appetizerTab' data-toggle='pill') Appetizers
+    li
+      a(href='#mealTab' data-toggle='pill') Meals
+    li 
+      a(href='#vegatableTab' data-toggle='pill') Vegetables 
+    li 
+      a(href='#fruitTab' data-toggle='pill') Fruits 
+    li 
+      a(href='#beverageTab' data-toggle='pill') Beverages
+    li 
+      a(href='#dessertTab' data-toggle='pill') Desserts  
 
-  .panel-group
-    .panel.panel-default
-      .panel-heading
-        .panel-title
-          a(data-toggle='collapse', href='#collapse1') Appetizers
-        hr(width="50%")
-      #collapse1.panel-collapse.collapse
-        ul#appetizer.items-list
-  .panel-group
-    .panel.panel-default
-      .panel-heading
-        .panel-title
-          a(data-toggle='collapse', href='#collapse2') Meals
-        hr(width="50%")
-      #collapse2.panel-collapse.collapse
-        ul#meal.items-list
-  .panel-group
-    .panel.panel-default
-      .panel-heading
-        .panel-title
-          a(data-toggle='collapse', href='#collapse3') Vegetables
-        hr(width="50%")
-      #collapse3.panel-collapse.collapse
-        ul#vegetable.items-list
-  .panel-group
-    .panel.panel-default
-      .panel-heading
-        .panel-title
-          a(data-toggle='collapse', href='#collapse4') Fruits
-        hr(width="50%")
-      #collapse4.panel-collapse.collapse
-        ul#fruit.items-list
-  .panel-group
-    .panel.panel-default
-      .panel-heading
-        .panel-title
-          a(data-toggle='collapse', href='#collapse5') Beverages
-        hr(width="50%")
-      #collapse5.panel-collapse.collapse
-        ul#beverage.items-list
-  .panel-group
-    .panel.panel-default
-      .panel-heading
-        .panel-title
-          a(data-toggle='collapse', href='#collapse6') Desserts
-        hr(width="50%")
-      #collapse6.panel-collapse.collapse
-        ul#dessert.items-list
-
-
+  .tab-content
+    #appetizerTab.tab-pane.fade.in.active
+      .container-fluid
+        .row
+          #appetizerList.card-group
+            .card
+              img(src='images/default_item_image.jpg')
+              .card-block
+                h4.card-title Chicken
+                p.card-text.
+                  Sugar<br>
+                  Text
+              .card-footer
+                small Footer
+            .card
+              img.card-img-top(src='images/default_item_image.jpg')
+              .card-block
+                .card-title Chicken
+                .card-text
+                  p Sugar 
+                  p Fat
+              .card-footer
+                small Footer
+            .card.card-primary
+              img(src='images/default_item_image.jpg')
+              .card-block
+                .card-title Chicken
+                .card-text
+                  p Sugar 
+                  p Fat
+                  p Sugar 
+                  p Fat
+                  p Sugar 
+                  p Fat
+                  p Sugar 
+                  p Fat
+              .card-footer
+                small Footer
+            .card
+              img(src='images/default_item_image.jpg')
+              .card-block
+                .card-title Chicken
+                .card-text
+                  p Sugar 
+                  p Fat
+              .card-footer
+                small Footer
+            .card
+              img.card-img-top(src='images/default_item_image.jpg')
+              .card-block
+                .card-title Chicken
+                .card-text
+                  p Sugar 
+                  p Fat
+              .card-footer
+                small Footer
+            .card.card-primary
+              img(src='images/default_item_image.jpg')
+              .card-block
+                .card-title Chicken
+                .card-text
+                  p Sugar 
+                  p Fat
+                  p Sugar 
+                  p Fat
+                  p Sugar 
+                  p Fat
+                  p Sugar 
+                  p Fat
+              .card-footer
+                small Footer
+            .card
+              img(src='images/default_item_image.jpg')
+              .card-block
+                .card-title Chicken
+                .card-text
+                  p Sugar 
+                  p Fat
+              .card-footer
+                small Footer
+            .card
+              img.card-img-top(src='images/default_item_image.jpg')
+              .card-block
+                .card-title Chicken
+                .card-text
+                  p Sugar 
+                  p Fat
+              .card-footer
+                small Footer
+            .card.card-primary
+              img(src='images/default_item_image.jpg')
+              .card-block
+                .card-title Chicken
+                .card-text
+                  p Sugar 
+                  p Fat
+                  p Sugar 
+                  p Fat
+                  p Sugar 
+                  p Fat
+                  p Sugar 
+                  p Fat
+              .card-footer
+                small Footer
+    #mealTab.tab-pane.fade
+      .container-fluid
+        .row
+          #mealList.card-group
+    #vegatableTab.tab-pane.fade
+      .container-fluid
+        .row
+          #vegetableList.card-group
+    #fruitTab.tab-pane.fade
+      .container-fluid
+        .row
+          #fruitList.card-group
+    #beverageTab.tab-pane.fade
+      .container-fluid
+        .row
+          #beverageList.card-group
+    #dessertTab.tab-pane.fade
+      .container-fluid
+        .row
+          #dessertList.card-group
 
 
 

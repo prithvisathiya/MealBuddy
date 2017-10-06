@@ -38,7 +38,7 @@ $(document).ready(function() {
 		td = DOMcreator({name:'td'});
 		var select = DOMcreator({ name:'select',
 			classlist:['form-control','criteria-name', 'selectpicker'], 
-			attr:{"data-live-search":true, "data-width":"100%", "title":"potassium, cholestrol, etc..."}
+			attr:{"data-live-search":true, "data-width":"200px", "title":"fat, sugar, etc..."}
 		});
 		ddlCriteriaList.forEach(function(c) {
 			$(select).append('<option value="'+c+'">'+c+'</option>');
@@ -47,21 +47,23 @@ $(document).ready(function() {
 		tr.appendChild(td);
 		//Add criteria range type
 		td = DOMcreator({name:'td'});
-		select = DOMcreator({name:'select', classlist:['form-control','selectpicker','range-type']});
+		select = DOMcreator({name:'select', classlist:['form-control','selectpicker','range-type'],
+			attr:{"data-width":"130px"}
+		});
 		for(var key in rangeTypes) {
 			$(select).append('<option value="'+key+'">'+rangeTypes[key]+'</option>');
 		}
 		td.appendChild(select);
 		tr.appendChild(td);
 		//Add criteria min
-		td = DOMcreator({name:'td', inner:'<input type="number" class="form-control range1"/>'});
+		td = DOMcreator({name:'td', attr:{"data-width":"70px"}, inner:'<input type="number" class="form-control range1"/>'});
 		tr.appendChild(td);
 		//Add criteria max
-		td = DOMcreator({name:'td', inner:'<input type="number" class="form-control range2" hidden/>'});
+		td = DOMcreator({name:'td', attr:{"data-width":"70px"}, inner:'<input type="number" class="form-control range2" hidden/>'});
 		tr.appendChild(td);
 		//Add priority dropdown
 		td = DOMcreator({name:'td'});
-		select = DOMcreator({name:'select', classlist:['form-control','priority', 'selectpicker']});
+		select = DOMcreator({name:'select', attr:{"data-width":"130px"}, classlist:['form-control','priority', 'selectpicker']});
 		priorityList.forEach(function(p) {
 			$(select).append('<option value="'+p.toLowerCase()+'">'+p+'</option>');
 		});
@@ -108,12 +110,13 @@ $(document).ready(function() {
 				criteriaNames.push(criteria.name);
 			}
 		});
+		var cuisineIdx = $('#cuisine-type').val();
 		console.log(allCriterias);
 		if(allCriterias.length > 0) { 
 			$.ajax({
 				type: 'POST',
 				url: '/submit',
-				data: {data: allCriterias},
+				data: {data: allCriterias, idx: cuisineIdx},
 	            success: function(data) {
 	            	displayResults(JSON.parse(data));
 	            }
@@ -138,7 +141,7 @@ $(document).ready(function() {
 		removeFromMealCart(item);
 	});
 
-	$('body').on('click', 'li.item a', function(e) {
+	$('body').on('click', '.card', function(e) {
 		//Get clicked item info
 		console.log($(this).data('item-info'));
 		displayInfo($(this).data('item-info'));
@@ -192,7 +195,16 @@ $(document).ready(function() {
 		$('#cartModal').modal('show');
 	});
 
+	const Item = ({item}) => `
+		<div class="card">
+		   <img src="images/${item.imagepath}">
+		   <div class="card-block">
+		      <h4 class="card-title">${item.name}</h4>
+		   </div>
+		</div>
+	`;
 
+	
 
 	//HELPER FUNCTIONS
 	function displayResults(data) {
@@ -204,14 +216,16 @@ $(document).ready(function() {
 				beverage: []
 			};
 			console.log(data.result);
-			$('.items-list').html('');
+			$('.card-group').html('');
 			data.result.forEach(function(item, idx) {
-				var selector = '#' + item.type;
-				var li = DOMcreator({name:'li', classlist:['item']});
-				var a = DOMcreator({name:'a', inner:item.name});
-				li.appendChild(a);
-				$(selector).append(li);
-				$(a).data('item-info', item);
+				var selector = '#' + item.type + 'List';
+				var card = $(Item({item: item}));
+				var cardText = card.find('.card-block');
+				criteriaNames.forEach(function(criteria) {
+					cardText.append('<p>' + criteria + ":   " + item[criteria] + '</p>')
+				});
+				$(selector).append(card);
+				$(card).data('item-info', item);
 			});
 			$('.collapse').collapse('show');
 		}
@@ -237,7 +251,7 @@ $(document).ready(function() {
 		criteriaNames.forEach(function(key) {
 			$('#itemInfoCriteriaDesc').append('<p>' + key + ': ' + item[key] + '</p>');
 		});
-		var path = 'images/' + item.imagePath;
+		var path = 'images/' + item.imagepath;
 		$('#itemInfoImage').attr('src', path);
 		
 		$('#itemModal').modal('show');

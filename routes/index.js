@@ -14,9 +14,11 @@ var format = require('string-format');
 // });
 console.log('db url is : ' + process.env.DATABASE_URL);
 console.log('db env is : ' + process.env.NODE_ENV);
+// var pgConnString = 'postgres://chystyrmzwpzxa:19b598a2ea9da17f9af955b56dae01279a5cf1836227f3383c7b12d021089026@ec2-107-20-193-89.compute-1.amazonaws.com:5432/d8mag523fiim17';
 var pgConnString = process.env.DATABASE_URL || 'postgres://localhost:5432/prithvisathiya';
+console.log(pgConnString);
 var pool = new pg.Pool(pgConnString);
-
+var cuisines = ['none', 'Thai', 'Italian', 'Indian'];
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -47,13 +49,17 @@ router.post('/submit', function(req, res, next) {
 	"coalesce(phosphorous, null) as phosphorous, " +
 	"coalesce(type, null) as type, " +
 	"coalesce(cuisine, null) as cuisine, " +
-	"imagePath " +
+	"imagePath " + 
 	"from items where 1=1 "; 
 	all.forEach(function(el, idx) {
 		query += getReqQuery(el);
 		console.log(el.name + ' min: ' + el.min + ' max: ' + el.max);
 		
 	});
+	var cuisineIdx = parseInt(req.body.idx);
+	if(cuisineIdx > 0) {
+		query += "and cuisine in ('none','" + cuisines[cuisineIdx] + "')";
+	}
 	console.log(query);
 	pool.connect(function(err, client, done) {
 		if(err) {
