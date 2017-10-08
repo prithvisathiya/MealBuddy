@@ -8,7 +8,7 @@ block content
       button#mealCart.btn.btn-default
         .glyphicon.glyphicon-shopping-cart(type='button', style='display:inline-block;')
         p#cartQuantity(style='display:inline-block;') 0  
-  h2.display-4.m-b-2 Criterias
+  h2.display-4.m-b-2 Restrictions
   .main.container-fluid 
     form#criteria-form
       table#criteriaTable.form-group
@@ -17,19 +17,17 @@ block content
             span.glyphicon.glyphicon-remove
           td
             select.form-control.selectpicker.criteria-name(type='text', title='fat, sugar, etc...', data-live-search='true', data-width="200px")
-              option(value='fat') fat
-              option(value='potassium') potassium
-              option(value='sugar') sugar
-              option(value='calories') calories
           td
             select.form-control.selectpicker.range-type(data-width="130px")
               option(value='lt') Less than
               option(value='between') Between
               option(value='gt') Greater than
-          td
-            input.form-control.range1(type='number', size='5', value=30)
-          td
-            input.form-control.range2(type='number', size=5, value=50, hidden=true)
+          td(nowrap='true')
+            input.form-control.range1(type='number', maxlength='5', value=30)
+            p.units1 mg
+          td(nowrap='true')
+            input.form-control.range2(type='number', maxlength='5', value=50, hidden=true)
+            p.units2(hidden=true) mg
           td
             select.form-control.selectpicker.priority(data-width="130px")
               option(value='high') High
@@ -41,19 +39,17 @@ block content
             span.glyphicon.glyphicon-remove
           td
             select.form-control.selectpicker.criteria-name(type='text', title='fat, sugar, etc...', data-live-search='true', data-width="200px")
-              option(value='fat') fat
-              option(value='potassium') potassium
-              option(value='sugar') sugar
-              option(value='calories') calories
           td
             select.form-control.selectpicker.range-type(data-width="130px")
               option(value='lt') Less than
               option(value='between') Between
               option(value='gt') Greater than
-          td
+          td(nowrap='true')
             input.form-control.range1(type='number', size='5', value=30)
-          td
+            p.units1 mg
+          td(nowrap='true')
             input.form-control.range2(type='number', size='5', value=30, hidden=true) 
+            p.units2(hidden=true) mg
           td
             select.form-control.selectpicker.priority(data-width="130px")
               option(value='high', selected='selected') High
@@ -92,105 +88,26 @@ block content
       .container-fluid
         .row
           #appetizerList.card-group
-            .card
-              img(src='images/default_item_image.jpg')
-              .card-block
-                h4.card-title Chicken
-                p.card-text.
-                  Sugar<br>
-                  Text
-              .card-footer
-                small Footer
-            .card
-              img.card-img-top(src='images/default_item_image.jpg')
-              .card-block
-                .card-title Chicken
-                .card-text
-                  p Sugar 
-                  p Fat
-              .card-footer
-                small Footer
-            .card.card-primary
-              img(src='images/default_item_image.jpg')
-              .card-block
-                .card-title Chicken
-                .card-text
-                  p Sugar 
-                  p Fat
-                  p Sugar 
-                  p Fat
-                  p Sugar 
-                  p Fat
-                  p Sugar 
-                  p Fat
-              .card-footer
-                small Footer
-            .card
-              img(src='images/default_item_image.jpg')
-              .card-block
-                .card-title Chicken
-                .card-text
-                  p Sugar 
-                  p Fat
-              .card-footer
-                small Footer
-            .card
-              img.card-img-top(src='images/default_item_image.jpg')
-              .card-block
-                .card-title Chicken
-                .card-text
-                  p Sugar 
-                  p Fat
-              .card-footer
-                small Footer
-            .card.card-primary
-              img(src='images/default_item_image.jpg')
-              .card-block
-                .card-title Chicken
-                .card-text
-                  p Sugar 
-                  p Fat
-                  p Sugar 
-                  p Fat
-                  p Sugar 
-                  p Fat
-                  p Sugar 
-                  p Fat
-              .card-footer
-                small Footer
-            .card
-              img(src='images/default_item_image.jpg')
-              .card-block
-                .card-title Chicken
-                .card-text
-                  p Sugar 
-                  p Fat
-              .card-footer
-                small Footer
-            .card
-              img.card-img-top(src='images/default_item_image.jpg')
-              .card-block
-                .card-title Chicken
-                .card-text
-                  p Sugar 
-                  p Fat
-              .card-footer
-                small Footer
-            .card.card-primary
-              img(src='images/default_item_image.jpg')
-              .card-block
-                .card-title Chicken
-                .card-text
-                  p Sugar 
-                  p Fat
-                  p Sugar 
-                  p Fat
-                  p Sugar 
-                  p Fat
-                  p Sugar 
-                  p Fat
-              .card-footer
-                small Footer
+            //- .card
+            //-   img(src='images/default_item_image.jpg')
+            //-   .card-block
+            //-     h4.card-title Chicken
+            //-     p.card-text.
+            //-       Sugar<br>
+            //-       Text
+            //-   .card-footer
+            //-     small Footer
+            //- .card
+            //-   img.card-img-top(src='images/default_item_image.jpg')
+            //-   .card-block
+            //-     .card-title Chicken
+            //-     .card-text
+            //-       p Sugar 
+            //-       p Fat
+            //-   .card-footer
+            //-     small Footer
+
+
     #mealTab.tab-pane.fade
       .container-fluid
         .row
@@ -219,12 +136,105 @@ block content
     .modal-dialog(role='document')
       .modal-content
         .modal-header
-          h4#item-modal-title.modal-title Food
+          h2#item-modal-title.modal-title Food
         .modal-body
-          .row
-            img#itemInfoImage.img-thumbnail(src="images/default_item_image.jpg")
-            #itemInfoCriteriaDesc
-            #itemInfoDesc
+          h4 Your Restriction(s)
+          #itemInfoCriteriaDesc
+          hr
+          h4 Nutrition Info
+          #itemInfoDesc
+            table
+              tr(style="font-weight: bold; color: black;")
+                td Serving Size:
+                td#itemSERVINGSIZE --
+
+              tr
+                td(colspan='2') 
+                  h4 Proximates
+              tr
+                td Calories
+                td#itemCALORIES --
+              tr
+                td Protein
+                td#itemPROTEIN --
+              tr
+                td Total Fat
+                td#itemFAT --
+              tr
+                td Fiber
+                td#itemFIBER --
+              tr
+                td Sugars
+                td#itemSUGAR --
+
+              tr
+                td(colspan='2') 
+                  h4 Minerals
+              tr
+                td Calcium:
+                td#itemCALCIUM --
+              tr
+                td Iron:
+                td#itemIRON --
+              tr
+                td Magnesium:
+                td#itemMAGNESIUM --
+              tr
+                td Phosphorus
+                td#itemPHOSPHOROUS --
+              tr
+                td Potassium:
+                td#itemPOTASSIUM --
+              tr
+                td Sodium:
+                td#itemSODIUM --
+              tr
+                td Zinc:
+                td#itemZINC --
+
+              tr
+                td(colspan='2')
+                  h4 Vitamins
+              tr
+                td Vitamin A, RAE:
+                td#itemVITAMINARAE --
+              tr
+                td Vitamin B-6:
+                td#itemVITAMINB6 --
+              tr
+                td Vitamin B-12:
+                td#itemVITAMINB12 --
+              tr
+                td Vitamin C:
+                td#itemVITAMINC --
+              tr
+                td Vitamin D:
+                td#itemVITAMIND --
+
+              tr
+                td(colspan='2')
+                  h4 Lipids
+              tr
+                td Saturated Fat:
+                td#itemSATURATED --
+              tr
+                td Mono-Unsaturated Fat:
+                td#itemMONOUNSATURATED --
+              tr
+                td Poly-Unsaturated Fat:
+                td#itemPOLYUNSATURATED --
+              tr
+                td Cholesterol
+                td#itemCHOLESTEROL --
+
+              tr
+                td(colspan='2')
+                  h4 Other
+              tr
+                td Caffeine
+                td#itemCAFFEINE --
+              
+              
         .modal-footer
           button.btn.btn-danger.modalButtons(type='button', data-dismiss='modal') Close
           button#addMealCart.btn.btn-primary.modalButtons(type='button') Add To MealCart
@@ -237,28 +247,104 @@ block content
         .modal-header
           h4#cart-modal-title.modal-title Your Cart
         #cartModalBody.modal-body
-          p#noItems No item in MealCart yet. You can add from suggestions to you Meal Cart
-          table#cartItems  
-          #cartCriteriaDesc
-          table#cartNutritionCount
-            tr
-              td Calories
-              td#cartCALORIES N/A
-            tr
-              td Fat
-              td#cartFAT N/A
-            tr
-              td Sugar
-              td#cartSUGAR N/A
-            tr
-              td Potassium
-              td#cartPOTASSIUM N/A
-            tr
-              td Calcium
-              td#cartCALCIUM N/A
-            tr
-              td Phosphorous
-              td#cartPHOSPHOROUS N/A
+          p#noItems(style="text-align:center") No item in MealCart yet. You can add from suggestions to you Meal Cart
+            hr
+          #cartTop.container-fluid
+            .row(nowrap=true)
+              .col-xs-6
+                h4(style="border-bottom: 1px solid black") Items
+                table#cartItems 
+              .col-xs-6
+                h4(style="border-bottom: 1px solid black") Your Restriction(s)
+                #cartCriteriaDesc
+            hr
+            #cartNutritionCount.row     
+              table
+                tr
+                  td(colspan='2') 
+                    h4 Proximates
+                tr
+                  td Calories
+                  td#cartCALORIES --
+                tr
+                  td Protein
+                  td#cartPROTEIN --
+                tr
+                  td Total Fat
+                  td#cartFAT --
+                tr
+                  td Fiber
+                  td#cartFIBER --
+                tr
+                  td Sugars
+                  td#cartSUGAR --
+
+                tr
+                  td(colspan='2') 
+                    h4 Minerals
+                tr
+                  td Calcium:
+                  td#cartCALCIUM --
+                tr
+                  td Iron:
+                  td#cartIRON --
+                tr
+                  td Magnesium:
+                  td#cartMAGNESIUM --
+                tr
+                  td Phosphorus
+                  td#cartPHOSPHOROUS --
+                tr
+                  td Potassium:
+                  td#cartPOTASSIUM --
+                tr
+                  td Sodium:
+                  td#cartSODIUM --
+                tr
+                  td Zinc:
+                  td#cartZINC --
+
+                tr
+                  td(colspan='2')
+                    h4 Vitamins
+                tr
+                  td Vitamin A
+                  td#cartVITAMINA --
+                tr
+                  td Vitamin B-6:
+                  td#cartVITAMINB6 --
+                tr
+                  td Vitamin B-12:
+                  td#cartVITAMINB12 --
+                tr
+                  td Vitamin C:
+                  td#cartVITAMINC --
+                tr
+                  td Vitamin D:
+                  td#cartVITAMIND --
+
+                tr
+                  td(colspan='2')
+                    h4 Lipids
+                tr
+                  td Saturated Fat:
+                  td#cartSATURATED --
+                tr
+                  td Mono-Unsaturated Fat:
+                  td#cartMONOUNSATURATED --
+                tr
+                  td Poly-Unsaturated Fat:
+                  td#cartPOLYUNSATURATED --
+                tr
+                  td Cholesterol
+                  td#cartCHOLESTEROL --
+
+                tr
+                  td(colspan='2')
+                    h4 Other
+                tr
+                  td Caffeine
+                  td#cartCAFFEINE --
 
         .modal-footer
           button.btn.btn-danger.modalButtons(type='button', data-dismiss='modal') Close

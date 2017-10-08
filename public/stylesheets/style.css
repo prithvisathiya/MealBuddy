@@ -43,11 +43,11 @@ a {
 hr {
 	border-color: orange;
 	margin: 2px;
-	size: 100px;
 }
 
 .glyphicon-remove:hover {
 	cursor: pointer;
+	color: #f72323;
 }
 .form-control, button {
 	border-radius: 20px !important;
@@ -56,9 +56,16 @@ hr {
 
 .range1, .range2{
 	width: 70px;
+	display: inline-block;
+}
+.units1, .units2 {
+	display: inline-block;
 }
 .table-row td {
 	padding: 5px;
+}
+.table-row td > * {
+	vertical-align: middle;
 }
 .table-row {
 	margin-bottom: 5px;
@@ -75,12 +82,15 @@ a:hover {
 ul {
 	list-style-type: none;
 }
+.nav-pills {
+	border-bottom: 2px solid #7d0202;
+}
 
 .card {
 	color: black;
 	background-color: white;
 	width: 200px;
-	/*height: 300px;*/
+	text-align: center;
 	margin: 10px;
 	vertical-align: top;
 	display: inline-block;
@@ -94,7 +104,7 @@ ul {
 	height: 200px;
 }
 .card-block {
-	padding: 5px;
+	padding: 15px;
 }
 .card-text {
 	text-overflow: ellipsis;
@@ -124,18 +134,29 @@ ul {
 	height: 200px;	
 }
 #itemInfoCriteriaDesc {
-	float: right;
-	border: 2px solid grey;
-	margin: 20px;
-	padding: 10px;
-}
-#itemInfoDesc {
-	width: 60%;
+	/*border: 1px solid grey;*/
 	text-align: center;
-	padding: 10px;
-	border: 2px solid grey;
 }
-
+.fa-check-circle {
+	color: green;
+}
+.fa-exclamation-circle {
+	color: orange;
+}
+.fa-times-circle {
+	color: red;
+}
+#itemInfoDesc td, #cartNutritionCount td {
+	padding:5px 50px 5px 50px;
+}
+#itemInfoDesc table, #cartNutritionCount table{
+	margin-right: auto;
+	margin-left: auto;
+}
+#itemInfoDesc h4, #cartNutritionCount h4 {
+	text-align:center;
+	border-bottom: 2px solid orange;
+}
 .modal-content {
 	color: darkgray;
 }
@@ -150,16 +171,13 @@ ul {
 	width: 100%;
 }
 #cartItems {
-	display: inline-block;
-	width: 40%
 	margin:5px;
-	border: 2px solid gray;
+}
+#cartItems td {
+	padding: 5px;
 }
 #cartNutritionCount {
-	display: inline-block;
-	width: 50%
-	margin:5px;
-	border: 2px solid gray;
+
 }
 
 .modalButtons   {

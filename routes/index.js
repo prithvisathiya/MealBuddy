@@ -40,15 +40,15 @@ function getReqQuery(req) {
 
 router.post('/submit', function(req, res, next) {
 	var all = req.body.data;
-	var query = "Select name, coalesce(servingsize,null) as servingsize, " +
-	"coalesce(calories, null) as calories, " +
-	"coalesce(fat, null) as fat, " +
-	"coalesce(sugar, null) as sugar, " +
-	"coalesce(potassium, null) as potassium, " +
-	"coalesce(calcium, null) as calcium, " +
-	"coalesce(phosphorous, null) as phosphorous, " +
-	"coalesce(type, null) as type, " +
-	"coalesce(cuisine, null) as cuisine, " +
+	var query = "Select Name, coalesce(servingsize,null) as servingsize, " +
+	"coalesce(calories, null) as Calories, " +
+	"coalesce(fat, null) as Fat, " +
+	"coalesce(sugar, null) as Sugar, " +
+	"coalesce(potassium, null) as Potassium, " +
+	"coalesce(calcium, null) as Calcium, " +
+	"coalesce(phosphorus, null) as Phosphorus, " +
+	"coalesce(type, null) as Type, " +
+	"coalesce(cuisine, null) as Cuisine, " +
 	"imagePath " + 
 	"from items where 1=1 "; 
 	all.forEach(function(el, idx) {

@@ -1,10 +1,15 @@
 $(document).ready(function() {
-	var itemInfo = {};
 	var currentItem;
 	var selectedItem;
 	var allCriterias = [];
 	var criteriaNames = [];
+	var dev = {"low" : .2, "medium" : .1, "high" : 0};
 	var myCart = 0;
+	var criteriaUnits = {
+		Calories: 'Cal', Protein: 'g', Fat: 'g', Carbohydrate: 'g', Fiber:'g', Sugar:'g', Calcium:'mg', Iron:'mg', Magnesium:'mg',
+		Phosphorus:'mg', Potassium:'mg', Sodium:'mg', Zinc:'mg', VitaminA:'µg', VitaminC:'mg', VitaminB6:'µg', VitaminB12:'µg',
+		VitaminD:'µg', SaturatedFat:'g', MonoUnsaturatedFat:'g', PolyUnsaturatedFat:'g', Cholesterol:'mg', Caffeine:'mg' 
+	}
 
 	var ddlCriteriaList = ['fat', 'sugar', 'potassium', 'calories'];
 	var priorityList = ['High', 'Medium', 'Low'];
@@ -18,6 +23,11 @@ $(document).ready(function() {
 		$('.selectpicker').selectpicker('refresh');
 	} else {
 		$('nav').css('width', windowWidth);
+	}
+
+	//Attach ddl for criteria names
+	for(var key in criteriaUnits) {
+		$('.criteria-name').append('<option value="'+key+'">'+key+'</option>');
 	}
 
 	//Attach previous cart if exists
@@ -40,9 +50,9 @@ $(document).ready(function() {
 			classlist:['form-control','criteria-name', 'selectpicker'], 
 			attr:{"data-live-search":true, "data-width":"200px", "title":"fat, sugar, etc..."}
 		});
-		ddlCriteriaList.forEach(function(c) {
-			$(select).append('<option value="'+c+'">'+c+'</option>');
-		});
+		for(var key in criteriaUnits) {
+			$(select).append('<option value="'+key+'">'+key+'</option>');
+		}
 		td.appendChild(select);
 		tr.appendChild(td);
 		//Add criteria range type
@@ -56,10 +66,10 @@ $(document).ready(function() {
 		td.appendChild(select);
 		tr.appendChild(td);
 		//Add criteria min
-		td = DOMcreator({name:'td', attr:{"data-width":"70px"}, inner:'<input type="number" class="form-control range1"/>'});
+		td = DOMcreator({name:'td', attr:{"data-width":"70px", "nowrap":true}, inner:'<input type="number" class="form-control range1"/><p class="units1">mg</p>'});
 		tr.appendChild(td);
 		//Add criteria max
-		td = DOMcreator({name:'td', attr:{"data-width":"70px"}, inner:'<input type="number" class="form-control range2" hidden/>'});
+		td = DOMcreator({name:'td', attr:{"data-width":"70px", "nowrap":true}, inner:'<input type="number" class="form-control range2" hidden/><p class="units2" hidden="hidden">mg</p>'});
 		tr.appendChild(td);
 		//Add priority dropdown
 		td = DOMcreator({name:'td'});
@@ -151,13 +161,20 @@ $(document).ready(function() {
 		switch($(this).val()) {
 			case 'between':
 				$(this).parents('tr').find('input.range2').removeAttr('hidden');
+				$(this).parents('tr').find('p.units2').removeAttr('hidden');
 				break;
 			default:
 				$(this).parents('tr').find('input.range2').attr('hidden', true);
+				$(this).parents('tr').find('p.units2').attr('hidden', true);
 
 		}
 	});
 
+	$('body').on('change', 'select.criteria-name', function(e) {
+		var val = $(this).val();
+		$(this).parents('tr').find('p.units1').html(criteriaUnits[val]);
+		$(this).parents('tr').find('p.units2').html(criteriaUnits[val]);
+	});
 	$('#item-info-popup').click(function(e) {
 		$(this).css('display', 'none');
 	});
@@ -177,22 +194,7 @@ $(document).ready(function() {
 	});
 
 	$('#mealCart').click(function(e) {
-		if(myCart == 0) {
-			$('#noItems').show();
-			$('#cartNutritionCount').hide();
-			$('#cartCriteriaDesc').hide();
-		}
-		else {
-			$('#noItems').hide();
-			$('#cartNutritionCount').show();
-			$('#cartCriteriaDesc').show();
-			$('#cartCriteriaDesc').html("");
-			criteriaNames.forEach(function(name) {
-				var selector = '#cart' + name.toUpperCase();
-				$('#cartCriteriaDesc').append('<p>' + name + ': ' + $(selector).html() + '</p>');
-			});
-		}
-		$('#cartModal').modal('show');
+		displayMealCart()
 	});
 
 	const Item = ({item}) => `
@@ -200,6 +202,7 @@ $(document).ready(function() {
 		   <img src="images/${item.imagepath}">
 		   <div class="card-block">
 		      <h4 class="card-title">${item.name}</h4>
+		      <hr><br>
 		   </div>
 		</div>
 	`;
@@ -209,25 +212,19 @@ $(document).ready(function() {
 	//HELPER FUNCTIONS
 	function displayResults(data) {
 		if(data.success) {
-			itemInfo = {
-				meal: [],
-				vegetable: [],
-				fruit: [],
-				beverage: []
-			};
 			console.log(data.result);
+			console.log(allCriterias);
 			$('.card-group').html('');
 			data.result.forEach(function(item, idx) {
 				var selector = '#' + item.type + 'List';
 				var card = $(Item({item: item}));
 				var cardText = card.find('.card-block');
 				criteriaNames.forEach(function(criteria) {
-					cardText.append('<p>' + criteria + ":   " + item[criteria] + '</p>')
+					cardText.append('<p>' + criteria + ":   " + item[criteria.toLowerCase()] + '</p>')
 				});
 				$(selector).append(card);
 				$(card).data('item-info', item);
 			});
-			$('.collapse').collapse('show');
 		}
 		else{
 			console.log(data.error);  
@@ -237,44 +234,95 @@ $(document).ready(function() {
 	function displayInfo(item) {
 		currentItem = item;
 		$('#itemInfoCriteriaDesc').html("");
-		$('#itemInfoDesc').html(""); 
+		// $('#itemInfoDesc').html(""); 
 		$('#countToAdd').val(1);
 		$('#item-modal-title').text(item.name);
 		for(var key in item) {
 			if(key == 'name' || key == 'id') continue;
+			var selector = '#item' + key.toUpperCase();
 			if(item[key] != null) {
-				$('#itemInfoDesc').append('<p>' + key + ': ' + item[key] + '</p>');
+				$(selector).html(item[key]);
 			}else {
-				$('#itemInfoDesc').append('<p>' + key + ': --</p>');
+				$(selector).html('--');
 			}
 		}
-		criteriaNames.forEach(function(key) {
-			$('#itemInfoCriteriaDesc').append('<p>' + key + ': ' + item[key] + '</p>');
+		criteriaNames.forEach(function(criteria) {
+			var valid = '<i class="fa fa-check-circle" aria-hidden="true"></i>';
+			for(var i = 0; i < allCriterias.length; i++) {
+				if(allCriterias[i].name == criteria){
+					if(item[criteria.toLowerCase()] > allCriterias[i].max || item[criteria.toLowerCase()] < allCriterias[i].min) {
+						valid = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i>';
+						break;
+					}
+				}
+			}
+			$('#itemInfoCriteriaDesc').append('<p>' + criteria + ': ' + item[criteria.toLowerCase()] + ' ' + valid + '</p>');
 		});
-		var path = 'images/' + item.imagepath;
-		$('#itemInfoImage').attr('src', path);
 		
 		$('#itemModal').modal('show');
 	}
 
+	function displayMealCart() {
+		if(myCart == 0) {
+			$('#noItems').show();
+			$('#cartNutritionCount').hide();
+			$('#cartCriteriaDesc').hide();
+			$('#cartTop').hide();
+		}
+		else {
+			$('#noItems').hide();
+			$('#cartNutritionCount').show();
+			$('#cartCriteriaDesc').show();
+			$('#cartTop').show();
+			$('#cartCriteriaDesc').html("");
+
+			criteriaNames.forEach(function(name) {
+				var selector = '#cart' + name.toUpperCase();
+				var total = parseInt($(selector).html());
+
+				var valid;
+				for(var i = 0; i < allCriterias.length; i++) {
+					if(allCriterias[i].name == name){
+						var mult = dev[allCriterias[i].priority];
+						var mi = allCriterias[i].min - allCriterias[i].min * mult;
+						var ma = allCriterias[i].max + allCriterias[i].max * mult;
+						if(total <= allCriterias[i].max && total >= allCriterias[i].min) {
+							valid = '<i class="fa fa-check-circle" aria-hidden="true"></i>';
+							break;
+						} 
+						if(total < ma && total > mi) {
+							valid = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i>';
+							break;
+						} 
+						else {
+							valid = '<i class="fa fa-times-circle" aria-hidden="true"></i>';
+							break;
+						}
+					}
+				}
+
+				$('#cartCriteriaDesc').append('<p>' + name + ': ' + $(selector).html() + ' ' + valid + '</p>');
+			});
+		}
+		$('#cartModal').modal('show');
+	}
 	function addToMealCart(item, onReload) {
 		var num = parseInt($('#countToAdd').val());
 		for(var i = 0; i < num; i++) {
-			var tr = DOMcreator({name:'tr', inner:'<td class="glyphicon glyphicon-remove"></td><td>' + item.name +'</td>'})
-			// $('#cartItems').append('<p>' + item.name + '</p>');
-			$(tr).find('td:first').data('item-info', item);
+			var tr = DOMcreator({name:'tr', inner:'<td><i class="glyphicon glyphicon-remove"></i></td><td>' + item.name +'</td>'})
+			$(tr).find('i').data('item-info', item);
 			$('#cartItems').append(tr);
 
 
 			for(var key in item) {
 				var selector = '#cart' + key.toUpperCase();
-				if($(selector).html() && isNumeric($(selector).html())) {
-					if(isNumeric(item[key])) {
+				if(isNumeric(item[key]) && item[key] != null) {
+					if( isNumeric($(selector).html()) ) {
 						var after = parseInt($(selector).html()) + parseInt(item[key]);
 						$(selector).html(after);
+					} else {
+						$(selector).html(item[key]);
 					}
-				}else {
-					$(selector).html(item[key]);
 				}
 			}
 
@@ -303,15 +351,18 @@ $(document).ready(function() {
 		myCart -= 1;
 		$('#cartQuantity').html(myCart);
 		if(myCart == 1) {
-			var remItem = $('#cartItems').find('tr td:first').data('item-info');
+			var remItem = $('#cartItems').find('tr i').data('item-info');
 			for(var key in remItem) {
 				var selector = '#cart' + key.toUpperCase();
-				$(selector).html(remItem[key]);
+				if(remItem[key] == null)
+					$(selector).html('--');
+				else 
+					$(selector).html(remItem[key]);
 			}
 		}else {
 			for(var key in item) {
 				var selector = '#cart' + key.toUpperCase();
-				if($(selector).html() && isNumeric($(selector).html()) && isNumeric(item[key])) {
+				if(item[key] != null) {
 					var after = parseInt($(selector).html()) - parseInt(item[key]);
 					$(selector).html(after);
 				}
@@ -320,12 +371,37 @@ $(document).ready(function() {
 		$('#cartCriteriaDesc').html("");
 		criteriaNames.forEach(function(name) {
 			var selector = '#cart' + name.toUpperCase();
-			$('#cartCriteriaDesc').append('<p>' + name + ': ' + $(selector).html() + '</p>');
+			var total = parseInt($(selector).html());
+
+			var valid;
+			for(var i = 0; i < allCriterias.length; i++) {
+				if(allCriterias[i].name == name){
+					var mult = dev[allCriterias[i].priority];
+					var mi = allCriterias[i].min - allCriterias[i].min * mult;
+					var ma = allCriterias[i].max + allCriterias[i].max * mult;
+					if(total <= allCriterias[i].max && total >= allCriterias[i].min) {
+						valid = '<i class="fa fa-check-circle" aria-hidden="true"></i>';
+						break;
+					} 
+					if(total < ma && total > mi) {
+						valid = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i>';
+						break;
+					} 
+					else {
+						valid = '<i class="fa fa-times-circle" aria-hidden="true"></i>';
+						break;
+					}
+				}
+			}
+
+			$('#cartCriteriaDesc').append('<p>' + name + ': ' + $(selector).html() + ' ' + valid + '</p>');
+
 		});
 		if(myCart == 0) {
 			$('#noItems').show();
 			$('#cartNutritionCount').hide();
 			$('#cartCriteriaDesc').hide();
+			$('#cartTop').hide();
 		}
 		var itemsNames = JSON.parse(sessionStorage.cartItemsNames);
 		itemsNames.splice(itemsNames.indexOf(item.name), 1)
