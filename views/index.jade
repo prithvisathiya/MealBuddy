@@ -16,7 +16,7 @@ block content
           td
             span.glyphicon.glyphicon-remove
           td
-            select.form-control.selectpicker.criteria-name(type='text', title='fat, sugar, etc...', data-live-search='true', data-width="200px")
+            select.form-control.selectpicker.criteria-name(type='text', title='fat, sugar, etc...', data-live-search='true', data-width="200px", data-size="10")
           td
             select.form-control.selectpicker.range-type(data-width="130px")
               option(value='lt') Less than
@@ -38,7 +38,7 @@ block content
           td
             span.glyphicon.glyphicon-remove
           td
-            select.form-control.selectpicker.criteria-name(type='text', title='fat, sugar, etc...', data-live-search='true', data-width="200px")
+            select.form-control.selectpicker.criteria-name(type='text', title='fat, sugar, etc...', data-live-search='true', data-width="200px", data-size="10")
           td
             select.form-control.selectpicker.range-type(data-width="130px")
               option(value='lt') Less than
@@ -55,15 +55,16 @@ block content
               option(value='high', selected='selected') High
               option(value='medium') Medium
               option(value='low') Low
-          
+      
+      p C u i s i n e   P r e f e r e n c e ? 
       select#cuisine-type.form-control.selectpicker(type='text', data-live-search='true', data-width="200px")
         option(value='0') No Preference
         option(value='1') Thai
         option(value='2') Italian
         option(value='3') Indian
     br
-    button#add.btn.btn-success(type="button") Add
-    button#submit.btn.btn-primary(type="button") Submit
+    button#add.btn.btn-success(type="button") Add Restriction
+    button#submit.btn.btn-primary(type="button") Get Suggestions
       
 
 

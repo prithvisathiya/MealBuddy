@@ -48,7 +48,7 @@ $(document).ready(function() {
 		td = DOMcreator({name:'td'});
 		var select = DOMcreator({ name:'select',
 			classlist:['form-control','criteria-name', 'selectpicker'], 
-			attr:{"data-live-search":true, "data-width":"200px", "title":"fat, sugar, etc..."}
+			attr:{"data-live-search":true, "data-width":"200px", "data-size":"10", "title":"fat, sugar, etc..."}
 		});
 		for(var key in criteriaUnits) {
 			$(select).append('<option value="'+key+'">'+key+'</option>');
@@ -82,7 +82,11 @@ $(document).ready(function() {
 		
 
 		//Add the new row to criteria form and refresh to take changes
-		$('.table-row:last').after(tr);
+		if($('#criteriaTable .table-row').length == 0) {
+			$('#criteriaTable tbody').append(tr);
+		}else {
+			$('.table-row:last').after(tr);
+		}
 		$(".selectpicker").selectpicker('refresh');
 
 	});
@@ -98,12 +102,20 @@ $(document).ready(function() {
 				var rangeType = row.find('select.range-type').val();
 				var priority = row.find('select.priority').val();
 				criteria.priority = priority;
+				if( row.find('.range1').val() == "" ) {
+					alert('One or more of restrictions values is incomplete');
+					return;
+				}
 				switch(rangeType){
 					case 'lt':
 						criteria.min = 0;
 						criteria.max = parseInt(row.find('.range1').val());
 						break;
 					case 'between':
+						if( row.find('.range2').val() == "") {
+							alert('One of your restrictions is missing quantity');
+							return;
+						}
 						criteria.min = parseInt(row.find('.range1').val());
 						criteria.max = parseInt(row.find('.range2').val());
 						if(criteria.min > criteria.max) {
@@ -120,6 +132,11 @@ $(document).ready(function() {
 				criteriaNames.push(criteria.name);
 			}
 		});
+		var set = new Set(criteriaNames);
+		if(set.size != criteriaNames.length) {
+			alert('You have duplicate restrictions');
+			return;
+		}
 		var cuisineIdx = $('#cuisine-type').val();
 		console.log(allCriterias);
 		if(allCriterias.length > 0) { 

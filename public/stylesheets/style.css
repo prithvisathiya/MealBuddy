@@ -45,6 +45,13 @@ hr {
 	margin: 2px;
 }
 
+.main {
+	text-align: center;
+}
+#criteriaTable {
+	margin-left: auto;
+	margin-right: auto;
+}
 .glyphicon-remove:hover {
 	cursor: pointer;
 	color: #f72323;
@@ -59,6 +66,9 @@ hr {
 	display: inline-block;
 }
 .units1, .units2 {
+	width: 22px;
+	padding-left: 2px;
+	text-align: left;
 	display: inline-block;
 }
 .table-row td {
