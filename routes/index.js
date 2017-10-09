@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
-var pg = require('pg');
+// var pg = require('pg');
+const { Client } = require('pg');
 var mongoose = require('mongoose');
 var format = require('string-format');
 
@@ -12,12 +13,15 @@ var format = require('string-format');
 // 	if (err) {console.log('Error connecting to mysql DB');}
 // 	else console.log('Connection to mysql DB successful'); 
 // });
-console.log('db url is : ' + process.env.DATABASE_URL);
-console.log('db env is : ' + process.env.NODE_ENV);
+
+
 // var pgConnString = 'postgres://chystyrmzwpzxa:19b598a2ea9da17f9af955b56dae01279a5cf1836227f3383c7b12d021089026@ec2-107-20-193-89.compute-1.amazonaws.com:5432/d8mag523fiim17';
 var pgConnString = process.env.DATABASE_URL || 'postgres://localhost:5432/prithvisathiya';
 console.log(pgConnString);
-var pool = new pg.Pool(pgConnString);
+// var pool = new pg.Pool(pgConnString);
+// const client = new Client({
+// 	connectionString: pgConnString
+// });
 var cuisines = ['none', 'Thai', 'Italian', 'Indian'];
 
 /* GET home page. */
@@ -28,11 +32,11 @@ router.get('/', function(req, res, next) {
 function getReqQuery(req) {
 	var dev = {"low" : .2, "medium" : .1, "high" : 0};
 	if(req.max == Infinity) {
-		var min = (parseInt(req.min) - parseInt(req.min) * dev[req.priority]);
+		var min = (parseFloat(req.min) - parseFloat(req.min) * dev[req.priority]);
 		return 'and ' + req.name + ' > ' + mysql.escape(min) + ' '; 
 	}else {
-		var min = (parseInt(req.min) - parseInt(req.min) * dev[req.priority]);
-		var max = (parseInt(req.max) + parseInt(req.max) * dev[req.priority]); 
+		var min = (parseFloat(req.min) - parseFloat(req.min) * dev[req.priority]);
+		var max = (parseFloat(req.max) + parseFloat(req.max) * dev[req.priority]); 
 		console.log(min + " " + max);
 		return 'and ' + req.name + ' between ' + mysql.escape(min) + ' and ' + mysql.escape(max) + ' '; 
 	}
@@ -61,7 +65,10 @@ router.post('/submit', function(req, res, next) {
 		query += "and cuisine in ('none','" + cuisines[cuisineIdx] + "')";
 	}
 	console.log(query);
-	pool.connect(function(err, client, done) {
+	const client = new Client({
+		connectionString: pgConnString
+	});
+	client.connect(function(err) {
 		if(err) {
 			console.log('Error connecting to pg DB');
 			console.log(err);
@@ -80,9 +87,10 @@ router.post('/submit', function(req, res, next) {
 					res.write(JSON.stringify({"success": true, "result": result.rows}));
 				}
 				res.end();
-				done()
+				client.end();
 			});
 		}
+
 	});
 });
 

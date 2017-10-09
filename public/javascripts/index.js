@@ -8,7 +8,7 @@ $(document).ready(function() {
 	var criteriaUnits = {
 		Calories: 'Cal', Protein: 'g', Fat: 'g', Carbohydrate: 'g', Fiber:'g', Sugar:'g', Calcium:'mg', Iron:'mg', Magnesium:'mg',
 		Phosphorus:'mg', Potassium:'mg', Sodium:'mg', Zinc:'mg', VitaminA:'µg', VitaminC:'mg', VitaminB6:'µg', VitaminB12:'µg',
-		VitaminD:'µg', SaturatedFat:'g', MonoUnsaturatedFat:'g', PolyUnsaturatedFat:'g', Cholesterol:'mg', Caffeine:'mg' 
+		VitaminD:'µg', VitaminK:'µg', Thiamin:'mg', Riboflavin:'mg', Niacin:'mg', SaturatedFat:'g', MonoUnsaturatedFat:'g', PolyUnsaturatedFat:'g', Cholesterol:'mg', Caffeine:'mg' 
 	}
 
 	var ddlCriteriaList = ['fat', 'sugar', 'potassium', 'calories'];
@@ -40,7 +40,7 @@ $(document).ready(function() {
 	}
 
 	$('#add').click(function(e) {
-		var tr = DOMcreator({name:'tr', classlist:['table-row']}); 
+		var tr = DOMcreator({name:'tr', classlist:['table-row', 'criteria-row']}); 
 		//Add remove button
 		var td = DOMcreator({name:'td', inner:'<span class="glyphicon glyphicon-remove"></span>'});
 		tr.appendChild(td);
@@ -82,11 +82,11 @@ $(document).ready(function() {
 		
 
 		//Add the new row to criteria form and refresh to take changes
-		if($('#criteriaTable .table-row').length == 0) {
-			$('#criteriaTable tbody').append(tr);
-		}else {
-			$('.table-row:last').after(tr);
-		}
+		// if($('#criteriaTable .table-row').length == 0) {
+		// 	$('#criteriaTable tbody').append(tr);
+		// }else {
+		$('.table-row:last').after(tr);
+		// }
 		$(".selectpicker").selectpicker('refresh');
 
 	});
@@ -94,7 +94,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		allCriterias = [];
 		criteriaNames = [];
-		$('.table-row').each(function(tr) {
+		$('.criteria-row').each(function(tr) {
 			var row = $(this);
 			var criteria = {};
 			criteria.name = row.find('select.criteria-name').val();
@@ -109,15 +109,15 @@ $(document).ready(function() {
 				switch(rangeType){
 					case 'lt':
 						criteria.min = 0;
-						criteria.max = parseInt(row.find('.range1').val());
+						criteria.max = parseFloat(row.find('.range1').val());
 						break;
 					case 'between':
 						if( row.find('.range2').val() == "") {
 							alert('One of your restrictions is missing quantity');
 							return;
 						}
-						criteria.min = parseInt(row.find('.range1').val());
-						criteria.max = parseInt(row.find('.range2').val());
+						criteria.min = parseFloat(row.find('.range1').val());
+						criteria.max = parseFloat(row.find('.range2').val());
 						if(criteria.min > criteria.max) {
 							var temp = criteria.min;
 							criteria.min = criteria.max;
@@ -125,7 +125,7 @@ $(document).ready(function() {
 						}
 						break;
 					default:
-						criteria.min = parseInt(row.find('.range1').val());
+						criteria.min = parseFloat(row.find('.range1').val());
 						criteria.max = Infinity;
 				}
 				allCriterias.push(criteria);
@@ -230,7 +230,6 @@ $(document).ready(function() {
 	function displayResults(data) {
 		if(data.success) {
 			console.log(data.result);
-			console.log(allCriterias);
 			$('.card-group').html('');
 			data.result.forEach(function(item, idx) {
 				var selector = '#' + item.type + 'List';
@@ -295,7 +294,7 @@ $(document).ready(function() {
 
 			criteriaNames.forEach(function(name) {
 				var selector = '#cart' + name.toUpperCase();
-				var total = parseInt($(selector).html());
+				var total = parseFloat($(selector).html());
 
 				var valid;
 				for(var i = 0; i < allCriterias.length; i++) {
@@ -335,7 +334,7 @@ $(document).ready(function() {
 				var selector = '#cart' + key.toUpperCase();
 				if(isNumeric(item[key]) && item[key] != null) {
 					if( isNumeric($(selector).html()) ) {
-						var after = parseInt($(selector).html()) + parseInt(item[key]);
+						var after = parseFloat($(selector).html()) + parseFloat(item[key]);
 						$(selector).html(after);
 					} else {
 						$(selector).html(item[key]);
@@ -380,7 +379,7 @@ $(document).ready(function() {
 			for(var key in item) {
 				var selector = '#cart' + key.toUpperCase();
 				if(item[key] != null) {
-					var after = parseInt($(selector).html()) - parseInt(item[key]);
+					var after = parseFloat($(selector).html()) - parseFloat(item[key]);
 					$(selector).html(after);
 				}
 			}
@@ -388,7 +387,7 @@ $(document).ready(function() {
 		$('#cartCriteriaDesc').html("");
 		criteriaNames.forEach(function(name) {
 			var selector = '#cart' + name.toUpperCase();
-			var total = parseInt($(selector).html());
+			var total = parseFloat($(selector).html());
 
 			var valid;
 			for(var i = 0; i < allCriterias.length; i++) {

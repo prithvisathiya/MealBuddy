@@ -3,7 +3,7 @@ html {
 }
 body {
 	height: 100%;
-	background-image: url('../images/food1.jpg');
+	background-image: url('../images/food3.jpg');
 	background-size: cover;        
 	background-position: 0px 0px;              /* <------ */
     background-repeat: no-repeat;
@@ -31,6 +31,13 @@ nav {
 	float: right;
 	display: inline-block;
 	vertical-align: middle;
+	background-color: rgba(0,0,0,0);
+	border: 2px solid darkorange;
+	color: gray;
+}
+#cartQuantity {
+	margin: 0px 0px 0px 5px;
+	vertical-align: middle;
 }
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -38,7 +45,7 @@ input::-webkit-inner-spin-button {
 }
 
 a {
-  color: orange;
+  color: crimson;
 }
 hr {
 	border-color: orange;
@@ -92,8 +99,18 @@ a:hover {
 ul {
 	list-style-type: none;
 }
-.nav-pills {
+.nav-pills, .tab-content {
 	border-bottom: 2px solid #7d0202;
+	background-color: rgba(256,256,256,.9);
+}
+.nav-tabs > li, .nav-pills > li {
+    float:none;
+    display:inline-block;
+}
+
+.nav-tabs, .nav-pills {
+    text-align:center;
+    font-size: 11px;
 }
 
 .card {

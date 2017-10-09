@@ -6,13 +6,23 @@ block content
     .container-fluid
       h1#MealBuddy MealBuddy
       button#mealCart.btn.btn-default
-        .glyphicon.glyphicon-shopping-cart(type='button', style='display:inline-block;')
+        span.glyphicon.glyphicon-shopping-cart(type='button', style='display:inline-block;vertical-align:middle;')
         p#cartQuantity(style='display:inline-block;') 0  
-  h2.display-4.m-b-2 Restrictions
+  br
+
   .main.container-fluid 
+    div(style='text-align:left')
+      h2.display-4.m-b-2 Restrictions
     form#criteria-form
       table#criteriaTable.form-group
         tr.table-row
+          td 
+          td Restriction Name
+          td 
+          td
+          td
+          td Priority
+        tr.table-row.criteria-row
           td
             span.glyphicon.glyphicon-remove
           td
@@ -34,7 +44,7 @@ block content
               option(value='medium', selected='selected') Medium
               option(value='low') Low
 
-        tr.table-row
+        tr.table-row.criteria-row
           td
             span.glyphicon.glyphicon-remove
           td
@@ -68,67 +78,80 @@ block content
       
 
 
-  h2 Suggestions
+  #suggestions.container-fluid
+    h2 Suggestions
 
-  ul.nav.nav-pills
-    li.active 
-      a(href='#appetizerTab' data-toggle='pill') Appetizers
-    li
-      a(href='#mealTab' data-toggle='pill') Meals
-    li 
-      a(href='#vegatableTab' data-toggle='pill') Vegetables 
-    li 
-      a(href='#fruitTab' data-toggle='pill') Fruits 
-    li 
-      a(href='#beverageTab' data-toggle='pill') Beverages
-    li 
-      a(href='#dessertTab' data-toggle='pill') Desserts  
+    ul.nav.nav-pills
+      li.active 
+        a(href='#appetizerTab' data-toggle='pill') Appetizers
+      li
+        a(href='#mealTab' data-toggle='pill') Meals
+      li
+        a(href='#sideTab' data-toggle='pill') Sides
+      li
+        a(href='#snackTab' data-toggle='pill') Snacks
+      li 
+        a(href='#vegatableTab' data-toggle='pill') Vegetables 
+      li 
+        a(href='#fruitTab' data-toggle='pill') Fruits 
+      li 
+        a(href='#beverageTab' data-toggle='pill') Beverages
+      li 
+        a(href='#dessertTab' data-toggle='pill') Desserts  
 
-  .tab-content
-    #appetizerTab.tab-pane.fade.in.active
-      .container-fluid
-        .row
-          #appetizerList.card-group
-            //- .card
-            //-   img(src='images/default_item_image.jpg')
-            //-   .card-block
-            //-     h4.card-title Chicken
-            //-     p.card-text.
-            //-       Sugar<br>
-            //-       Text
-            //-   .card-footer
-            //-     small Footer
-            //- .card
-            //-   img.card-img-top(src='images/default_item_image.jpg')
-            //-   .card-block
-            //-     .card-title Chicken
-            //-     .card-text
-            //-       p Sugar 
-            //-       p Fat
-            //-   .card-footer
-            //-     small Footer
+    .tab-content
+      #appetizerTab.tab-pane.fade.in.active
+        .container-fluid
+          .row
+            #appetizerList.card-group
+              //- .card
+              //-   img(src='images/default_item_image.jpg')
+              //-   .card-block
+              //-     h4.card-title Chicken From the Sea, (Chobani) Blueberry
+              //-     p.card-text.
+              //-       Sugar<br>
+              //-       Text
+              //-   .card-footer
+              //-     small Footer
+              //- .card
+              //-   img.card-img-top(src='images/default_item_image.jpg')
+              //-   .card-block
+              //-     .card-title Chicken
+              //-     .card-text
+              //-       p Sugar 
+              //-       p Fat
+              //-   .card-footer
+              //-     small Footer
 
 
-    #mealTab.tab-pane.fade
-      .container-fluid
-        .row
-          #mealList.card-group
-    #vegatableTab.tab-pane.fade
-      .container-fluid
-        .row
-          #vegetableList.card-group
-    #fruitTab.tab-pane.fade
-      .container-fluid
-        .row
-          #fruitList.card-group
-    #beverageTab.tab-pane.fade
-      .container-fluid
-        .row
-          #beverageList.card-group
-    #dessertTab.tab-pane.fade
-      .container-fluid
-        .row
-          #dessertList.card-group
+      #mealTab.tab-pane.fade
+        .container-fluid
+          .row
+            #mealList.card-group
+      #sideTab.tab-pane.fade
+        .container-fluid
+          .row
+            #sideList.card-group
+      #snackTab.tab-pane.fade
+        .container-fluid
+          .row
+            #snackList.card-group
+      #vegatableTab.tab-pane.fade
+        .container-fluid
+          .row
+            #vegetableList.card-group
+      #fruitTab.tab-pane.fade
+        .container-fluid
+          .row
+            #fruitList.card-group
+      #beverageTab.tab-pane.fade
+        .container-fluid
+          .row
+            #beverageList.card-group
+      #dessertTab.tab-pane.fade
+        .container-fluid
+          .row
+            #dessertList.card-group
 
 
 
@@ -141,7 +164,9 @@ block content
         .modal-body
           h4 Your Restriction(s)
           #itemInfoCriteriaDesc
+          br
           hr
+          br
           h4 Nutrition Info
           #itemInfoDesc
             table
@@ -258,7 +283,10 @@ block content
               .col-xs-6
                 h4(style="border-bottom: 1px solid black") Your Restriction(s)
                 #cartCriteriaDesc
+            br
             hr
+            br
+            h4 Nutrition Info
             #cartNutritionCount.row     
               table
                 tr
