@@ -5,7 +5,9 @@ var mysql = require('mysql');
 const { Client } = require('pg');
 var mongoose = require('mongoose');
 var format = require('string-format');
+var pgConnString = process.env.DATABASE_URL || 'postgres://localhost:5432/prithvisathiya';
 
+var cuisines = ['none', 'Thai', 'Italian', 'Indian'];
 // var mysqlConnection = mysql.createConnection({
 // 	host: 'localhost',user: 'root',password: 'password',database: 'Foods'
 // });
@@ -15,14 +17,7 @@ var format = require('string-format');
 // });
 
 
-// var pgConnString = 'postgres://chystyrmzwpzxa:19b598a2ea9da17f9af955b56dae01279a5cf1836227f3383c7b12d021089026@ec2-107-20-193-89.compute-1.amazonaws.com:5432/d8mag523fiim17';
-var pgConnString = process.env.DATABASE_URL || 'postgres://localhost:5432/prithvisathiya';
 console.log(pgConnString);
-// var pool = new pg.Pool(pgConnString);
-// const client = new Client({
-// 	connectionString: pgConnString
-// });
-var cuisines = ['none', 'Thai', 'Italian', 'Indian'];
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
