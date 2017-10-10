@@ -7,7 +7,7 @@ $(document).ready(function() {
 	var myCart = 0;
 	var criteriaUnits = {
 		Calories: 'Cal', Protein: 'g', Fat: 'g', Carbohydrate: 'g', Fiber:'g', Sugar:'g', Calcium:'mg', Iron:'mg', Magnesium:'mg',
-		Phosphorus:'mg', Potassium:'mg', Sodium:'mg', Zinc:'mg', VitaminA:'µg', VitaminC:'mg', VitaminB6:'µg', VitaminB12:'µg',
+		Phosphorus:'mg', Potassium:'mg', Sodium:'mg', Zinc:'mg', VitaminA:'µg', VitaminC:'mg', VitaminB6:'mg', VitaminB12:'µg',
 		VitaminD:'µg', VitaminK:'µg', Thiamin:'mg', Riboflavin:'mg', Niacin:'mg', SaturatedFat:'g', MonoUnsaturatedFat:'g', PolyUnsaturatedFat:'g', Cholesterol:'mg', Caffeine:'mg' 
 	}
 
@@ -103,7 +103,7 @@ $(document).ready(function() {
 				var priority = row.find('select.priority').val();
 				criteria.priority = priority;
 				if( row.find('.range1').val() == "" ) {
-					alert('One or more of restrictions values is incomplete');
+					alert('One or more of restrictions quantity is incomplete');
 					return;
 				}
 				switch(rangeType){
@@ -275,7 +275,9 @@ $(document).ready(function() {
 			$('#itemInfoCriteriaDesc').append('<p>' + criteria + ': ' + item[criteria.toLowerCase()] + ' ' + valid + '</p>');
 		});
 		
+
 		$('#itemModal').modal('show');
+		$('#itemModal .modal-body').scrollTop(0);
 	}
 
 	function displayMealCart() {
@@ -320,7 +322,9 @@ $(document).ready(function() {
 				$('#cartCriteriaDesc').append('<p>' + name + ': ' + $(selector).html() + ' ' + valid + '</p>');
 			});
 		}
+
 		$('#cartModal').modal('show');
+		$('#cartModal .modal-body').scrollTop(0);
 	}
 	function addToMealCart(item, onReload) {
 		var num = parseInt($('#countToAdd').val());
