@@ -20,7 +20,7 @@ var cuisines = ['none', 'Thai', 'Italian', 'Indian'];
 console.log(pgConnString);
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res, next) { 
 	res.render('index', { title: 'MealBuddy' }); 
 }); 
 
