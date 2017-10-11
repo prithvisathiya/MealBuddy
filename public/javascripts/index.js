@@ -19,8 +19,8 @@ $(document).ready(function() {
 	//set the tool bar to the right width of the screen
 	var windowWidth = $(window).width();
 	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
-		$('.selectpicker').selectpicker('mobile');
-		$('.selectpicker').selectpicker('refresh');
+		// $('.selectpicker').selectpicker('mobile');
+		// $('.selectpicker').selectpicker('refresh');
 	} else {
 		$('nav').css('width', windowWidth);
 	}
@@ -241,6 +241,7 @@ $(document).ready(function() {
 				$(selector).append(card);
 				$(card).data('item-info', item);
 			});
+			$('#suggestions').removeAttr('hidden');
 		}
 		else{
 			console.log(data.error);  
@@ -339,7 +340,7 @@ $(document).ready(function() {
 				if(isNumeric(item[key]) && item[key] != null) {
 					if( isNumeric($(selector).html()) ) {
 						var after = parseFloat($(selector).html()) + parseFloat(item[key]);
-						$(selector).html(after);
+						$(selector).html(after.toFixed(2));
 					} else {
 						$(selector).html(item[key]);
 					}
@@ -384,7 +385,7 @@ $(document).ready(function() {
 				var selector = '#cart' + key.toUpperCase();
 				if(item[key] != null) {
 					var after = parseFloat($(selector).html()) - parseFloat(item[key]);
-					$(selector).html(after);
+					$(selector).html(after.toFixed(2));
 				}
 			}
 		}

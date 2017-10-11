@@ -65,8 +65,9 @@ router.post('/submit', function(req, res, next) {
 	});
 	var cuisineIdx = parseInt(req.body.idx);
 	if(cuisineIdx > 0) {
-		query += "and cuisine in ('none','" + cuisines[cuisineIdx] + "')";
+		query += "and cuisine in ('none','" + cuisines[cuisineIdx] + "') ";
 	}
+	query += "order by group1, group2, group3"
 	console.log(query);
 	const client = new Client({
 		connectionString: pgConnString
