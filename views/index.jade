@@ -83,74 +83,71 @@ block content
 
     ul.nav.nav-pills
       li.active 
-        a(href='#appetizerTab' data-toggle='pill') Appetizers
+        a(href='#breakfastTab' name='Breakfast' data-toggle='pill') Breakfast
+          span.amount
       li
-        a(href='#mealTab' data-toggle='pill') Meals
+        a(href='#mealTab' name='Meals' data-toggle='pill') Meals
+          span.amount
       li
-        a(href='#sideTab' data-toggle='pill') Sides
+        a(href='#sideTab' name='Sides' data-toggle='pill') Sides
+          span.amount
       li
-        a(href='#snackTab' data-toggle='pill') Snacks
+        a(href='#snackTab' name='Snacks' data-toggle='pill') Snacks
+          span.amount
+      //- br
       li 
-        a(href='#vegatableTab' data-toggle='pill') Vegetables 
+        a(href='#vegetableTab' name='Vegetables' data-toggle='pill') Vegetables
+          span.amount
       li 
-        a(href='#fruitTab' data-toggle='pill') Fruits 
+        a(href='#fruitTab' name='Fruits' data-toggle='pill') Fruits
+          span.amount
       li 
-        a(href='#beverageTab' data-toggle='pill') Beverages
+        a(href='#beverageTab' name='Beverages' data-toggle='pill') Beverages
+          span.amount
       li 
-        a(href='#dessertTab' data-toggle='pill') Desserts  
+        a(href='#dessertTab' name='Desserts' data-toggle='pill') Desserts
+          span.amount
 
     .tab-content
-      #appetizerTab.tab-pane.fade.in.active
+      #breakfastTab.tab-pane.fade.in.active
         .container-fluid
           .row
-            #appetizerList.card-group
-              //- .card
-              //-   img(src='images/default_item_image.jpg')
-              //-   .card-block
-              //-     h4.card-title Chicken From the Sea, (Chobani) Blueberry
-              //-     p.card-text.
-              //-       Sugar<br>
-              //-       Text
-              //-   .card-footer
-              //-     small Footer
-              //- .card
-              //-   img.card-img-top(src='images/default_item_image.jpg')
-              //-   .card-block
-              //-     .card-title Chicken
-              //-     .card-text
-              //-       p Sugar 
-              //-       p Fat
-              //-   .card-footer
-              //-     small Footer
-
-
+            p.no-matches No Breakfast Matches Your Restrictions
+            #breakfastList.card-group
       #mealTab.tab-pane.fade
         .container-fluid
           .row
+            p.no-matches No Meals Matches Your Restrictions
             #mealList.card-group
       #sideTab.tab-pane.fade
         .container-fluid
           .row
+            p.no-matches No Sides Matches Your Restrictions
             #sideList.card-group
       #snackTab.tab-pane.fade
         .container-fluid
           .row
+            p.no-matches No Snacks Matches Your Restrictions
             #snackList.card-group
-      #vegatableTab.tab-pane.fade
+      #vegetableTab.tab-pane.fade
         .container-fluid
           .row
+            p.no-matches No Vegetables Matches Your Restrictions
             #vegetableList.card-group
       #fruitTab.tab-pane.fade
         .container-fluid
           .row
+            p.no-matches No Fruit Matches Your Restrictions
             #fruitList.card-group
       #beverageTab.tab-pane.fade
         .container-fluid
           .row
+            p.no-matches No Beverages Matches Your Restrictions
             #beverageList.card-group
       #dessertTab.tab-pane.fade
         .container-fluid
           .row
+            p.no-matches No Desserts Matches Your Restrictions
             #dessertList.card-group
 
 
@@ -281,6 +278,12 @@ block content
           button#addMealCart.btn.btn-primary.modalButtons(type='button') Add To MealCart
           p.modalButtons How Many?
           input#countToAdd.form-control.modalButtons(type='number', size='1', min='1', value=1)
+          .legend
+            .status-symbols.fa.fa-check-circle Within you restrictions
+            br
+            .status-symbols.fa.fa-exclamation-circle Close, but not within
+            br
+            .status-symbols.fa.fa-times-circle Not good
   
   #cartModal.modal.fade(tabindex='-1', role='dialog')
     .modal-dialog(role='document')
@@ -407,4 +410,8 @@ block content
 
         .modal-footer
           button.btn.btn-danger.modalButtons(type='button', data-dismiss='modal') Close
+          .legend
+            .status-symbols.fa.fa-check-circle Within you restrictions
+            .status-symbols.fa.fa-exclamation-circle Close, but not within
+            .status-symbols.fa.fa-times-circle Not good
 

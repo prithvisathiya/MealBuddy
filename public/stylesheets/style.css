@@ -101,16 +101,35 @@ ul {
 }
 .nav-pills, .tab-content {
 	border-bottom: 2px solid #7d0202;
-	background-color: rgba(256,256,256,.9);
+	background-color: rgba(256,256,256,.8);
+}
+.nav-pills>li>a {
+     border-radius: 0px !important; 
+}
+.amount {
+	font-size: 10px;
 }
 .nav-tabs > li, .nav-pills > li {
     float:none;
     display:inline-block;
 }
+.tab-content {
+	background-color: rgba(256,256,256,.2);
+}
 
 .nav-tabs, .nav-pills {
     text-align:center;
     font-size: 11px;
+}
+
+
+.no-matches {
+	color: black;
+	text-align: center;
+	padding: 20px 0px 20px 0px;
+}
+.card-group {
+	text-align: center;
 }
 
 .card {
@@ -125,10 +144,14 @@ ul {
 }
 .card:hover {
 	cursor: pointer;
+	box-shadow: 0 0 30px #000;
 }
 .card img {
 	width: 200px;
 	height: 200px;
+}
+.card h4 {
+	font-size: 15px;
 }
 .card-block {
 	padding: 15px;
@@ -184,6 +207,9 @@ ul {
 	text-align:center;
 	border-bottom: 2px solid orange;
 }
+#itemInfoDesc td:nth-child(2), #cartNutritionCount td:nth-child(2){
+	text-align: right;
+}
 .modal-content {
 	color: darkgray;
 }
@@ -212,5 +238,14 @@ ul {
 }
 #countToAdd {
 	width: 60px;
+}
+
+.legend {
+	float: right;
+	text-align: right;
+	vertical-align: middle;
+}
+.status-symbols {
+	padding: 0px 3px 0px 3px;
 }
 

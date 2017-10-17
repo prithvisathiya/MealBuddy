@@ -216,7 +216,7 @@ $(document).ready(function() {
 
 	const Item = ({item}) => `
 		<div class="card">
-		   <img src="images/${item.imagepath}">
+		   <img src="images/default_item_image.jpg">
 		   <div class="card-block">
 		      <h4 class="card-title">${item.name}</h4>
 		      <hr><br>
@@ -241,7 +241,24 @@ $(document).ready(function() {
 				$(selector).append(card);
 				$(card).data('item-info', item);
 			});
+
+			$('.tab-pane').each(function(idx) {
+				var tab = $(this);
+				var numCards = tab.find('.card').length;
+				var id = tab.attr('id');
+				$('.nav-pills li a[href=#'+id+']').find('.amount').html(' (' + numCards + ')');
+				if(numCards == 0) {
+					tab.find('.no-matches').show();
+				}else {
+					tab.find('.no-matches').hide();
+				}
+			});
+
+
 			$('#suggestions').removeAttr('hidden');
+
+			//Indicate How Many Resutls are shown
+			// alert('Found ' + data.result.length + ' Matches For Your Restrictions!');
 		}
 		else{
 			console.log(data.error);  
