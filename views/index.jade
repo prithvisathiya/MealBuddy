@@ -40,9 +40,9 @@ block content
             p.units2(hidden=true) mg
           td
             select.form-control.selectpicker.priority(data-width="130px")
-              option(value='high') High
-              option(value='medium', selected='selected') Medium
-              option(value='low') Low
+              option(value='high', data-subtext="+/- 0%") High
+              option(value='medium', selected='selected', data-subtext="+/- 10%") Medium
+              option(value='low', data-subtext="+/- 20%") Low
 
         tr.table-row.criteria-row
           td
@@ -62,9 +62,9 @@ block content
             p.units2(hidden=true) mg
           td
             select.form-control.selectpicker.priority(data-width="130px")
-              option(value='high', selected='selected') High
-              option(value='medium') Medium
-              option(value='low') Low
+              option(value='high', selected='selected', data-subtext="+/- 0%") High
+              option(value='medium', data-subtext="+/- 10%") Medium
+              option(value='low', data-subtext="+/- 20%") Low
       
       p C u i s i n e   P r e f e r e n c e ? 
       select#cuisine-type.form-control.selectpicker(type='text', data-live-search='true', data-width="200px")
@@ -86,7 +86,7 @@ block content
         a(href='#breakfastTab' name='Breakfast' data-toggle='pill') Breakfast
           span.amount
       li
-        a(href='#mealTab' name='Meals' data-toggle='pill') Meals
+        a(href='#entreeTab' name='Entrees' data-toggle='pill') Entrees
           span.amount
       li
         a(href='#sideTab' name='Sides' data-toggle='pill') Sides
@@ -114,11 +114,11 @@ block content
           .row
             p.no-matches No Breakfast Matches Your Restrictions
             #breakfastList.card-group
-      #mealTab.tab-pane.fade
+      #entreeTab.tab-pane.fade
         .container-fluid
           .row
             p.no-matches No Meals Matches Your Restrictions
-            #mealList.card-group
+            #entreeList.card-group
       #sideTab.tab-pane.fade
         .container-fluid
           .row
@@ -414,4 +414,7 @@ block content
             .status-symbols.fa.fa-check-circle Within you restrictions
             .status-symbols.fa.fa-exclamation-circle Close, but not within
             .status-symbols.fa.fa-times-circle Not good
+  #notification-results(style='display:none;')
+    p There were 61 matches for you restrictions
+
 

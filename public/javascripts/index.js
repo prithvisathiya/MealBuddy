@@ -103,7 +103,7 @@ $(document).ready(function() {
 				var priority = row.find('select.priority').val();
 				criteria.priority = priority;
 				if( row.find('.range1').val() == "" ) {
-					alert('One or more of restrictions quantity is incomplete');
+					alert('One or more of your restriction\'s value is incomplete.');
 					return;
 				}
 				switch(rangeType){
@@ -113,7 +113,7 @@ $(document).ready(function() {
 						break;
 					case 'between':
 						if( row.find('.range2').val() == "") {
-							alert('One of your restrictions is missing quantity');
+							alert('One or more of your restriction\'s value is incomplete.');
 							return;
 						}
 						criteria.min = parseFloat(row.find('.range1').val());
@@ -134,7 +134,7 @@ $(document).ready(function() {
 		});
 		var set = new Set(criteriaNames);
 		if(set.size != criteriaNames.length) {
-			alert('You have duplicate restrictions');
+			alert('You have duplicate restrictions. Please remove the duplicate.');
 			return;
 		}
 		var cuisineIdx = $('#cuisine-type').val();
@@ -256,9 +256,17 @@ $(document).ready(function() {
 
 
 			$('#suggestions').removeAttr('hidden');
+			$('#notification-results').find('p').html('Found ' + data.result.length + ' matches for your criteria');
+			$('#notification-results').fadeIn(500);
+			setTimeout(function() {
+				$('#notification-results').fadeOut(500);
+			}, 3000);
 
-			//Indicate How Many Resutls are shown
-			// alert('Found ' + data.result.length + ' Matches For Your Restrictions!');
+
+			$('#suggestions a:first').tab('show');
+		    $('html, body').animate({
+		        scrollTop: $("#suggestions").offset().top - 100
+		    }, 1000);
 		}
 		else{
 			console.log(data.error);  
