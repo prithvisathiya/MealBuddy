@@ -7,7 +7,7 @@ var mongoose = require('mongoose');
 var format = require('string-format');
 var pgConnString = process.env.DATABASE_URL || 'postgres://localhost:5432/prithvisathiya';
 
-var cuisines = ['none', 'Thai', 'Italian', 'Indian'];
+var cuisines = ['none', 'American', 'Italian', 'Indian', 'Japanese', 'Chinese', 'Korean', 'Mexican', 'Vietnamese', 'Thai', 'French', 'English'];
 // var mysqlConnection = mysql.createConnection({
 // 	host: 'localhost',user: 'root',password: 'password',database: 'Foods'
 // });
@@ -65,7 +65,8 @@ router.post('/submit', function(req, res, next) {
 	});
 	var cuisineIdx = parseInt(req.body.idx);
 	if(cuisineIdx > 0) {
-		query += "and cuisine in ('none','" + cuisines[cuisineIdx] + "') ";
+		// query += "and cuisine in ('none','" + cuisines[cuisineIdx] + "') ";
+		query += "and (cuisine like '%" + cuisines[cuisineIdx] + "%' or cuisine like '%none%') ";
 	}
 	query += "order by group1, group2, group3"
 	console.log(query);
