@@ -216,7 +216,7 @@ $(document).ready(function() {
 
 	const Item = ({item}) => `
 		<div class="card">
-		   <img src="images/default_item_image.jpg">
+		   <img src="images/${item.type}/${item.imagepath}">
 		   <div class="card-block">
 		      <h4 class="card-title">${item.name}</h4>
 		      <hr><br>
@@ -236,7 +236,8 @@ $(document).ready(function() {
 				var card = $(Item({item: item}));
 				var cardText = card.find('.card-block');
 				criteriaNames.forEach(function(criteria) {
-					cardText.append('<p>' + criteria + ":   " + item[criteria.toLowerCase()] + '</p>')
+					var t = item[criteria.toLowerCase()] || '--';
+					cardText.append('<p>' + criteria + ":   " + t + '</p>')
 				});
 				$(selector).append(card);
 				$(card).data('item-info', item);
@@ -298,7 +299,8 @@ $(document).ready(function() {
 					}
 				}
 			}
-			$('#itemInfoCriteriaDesc').append('<p>' + criteria + ': ' + item[criteria.toLowerCase()] + ' ' + valid + '</p>');
+			var t = item[criteria.toLowerCase()] || '--'
+			$('#itemInfoCriteriaDesc').append('<p>' + criteria + ' (' + criteriaUnits[criteria] + '): ' + t + '</p>');
 		});
 		
 

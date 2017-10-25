@@ -55,6 +55,17 @@ hr {
 .main {
 	text-align: center;
 }
+#how-it-works {
+	border:2px solid darkorange;
+	background-color: rgba(0,0,0,0);
+	margin-top: 20px;
+	padding: 10px 20px 10px 20px;
+	color: white;
+	font-size: 15px;
+}
+#how-it-works:hover {
+	background-color: rgba(185,15,6,1);
+}
 #criteriaTable {
 	margin-left: auto;
 	margin-right: auto;
@@ -68,6 +79,9 @@ hr {
 	/*background-color: rgba(256,256,256,.8) !important;*/
 }
 
+.form-control:focus, button:focus {
+	outline:0 !important;
+}
 .range1, .range2{
 	width: 70px;
 	display: inline-block;
@@ -152,6 +166,7 @@ ul {
 }
 .card h4 {
 	font-size: 15px;
+	height: 50px;
 }
 .card-block {
 	padding: 15px;

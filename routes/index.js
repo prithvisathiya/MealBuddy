@@ -28,12 +28,14 @@ function getReqQuery(req) {
 	var dev = {"low" : .2, "medium" : .1, "high" : 0};
 	if(req.max == Infinity) {
 		var min = (parseFloat(req.min) - parseFloat(req.min) * dev[req.priority]);
-		return 'and ' + req.name + ' > ' + mysql.escape(min) + ' '; 
+		// return 'and ' + req.name + ' > ' + mysql.escape(min) + ' '; 
+		return '';
 	}else {
 		var min = (parseFloat(req.min) - parseFloat(req.min) * dev[req.priority]);
 		var max = (parseFloat(req.max) + parseFloat(req.max) * dev[req.priority]); 
 		console.log(min + " " + max);
-		return 'and ' + req.name + ' between ' + mysql.escape(min) + ' and ' + mysql.escape(max) + ' '; 
+		// return 'and ' + req.name + ' between ' + mysql.escape(min) + ' and ' + mysql.escape(max) + ' '; 
+		return 'and coalesce(' + req.name + ',0) < ' + mysql.escape(max) + ' '; 
 	}
 } 
 
