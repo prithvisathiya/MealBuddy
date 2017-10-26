@@ -41,7 +41,7 @@ function getReqQuery(req) {
 
 router.post('/submit', function(req, res, next) {
 	var all = req.body.data;
-	var query = "Select Name, coalesce(servingsize,null) as servingsize, " +
+	var query = "Select id, Name, coalesce(servingsize,null) as servingsize, " +
 	"coalesce(type, null) as Type, " +
 	"coalesce(cuisine, null) as Cuisine, " +
 	"coalesce(calories, null) as Calories, " +

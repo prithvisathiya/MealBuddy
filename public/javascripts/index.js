@@ -4,7 +4,6 @@ $(document).ready(function() {
 	var allCriterias = [];
 	var criteriaNames = [];
 	var dev = {"low" : .2, "medium" : .1, "high" : 0};
-	var myCart = 0;
 	var criteriaUnits = {
 		Calories: 'Cal', Protein: 'g', Fat: 'g', Carbohydrate: 'g', Fiber:'g', Sugar:'g', Calcium:'mg', Iron:'mg', Magnesium:'mg',
 		Phosphorus:'mg', Potassium:'mg', Sodium:'mg', Zinc:'mg', VitaminA:'µg', VitaminC:'mg', VitaminB6:'mg', VitaminB12:'µg',
@@ -31,14 +30,15 @@ $(document).ready(function() {
 	}
 
 	//Attach previous cart if exists
-	if(sessionStorage.cartItems) {
-		var attachCartItems = JSON.parse(sessionStorage.cartItems);
-		var i = JSON.parse(sessionStorage.cartItemsNames);
-		i.forEach(function(n) {
-			addToMealCart(attachCartItems[n], true);
-		});
-	}
+	// if(sessionStorage.cartItems) {
+	// 	var attachCartItems = JSON.parse(sessionStorage.cartItems);
+	// 	var i = JSON.parse(sessionStorage.cartItemsNames);
+	// 	i.forEach(function(n) {
+	// 		addToMealCart(attachCartItems[n], true);
+	// 	});
+	// }
 
+	countCart();
 	$('#add').click(function(e) {
 		var tr = DOMcreator({name:'tr', classlist:['table-row', 'criteria-row']}); 
 		//Add remove button
@@ -165,7 +165,7 @@ $(document).ready(function() {
 		var item = $(this).data('item-info');
 		console.log(item);
 		$(this).parents('tr').remove();
-		removeFromMealCart(item);
+		removeFromMealCart(item.id);
 	});
 
 	$('body').on('click', '.card', function(e) {
@@ -201,12 +201,13 @@ $(document).ready(function() {
 		if(count == "") {
 			alert('Please enter a valid number for How Many to add to MealCart');
 			return;
-		}else if(parseInt(count) < 0) {
+		}else if(parseInt(count) <= 0) {
 			alert('Please enter a number greater than 0');
 			return;
 		}else {
 			$('#itemModal').modal('hide');
-			addToMealCart(currentItem, false);
+			currentItem.numServ = parseFloat(count).toFixed(1);
+			addToMealCart(currentItem);
 		}
 	});
 
@@ -214,6 +215,9 @@ $(document).ready(function() {
 		displayMealCart()
 	});
 
+	$('#updateServBtn').click(function(e) {
+		updateCartServings();
+	})
 	const Item = ({item}) => `
 		<div class="card">
 		   <img src="images/${item.type}/${item.imagepath}">
@@ -277,7 +281,6 @@ $(document).ready(function() {
 	function displayInfo(item) {
 		currentItem = item;
 		$('#itemInfoCriteriaDesc').html("");
-		// $('#itemInfoDesc').html(""); 
 		$('#countToAdd').val(1);
 		$('#item-modal-title').text(item.name);
 		for(var key in item) {
@@ -309,7 +312,7 @@ $(document).ready(function() {
 	}
 
 	function displayMealCart() {
-		if(myCart == 0) {
+		if(countCart() == 0) {
 			$('#noItems').show();
 			$('#cartNutritionCount').hide();
 			$('#cartCriteriaDesc').hide();
@@ -322,9 +325,103 @@ $(document).ready(function() {
 			$('#cartTop').show();
 			$('#cartCriteriaDesc').html("");
 
+			refreshCartModalItems();
+			computeMealCartTotal();
+
+		}
+
+		$('#cartModal').modal('show');
+		$('#cartModal .modal-body').scrollTop(0);
+	}
+
+	function addToMealCart(item) {
+		var cartItems = sessionStorage.cartItems || "{}";
+		cartItems = JSON.parse(cartItems);
+		//ss and SS == serving size
+		if(cartItems[item.id]) {
+			var numServ = parseFloat(cartItems[item.id].numServ) + parseFloat(item.numServ);
+			cartItems[item.id].numServ = numServ;
+		} else {
+			cartItems[item.id] = item;
+		}
+		sessionStorage.cartItems = JSON.stringify(cartItems);
+		$('#cartQuantity').html(countCart());
+	}
+
+	function removeFromMealCart(itemID) {
+		if(sessionStorage.cartItems) {
+			itemID = itemID + '';
+			var cart = JSON.parse(sessionStorage.cartItems);
+			delete cart[itemID];
+			sessionStorage.cartItems = JSON.stringify(cart);
+		}
+		$('#cartQuantity').html(countCart());
+		if(countCart() == 0) {
+			$('#noItems').show();
+			$('#cartNutritionCount').hide();
+			$('#cartCriteriaDesc').hide();
+			$('#cartTop').hide();
+		}
+		else {
+			$('#noItems').hide();
+			$('#cartNutritionCount').show();
+			$('#cartCriteriaDesc').show();
+			$('#cartTop').show();
+			$('#cartCriteriaDesc').html("");
+		}
+		computeMealCartTotal();
+	}
+
+	function updateCartServings() {
+		$('.cart-item').each(function(row) {
+			row = $(this);
+			var id = row.find('i').data('item-info').id; 
+			var numServ = parseFloat(row.find('input').val()).toFixed(1);
+			if(!isNumeric(numServ)) {
+				alert('Please Enter a Valid Number For Servings');
+				return false;
+			}
+			if(numServ < 0) {
+				alert('Please Enter a Non-Negative Number For Servings');
+				return false;
+			}
+			row.find('input').val(numServ)
+			if(sessionStorage.cartItems) {
+				var items = JSON.parse(sessionStorage.cartItems);
+				items[id].numServ = numServ;
+				sessionStorage.cartItems = JSON.stringify(items);
+			}
+		});
+		computeMealCartTotal();
+	}
+
+	function computeMealCartTotal() {
+		if(sessionStorage.cartItems) {
+			count = {};
+			var cartItems = JSON.parse(sessionStorage.cartItems);
+			for(var id in cartItems) {
+				var item = cartItems[id];
+				for(var nutr in item) {
+					if(isNumeric(item[nutr]) && item[nutr] != null) {
+						var toAdd = parseFloat(item[nutr]) * parseFloat(item.numServ);
+						var tot = (count[nutr] || 0) + toAdd;
+						count[nutr] = parseFloat(tot.toFixed(2));
+					} else {
+						count[nutr] = count[nutr] || null;
+					}
+				}
+			}
+			for (var nutr in count) {
+				var selector = '#cart' + nutr.toUpperCase();
+				var val = '--';
+				if(count[nutr] != null) val = count[nutr];
+				$(selector).html(val);
+			}
+			$('#cartCriteriaDesc').html("");
 			criteriaNames.forEach(function(name) {
 				var selector = '#cart' + name.toUpperCase();
-				var total = parseFloat($(selector).html());
+				// var total = parseFloat($(selector).html());
+				var total = $(selector).html();
 
 				var valid;
 				for(var i = 0; i < allCriterias.length; i++) {
@@ -348,118 +445,37 @@ $(document).ready(function() {
 				}
 
 				$('#cartCriteriaDesc').append('<p>' + name + ': ' + $(selector).html() + ' ' + valid + '</p>');
+
 			});
 		}
-
-		$('#cartModal').modal('show');
-		$('#cartModal .modal-body').scrollTop(0);
-	}
-	function addToMealCart(item, onReload) {
-		var num = parseInt($('#countToAdd').val());
-		for(var i = 0; i < num; i++) {
-			var tr = DOMcreator({name:'tr', inner:'<td><i class="glyphicon glyphicon-remove"></i></td><td>' + item.name +'</td>'})
-			$(tr).find('i').data('item-info', item);
-			$('#cartItems').append(tr);
-
-
-			for(var key in item) {
-				var selector = '#cart' + key.toUpperCase();
-				if(isNumeric(item[key]) && item[key] != null) {
-					if( isNumeric($(selector).html()) ) {
-						var after = parseFloat($(selector).html()) + parseFloat(item[key]);
-						$(selector).html(after.toFixed(2));
-					} else {
-						$(selector).html(item[key]);
-					}
-				}
-			}
-
-			myCart += 1;
-			$('#cartQuantity').html(myCart);
-			if(!onReload){
-				if(sessionStorage.cartItems) {
-					var itemsNames = JSON.parse(sessionStorage.cartItemsNames);
-					itemsNames.push(item.name);
-					sessionStorage.cartItemsNames = JSON.stringify(itemsNames);
-					var items = JSON.parse(sessionStorage.cartItems);
-					items[item.name] = item;
-					sessionStorage.cartItems = JSON.stringify(items);
-				} else {
-					var itemsNames = [item.name];
-					sessionStorage.cartItemsNames = JSON.stringify(itemsNames);
-					var items = {};
-					items[item.name] = item;
-					sessionStorage.cartItems = JSON.stringify(items);
-				}
-			}
-		}
 	}
 
-	function removeFromMealCart(item) {
-		myCart -= 1;
-		$('#cartQuantity').html(myCart);
-		if(myCart == 1) {
-			var remItem = $('#cartItems').find('tr i').data('item-info');
-			for(var key in remItem) {
-				var selector = '#cart' + key.toUpperCase();
-				if(remItem[key] == null)
-					$(selector).html('--');
-				else 
-					$(selector).html(remItem[key]);
-			}
-		}else {
-			for(var key in item) {
-				var selector = '#cart' + key.toUpperCase();
-				if(item[key] != null) {
-					var after = parseFloat($(selector).html()) - parseFloat(item[key]);
-					$(selector).html(after.toFixed(2));
-				}
-			}
-		}
-		$('#cartCriteriaDesc').html("");
-		criteriaNames.forEach(function(name) {
-			var selector = '#cart' + name.toUpperCase();
-			var total = parseFloat($(selector).html());
-
-			var valid;
-			for(var i = 0; i < allCriterias.length; i++) {
-				if(allCriterias[i].name == name){
-					var mult = dev[allCriterias[i].priority];
-					var mi = allCriterias[i].min - allCriterias[i].min * mult;
-					var ma = allCriterias[i].max + allCriterias[i].max * mult;
-					if(total <= allCriterias[i].max && total >= allCriterias[i].min) {
-						valid = '<i class="fa fa-check-circle" aria-hidden="true"></i>';
-						break;
-					} 
-					if(total < ma && total > mi) {
-						valid = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i>';
-						break;
-					} 
-					else {
-						valid = '<i class="fa fa-times-circle" aria-hidden="true"></i>';
-						break;
-					}
-				}
-			}
-
-			$('#cartCriteriaDesc').append('<p>' + name + ': ' + $(selector).html() + ' ' + valid + '</p>');
-
-		});
-		if(myCart == 0) {
-			$('#noItems').show();
-			$('#cartNutritionCount').hide();
-			$('#cartCriteriaDesc').hide();
-			$('#cartTop').hide();
-		}
-		var itemsNames = JSON.parse(sessionStorage.cartItemsNames);
-		itemsNames.splice(itemsNames.indexOf(item.name), 1)
-		sessionStorage.cartItemsNames = JSON.stringify(itemsNames);
-		if(!itemsNames.includes(item.name)) {
+	function refreshCartModalItems() {
+		if(sessionStorage.cartItems) {
 			var items = JSON.parse(sessionStorage.cartItems);
-			delete items[item.name];
-			sessionStorage.cartItems = JSON.stringify(items);
+			$('#cartItems').html('');
+			for(var id in items) {
+				var item = items[id];
+				var tr = DOMcreator({name:'tr', classlist:['cart-item'],
+					inner:'<td><i class="glyphicon glyphicon-remove"></i></td><td><input type="number" class="form-control" value='+parseFloat(item.numServ).toFixed(1)+'></td><td>' + item.name +'</td>'})
+				$(tr).find('i').data('item-info', item);
+				$('#cartItems').append(tr);
+			}
 		}
 	}
+
+	function countCart() {
+		if(sessionStorage.cartItems) {
+			var num = 0;
+			for(var key in JSON.parse(sessionStorage.cartItems)) {
+				num += 1;
+			}
+			$('#cartQuantity').html(num);
+			return num;
+		}
+		return 0;
+	}
+
 
 	function DOMcreator(req) {
 		//req = {name:string, classlist:array, attr:object, inner:string}

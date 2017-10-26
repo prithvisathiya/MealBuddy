@@ -113,25 +113,25 @@ a:hover {
 ul {
 	list-style-type: none;
 }
-.nav-pills, .tab-content {
+#suggestions .nav-pills, #suggestions .tab-content {
 	border-bottom: 2px solid #7d0202;
 	background-color: rgba(256,256,256,.8);
 }
-.nav-pills>li>a {
+#suggestions .nav-pills>li>a {
      border-radius: 0px !important; 
 }
-.amount {
+#suggestions .amount {
 	font-size: 10px;
 }
 .nav-tabs > li, .nav-pills > li {
     float:none;
     display:inline-block;
 }
-.tab-content {
+#suggestions .tab-content {
 	background-color: rgba(256,256,256,.2);
 }
 
-.nav-tabs, .nav-pills {
+#suggestions .nav-tabs, #suggestions .nav-pills {
     text-align:center;
     font-size: 11px;
 }
@@ -180,7 +180,7 @@ ul {
 	opacity: .8;
 }
 
-.panel-group {
+/*.panel-group {
 	margin-bottom: 1px !important;
 }
 .panel-default > .panel-heading, .panel {
@@ -190,7 +190,7 @@ ul {
 }
 .panel-heading {
 	padding: 0px !important;
-}
+}*/
 
 #itemInfoImage {
 	vertical-align: middle;
@@ -243,6 +243,9 @@ ul {
 }
 #cartItems td {
 	padding: 5px;
+}
+#cartItems input {
+	width: 70px;
 }
 #cartNutritionCount {
 

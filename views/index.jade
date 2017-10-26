@@ -285,7 +285,7 @@ block content
         .modal-footer
           button.btn.btn-danger.modalButtons(type='button', data-dismiss='modal') Close
           button#addMealCart.btn.btn-primary.modalButtons(type='button') Add To MealCart
-          p.modalButtons How Many?
+          p.modalButtons # of Servings
           input#countToAdd.form-control.modalButtons(type='number', size='1', min='1', value=1)
           .legend
             .status-symbols.fa.fa-check-circle Within you restrictions
@@ -304,10 +304,11 @@ block content
             hr
           #cartTop.container-fluid
             .row(nowrap=true)
-              .col-xs-6
+              .col-xs-8
                 h4(style="border-bottom: 1px solid black") Items
                 table#cartItems 
-              .col-xs-6
+                button#updateServBtn.btn.btn-default Update
+              .col-xs-4
                 h4(style="border-bottom: 1px solid black") Your Restriction(s)
                 #cartCriteriaDesc
             br
