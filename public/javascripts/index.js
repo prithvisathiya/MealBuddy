@@ -1,9 +1,10 @@
 $(document).ready(function() {
 	var currentItem;
 	var selectedItem;
-	var allCriterias = [];
-	var criteriaNames = [];
-	var dev = {"low" : .2, "medium" : .1, "high" : 0};
+	var allCriterias = [[],[]];
+	var criteriaNames = [[],[]];
+	var displayedSearchTypeIdx = 0;
+	var dev = {"low" : 0, "medium" : .1, "high" : .2};
 	var criteriaUnits = {
 		Calories: 'Cal', Protein: 'g', Fat: 'g', Carbohydrate: 'g', Fiber:'g', Sugar:'g', Calcium:'mg', Iron:'mg', Magnesium:'mg',
 		Phosphorus:'mg', Potassium:'mg', Sodium:'mg', Zinc:'mg', VitaminA:'µg', VitaminC:'mg', VitaminB6:'mg', VitaminB12:'µg',
@@ -11,7 +12,7 @@ $(document).ready(function() {
 	}
 
 	var ddlCriteriaList = ['fat', 'sugar', 'potassium', 'calories'];
-	var priorityList = ['High', 'Medium', 'Low'];
+	var priorityList = ['Low', 'Medium', 'High'];
 	var rangeTypes = {'lt': 'Less than', 'between': 'Between', 'gt': 'Greater than'};
 	// $('.selectpicker').selectpicker('mobile');
 
@@ -82,19 +83,20 @@ $(document).ready(function() {
 		
 
 		//Add the new row to criteria form and refresh to take changes
-		// if($('#criteriaTable .table-row').length == 0) {
-		// 	$('#criteriaTable tbody').append(tr);
-		// }else {
-		$('.table-row:last').after(tr);
-		// }
+
+		var searchType = $('#searchType .active a').attr('href');
+		$(searchType).find('.table-row:last').after(tr);
 		$(".selectpicker").selectpicker('refresh');
 
 	});
 	$('#submit').click(function(e) {
 		e.preventDefault();
-		allCriterias = [];
-		criteriaNames = [];
-		$('.criteria-row').each(function(tr) {
+		var searchType = $('#searchType .active a').attr('href');
+		if(searchType == '#mealPlan') var searchTypeIdx = 0;
+		else var searchTypeIdx = 1;
+		allCriterias[searchTypeIdx] = [];
+		criteriaNames[searchTypeIdx] = [];
+		$(searchType+' .criteria-row').each(function(tr) {
 			var row = $(this);
 			var criteria = {};
 			criteria.name = row.find('select.criteria-name').val();
@@ -128,22 +130,22 @@ $(document).ready(function() {
 						criteria.min = parseFloat(row.find('.range1').val());
 						criteria.max = Infinity;
 				}
-				allCriterias.push(criteria);
-				criteriaNames.push(criteria.name);
+				allCriterias[searchTypeIdx].push(criteria);
+				criteriaNames[searchTypeIdx].push(criteria.name);
 			}
 		});
-		var set = new Set(criteriaNames);
-		if(set.size != criteriaNames.length) {
+		var set = new Set(criteriaNames[searchTypeIdx]);
+		if(set.size != criteriaNames[searchTypeIdx].length) {
 			alert('You have duplicate restrictions. Please remove the duplicate.');
 			return;
 		}
 		var cuisineIdx = $('#cuisine-type').val();
-		console.log(allCriterias);
-		if(allCriterias.length > 0) { 
+		console.log(allCriterias[searchTypeIdx]);
+		if(allCriterias[searchTypeIdx].length > 0) { 
 			$.ajax({
 				type: 'POST',
 				url: '/submit',
-				data: {data: allCriterias, idx: cuisineIdx},
+				data: {data: allCriterias[searchTypeIdx], idx: cuisineIdx, searchTypeIdx: searchTypeIdx},
 	            success: function(data) {
 	            	displayResults(JSON.parse(data));
 	            }
@@ -152,11 +154,12 @@ $(document).ready(function() {
 		
 	});
 
-	$('#criteriaTable').on('click', '.glyphicon-remove', function(e) {
+	$('#criteriaMealTable, #criteriaItemTable').on('click', '.glyphicon-remove', function(e) {
 		console.log($(this).parents('tr').index());
 		var name = $(this).parents('tr').find('select.criteria-name').val();
-		if(criteriaNames.includes(name)) {
-			criteriaNames.splice(criteriaNames.indexOf(name), 1);
+		var idx = ($('#searchType .active a').attr('href') == '#mealPlan') ? 0 : 1;
+		if(criteriaNames[idx].includes(name)) {
+			criteriaNames[idx].splice(criteriaNames[idx].indexOf(name), 1);
 		}
 		$(this).parents('tr').remove();
 	});
@@ -235,11 +238,12 @@ $(document).ready(function() {
 		if(data.success) {
 			console.log(data.result);
 			$('.card-group').html('');
+			displayedSearchTypeIdx = data.searchTypeIdx;
 			data.result.forEach(function(item, idx) {
 				var selector = '#' + item.type + 'List';
 				var card = $(Item({item: item}));
 				var cardText = card.find('.card-block');
-				criteriaNames.forEach(function(criteria) {
+				criteriaNames[data.searchTypeIdx].forEach(function(criteria) {
 					var t = item[criteria.toLowerCase()] || '--';
 					cardText.append('<p>' + criteria + ":   " + t + '</p>')
 				});
@@ -247,11 +251,11 @@ $(document).ready(function() {
 				$(card).data('item-info', item);
 			});
 
-			$('.tab-pane').each(function(idx) {
+			$('#suggestions .tab-pane').each(function(idx) {
 				var tab = $(this);
 				var numCards = tab.find('.card').length;
 				var id = tab.attr('id');
-				$('.nav-pills li a[href=#'+id+']').find('.amount').html(' (' + numCards + ')');
+				$('#suggestions .nav-pills li a[href=#'+id+']').find('.amount').html(' (' + numCards + ')');
 				if(numCards == 0) {
 					tab.find('.no-matches').show();
 				}else {
@@ -292,11 +296,11 @@ $(document).ready(function() {
 				$(selector).html('--');
 			}
 		}
-		criteriaNames.forEach(function(criteria) {
+		criteriaNames[displayedSearchTypeIdx].forEach(function(criteria) {
 			var valid = '<i class="fa fa-check-circle" aria-hidden="true"></i>';
-			for(var i = 0; i < allCriterias.length; i++) {
-				if(allCriterias[i].name == criteria){
-					if(item[criteria.toLowerCase()] > allCriterias[i].max || item[criteria.toLowerCase()] < allCriterias[i].min) {
+			for(var i = 0; i < allCriterias[displayedSearchTypeIdx].length; i++) {
+				if(allCriterias[displayedSearchTypeIdx][i].name == criteria){
+					if(item[criteria.toLowerCase()] > allCriterias[displayedSearchTypeIdx][i].max || item[criteria.toLowerCase()] < allCriterias[displayedSearchTypeIdx][i].min) {
 						valid = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i>';
 						break;
 					}
@@ -418,18 +422,18 @@ $(document).ready(function() {
 				$(selector).html(val);
 			}
 			$('#cartCriteriaDesc').html("");
-			criteriaNames.forEach(function(name) {
+			criteriaNames[0].forEach(function(name) {
 				var selector = '#cart' + name.toUpperCase();
 				// var total = parseFloat($(selector).html());
 				var total = $(selector).html();
 
 				var valid;
-				for(var i = 0; i < allCriterias.length; i++) {
-					if(allCriterias[i].name == name){
-						var mult = dev[allCriterias[i].priority];
-						var mi = allCriterias[i].min - allCriterias[i].min * mult;
-						var ma = allCriterias[i].max + allCriterias[i].max * mult;
-						if(total <= allCriterias[i].max && total >= allCriterias[i].min) {
+				for(var i = 0; i < allCriterias[0].length; i++) {
+					if(allCriterias[0][i].name == name){
+						var mult = dev[allCriterias[0][i].priority];
+						var mi = allCriterias[0][i].min - allCriterias[0][i].min * mult;
+						var ma = allCriterias[0][i].max + allCriterias[0][i].max * mult;
+						if(total <= allCriterias[0][i].max && total >= allCriterias[0][i].min) {
 							valid = '<i class="fa fa-check-circle" aria-hidden="true"></i>';
 							break;
 						} 
@@ -454,9 +458,11 @@ $(document).ready(function() {
 		if(sessionStorage.cartItems) {
 			var items = JSON.parse(sessionStorage.cartItems);
 			$('#cartItems').html('');
+			// var tr = DOMcreator({name:'tr', inner:'<td></td><td># of Servings</td><td>Name</td>'});
+			// $('#cartItems').append(tr);
 			for(var id in items) {
 				var item = items[id];
-				var tr = DOMcreator({name:'tr', classlist:['cart-item'],
+				tr = DOMcreator({name:'tr', classlist:['cart-item'],
 					inner:'<td><i class="glyphicon glyphicon-remove"></i></td><td><input type="number" class="form-control" value='+parseFloat(item.numServ).toFixed(1)+'></td><td>' + item.name +'</td>'})
 				$(tr).find('i').data('item-info', item);
 				$('#cartItems').append(tr);

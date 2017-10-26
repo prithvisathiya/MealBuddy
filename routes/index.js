@@ -24,17 +24,21 @@ router.get('/', function(req, res, next) {
 	res.render('index', { title: 'MealBuddy' }); 
 }); 
 
-function getReqQuery(req) {
-	var dev = {"low" : .2, "medium" : .1, "high" : 0};
+function getReqQuery(req, idx) {
+	var dev = {"high" : .2, "medium" : .1, "low" : 0};
 	if(req.max == Infinity) {
-		var min = (parseFloat(req.min) - parseFloat(req.min) * dev[req.priority]);
-		// return 'and ' + req.name + ' > ' + mysql.escape(min) + ' '; 
+		if(idx == 1) {
+			var min = (parseFloat(req.min) - parseFloat(req.min) * dev[req.priority]);
+			return 'and ' + req.name + ' > ' + mysql.escape(min) + ' '; 
+		}
 		return '';
 	}else {
 		var min = (parseFloat(req.min) - parseFloat(req.min) * dev[req.priority]);
 		var max = (parseFloat(req.max) + parseFloat(req.max) * dev[req.priority]); 
 		console.log(min + " " + max);
-		// return 'and ' + req.name + ' between ' + mysql.escape(min) + ' and ' + mysql.escape(max) + ' '; 
+		if(idx == 1) {
+			return 'and ' + req.name + ' between ' + mysql.escape(min) + ' and ' + mysql.escape(max) + ' '; 
+		}
 		return 'and coalesce(' + req.name + ',0) < ' + mysql.escape(max) + ' '; 
 	}
 } 
@@ -61,7 +65,7 @@ router.post('/submit', function(req, res, next) {
 	"imagePath " + 
 	"from items_table where 1=1 "; 
 	all.forEach(function(el, idx) {
-		query += getReqQuery(el);
+		query += getReqQuery(el, req.body.searchTypeIdx);
 		console.log(el.name + ' min: ' + el.min + ' max: ' + el.max);
 		
 	});
@@ -91,7 +95,7 @@ router.post('/submit', function(req, res, next) {
 				}
 				else {
 					console.log('Number of rows retrieved: ' + result.rows.length);
-					res.write(JSON.stringify({"success": true, "result": result.rows}));
+					res.write(JSON.stringify({"success": true, "result": result.rows, "searchTypeIdx": req.body.searchTypeIdx}));
 				}
 				res.end();
 				client.end();
