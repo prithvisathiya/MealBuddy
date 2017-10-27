@@ -4,25 +4,14 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var helmet = require('helmet');
+var http = require('http');
+setInterval(function() {
+	console.log('pinging');
+	http.get('http://meal--buddy.herokuapp.com');
+}, 15*60*1000);
 
 
-
-// connection.query('CREATE DATABASE IF NOT EXISTS testNode', function (err) {
-//     if (err) throw err;
-
-// 	connection.query('USE testNode', function (err) {
-//         if (err) throw err;
-//         console.log('using testNode database');
-//         connection.query('CREATE TABLE IF NOT EXISTS users('
-//             + 'id INT NOT NULL AUTO_INCREMENT,'
-//             + 'PRIMARY KEY(id),'
-//             + 'name VARCHAR(30)'
-//             +  ')', function (err) {
-//                 if (err) throw err;
-//                 console.log('created table users');
-//             });
-//     });
-// });
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -35,6 +24,7 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(helmet())
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

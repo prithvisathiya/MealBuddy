@@ -59,7 +59,7 @@ $(document).ready(function() {
 		//Add criteria range type
 		td = DOMcreator({name:'td'});
 		select = DOMcreator({name:'select', classlist:['form-control','selectpicker','range-type'],
-			attr:{"data-width":"130px"}
+			attr:{"data-width":"200px"}
 		});
 		for(var key in rangeTypes) {
 			$(select).append('<option value="'+key+'">'+rangeTypes[key]+'</option>');
@@ -74,7 +74,7 @@ $(document).ready(function() {
 		tr.appendChild(td);
 		//Add priority dropdown
 		td = DOMcreator({name:'td'});
-		select = DOMcreator({name:'select', attr:{"data-width":"130px"}, classlist:['form-control','priority', 'selectpicker']});
+		select = DOMcreator({name:'select', attr:{"data-width":"200px"}, classlist:['form-control','priority', 'selectpicker']});
 		priorityList.forEach(function(p) {
 			$(select).append('<option value="'+p.toLowerCase()+'">'+p+'</option>');
 		});
@@ -135,10 +135,14 @@ $(document).ready(function() {
 		});
 		var set = new Set(criteriaNames[searchTypeIdx]);
 		if(set.size != criteriaNames[searchTypeIdx].length) {
+			allCriterias[searchTypeIdx] = [];
+			criteriaNames[searchTypeIdx] = [];
 			alert('You have duplicate restrictions. Please remove the duplicate.');
 			return;
 		}
 		if( incomplete ) {
+			allCriterias[searchTypeIdx] = [];
+			criteriaNames[searchTypeIdx] = [];
 			alert('One or more of your restriction\'s value is incomplete.');
 			return;
 		}
@@ -234,6 +238,24 @@ $(document).ready(function() {
 	$('#updateServBtn').click(function(e) {
 		updateCartServings();
 	})
+
+	$(document).on('mouseenter', '.n', function(e) {
+		var row = $(this);
+		var itemData = row.parents('tr').find('i').data('item-info');
+		$('#itemOnHoverDesc').html('');
+		$('#itemOnHoverDesc').append('<p style="color:darkorange;">Serving Size: ' + itemData.servingsize +'</p>');
+		if(criteriaNames[0].length > 0) {
+			criteriaNames[0].forEach(function(name) {
+				var amt = itemData[name.toLowerCase()] * parseFloat(itemData.numServ);
+				$('#itemOnHoverDesc').append('<p>' + name + ': ' + amt.toFixed(2) +'</p>');
+			})
+		}
+		$('#itemOnHoverDesc').css('display', 'block');
+	});
+	$(document).on('mouseleave', '.n', function(e) {
+		$('#itemOnHoverDesc').css('display', 'none');
+	});
+
 	const Item = ({item}) => `
 		<div class="card">
 		   <img src="images/${item.type}/${item.imagepath}">
@@ -413,6 +435,9 @@ $(document).ready(function() {
 				items[id].numServ = numServ;
 				sessionStorage.cartItems = JSON.stringify(items);
 			}
+			var newItemData = row.find('i').data('item-info');
+			newItemData.numServ = numServ;
+			row.find('i').data('item-info', newItemData);
 		});
 		computeMealCartTotal();
 	}
@@ -481,7 +506,7 @@ $(document).ready(function() {
 			for(var id in items) {
 				var item = items[id];
 				tr = DOMcreator({name:'tr', classlist:['cart-item'],
-					inner:'<td><i class="glyphicon glyphicon-remove"></i></td><td><input type="number" class="form-control" value='+parseFloat(item.numServ).toFixed(1)+'></td><td>' + item.name +'</td>'})
+					inner:'<td><i class="glyphicon glyphicon-remove"></i></td><td><input type="number" class="form-control" value='+parseFloat(item.numServ).toFixed(1)+'></td><td class="n">' + item.name +'</td>'})
 				$(tr).find('i').data('item-info', item);
 				$('#cartItems').append(tr);
 			}

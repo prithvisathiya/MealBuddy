@@ -40,7 +40,7 @@ block content
                   td
                     select.form-control.selectpicker.criteria-name(type='text', title='fat, sugar, etc...', data-live-search='true', data-width="200px", data-size="10")
                   td
-                    select.form-control.selectpicker.range-type(data-width="130px")
+                    select.form-control.selectpicker.range-type(data-width="200px")
                       option(value='lt') Less than
                       option(value='between') Between
                       option(value='gt') Greater than
@@ -51,7 +51,7 @@ block content
                     input.form-control.range2(type='number', maxlength='5', value=50, hidden=true)
                     p.units2(hidden=true) mg
                   td
-                    select.form-control.selectpicker.priority(data-width="130px")
+                    select.form-control.selectpicker.priority(data-width="200px")
                       option(value='low', data-subtext="+/- 0%") Low
                       option(value='medium', selected='selected', data-subtext="+/- 10%") Medium
                       option(value='high', data-subtext="+/- 20%") High
@@ -62,7 +62,7 @@ block content
                   td
                     select.form-control.selectpicker.criteria-name(type='text', title='fat, sugar, etc...', data-live-search='true', data-width="200px", data-size="10")
                   td
-                    select.form-control.selectpicker.range-type(data-width="130px")
+                    select.form-control.selectpicker.range-type(data-width="200px")
                       option(value='lt') Less than
                       option(value='between') Between
                       option(value='gt') Greater than
@@ -73,7 +73,7 @@ block content
                     input.form-control.range2(type='number', size='5', value=30, hidden=true) 
                     p.units2(hidden=true) mg
                   td
-                    select.form-control.selectpicker.priority(data-width="130px")
+                    select.form-control.selectpicker.priority(data-width="200px")
                       option(value='low', selected='selected', data-subtext="+/- 0%") Low
                       option(value='medium', data-subtext="+/- 10%") Medium
                       option(value='high', data-subtext="+/- 20%") High
@@ -95,7 +95,7 @@ block content
                   td
                     select.form-control.selectpicker.criteria-name(type='text', title='fat, sugar, etc...', data-live-search='true', data-width="200px", data-size="10")
                   td
-                    select.form-control.selectpicker.range-type(data-width="130px")
+                    select.form-control.selectpicker.range-type(data-width="200px")
                       option(value='lt') Less than
                       option(value='between') Between
                       option(value='gt') Greater than
@@ -106,7 +106,7 @@ block content
                     input.form-control.range2(type='number', maxlength='5', value=50, hidden=true)
                     p.units2(hidden=true) mg
                   td
-                    select.form-control.selectpicker.priority(data-width="130px")
+                    select.form-control.selectpicker.priority(data-width="200px")
                       option(value='low', data-subtext="+/- 0%") Low
                       option(value='medium', selected='selected', data-subtext="+/- 10%") Medium
                       option(value='high', data-subtext="+/- 20%") High
@@ -117,7 +117,7 @@ block content
                   td
                     select.form-control.selectpicker.criteria-name(type='text', title='fat, sugar, etc...', data-live-search='true', data-width="200px", data-size="10")
                   td
-                    select.form-control.selectpicker.range-type(data-width="130px")
+                    select.form-control.selectpicker.range-type(data-width="200px")
                       option(value='lt') Less than
                       option(value='between') Between
                       option(value='gt') Greater than
@@ -128,7 +128,7 @@ block content
                     input.form-control.range2(type='number', size='5', value=30, hidden=true) 
                     p.units2(hidden=true) mg
                   td
-                    select.form-control.selectpicker.priority(data-width="130px")
+                    select.form-control.selectpicker.priority(data-width="200px")
                       option(value='low', selected='selected', data-subtext="+/- 0%") Low
                       option(value='medium', data-subtext="+/- 10%") Medium
                       option(value='high', data-subtext="+/- 20%") High
@@ -372,12 +372,13 @@ block content
             hr
           #cartTop.container-fluid
             .row(nowrap=true)
-              .col-xs-8
+              .col-xs-7
                 h4(style="border-bottom: 1px solid black") Items
                 table#cartItems 
                 button#updateServBtn.btn.btn-default Update
-              .col-xs-4
+              .col-xs-5
                 h4(style="border-bottom: 1px solid black") Your Restriction(s)
+                #itemOnHoverDesc
                 #cartCriteriaDesc
             br
             hr

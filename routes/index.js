@@ -8,19 +8,12 @@ var format = require('string-format');
 var pgConnString = process.env.DATABASE_URL || 'postgres://localhost:5432/prithvisathiya';
 
 var cuisines = ['none', 'American', 'Italian', 'Indian', 'Japanese', 'Chinese', 'Korean', 'Mexican', 'Vietnamese', 'Thai', 'French', 'English'];
-// var mysqlConnection = mysql.createConnection({
-// 	host: 'localhost',user: 'root',password: 'password',database: 'Foods'
-// });
-// mysqlConnection.connect(function(err) {
-// 	if (err) {console.log('Error connecting to mysql DB');}
-// 	else console.log('Connection to mysql DB successful'); 
-// });
-
 
 console.log(pgConnString);
 
 /* GET home page. */
 router.get('/', function(req, res, next) { 
+	console.log(req.ip);
 	res.render('index', { title: 'MealBuddy' }); 
 }); 
 
@@ -106,7 +99,6 @@ router.post('/submit', function(req, res, next) {
 });
 
 router.get('/viewAll', function(req, res, next) {
-	// console.log("fetching items from db")
 	var query = "Select id, Name, coalesce(servingsize,null) as servingsize, " +
 	"coalesce(type, null) as Type, " +
 	"coalesce(cuisine, null) as Cuisine, " +
