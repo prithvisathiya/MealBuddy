@@ -44,8 +44,11 @@ input::-webkit-inner-spin-button {
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
-a {
-  color: crimson;
+#suggestions a {
+/*  color: crimson;
+*/}
+#searchType a {
+	color: white;
 }
 hr {
 	border-color: orange;
@@ -58,13 +61,15 @@ hr {
 #how-it-works {
 	border:2px solid darkorange;
 	background-color: rgba(0,0,0,0);
-	margin-top: 20px;
+	margin-top: 50px;
+	margin-bottom: 30px;
 	padding: 10px 20px 10px 20px;
 	color: white;
 	font-size: 15px;
 }
 #how-it-works:hover {
-	background-color: rgba(185,15,6,1);
+	color: black;
+    background-color: rgb(255, 255, 255);
 }
 #criteriaMealTable, #criteriaItemTable {
 	margin-left: auto;
@@ -112,6 +117,20 @@ a:hover {
 
 ul {
 	list-style-type: none;
+}
+#viewAll {
+	background-color: #7b7979;
+}
+#searchType.nav-pills>li>a:hover {
+    border-bottom: 3px solid white;
+    border-top: 3px solid white;
+    background-color: rgba(256,256,256,0);
+}
+
+#searchType.nav-pills>li.active>a, #searchType.nav-pills>li.active>a:focus,#searchType.nav-pills>li.active>a:hover {
+    border-bottom: 3px solid darkorange;
+    border-top: 3px solid darkorange;
+    background-color: rgba(256,256,256,0);
 }
 #suggestions .nav-pills, #suggestions .tab-content {
 	border-bottom: 2px solid #7d0202;
@@ -227,7 +246,8 @@ ul {
 	text-align: right;
 }
 .modal-content {
-	color: darkgray;
+	background-image: url(../images/texture3.jpg);
+	color: #616161;
 }
 .modal-dialog{
     overflow-y: initial !important
@@ -257,6 +277,15 @@ ul {
 }
 #countToAdd {
 	width: 60px;
+}
+
+.modal-footer p{
+	padding: 5px;
+	border-left: 1px solid black;
+	margin:2px 5px 0px 0px;
+}
+.modal-footer {
+	border-top: 1px solid #ff8f03;
 }
 
 .legend {

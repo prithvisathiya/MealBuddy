@@ -96,6 +96,7 @@ $(document).ready(function() {
 		else var searchTypeIdx = 1;
 		allCriterias[searchTypeIdx] = [];
 		criteriaNames[searchTypeIdx] = [];
+		var incomplete = false;
 		$(searchType+' .criteria-row').each(function(tr) {
 			var row = $(this);
 			var criteria = {};
@@ -105,8 +106,7 @@ $(document).ready(function() {
 				var priority = row.find('select.priority').val();
 				criteria.priority = priority;
 				if( row.find('.range1').val() == "" ) {
-					alert('One or more of your restriction\'s value is incomplete.');
-					return;
+					incomplete = true;
 				}
 				switch(rangeType){
 					case 'lt':
@@ -115,8 +115,7 @@ $(document).ready(function() {
 						break;
 					case 'between':
 						if( row.find('.range2').val() == "") {
-							alert('One or more of your restriction\'s value is incomplete.');
-							return;
+							incomplete = true;
 						}
 						criteria.min = parseFloat(row.find('.range1').val());
 						criteria.max = parseFloat(row.find('.range2').val());
@@ -139,6 +138,10 @@ $(document).ready(function() {
 			alert('You have duplicate restrictions. Please remove the duplicate.');
 			return;
 		}
+		if( incomplete ) {
+			alert('One or more of your restriction\'s value is incomplete.');
+			return;
+		}
 		var cuisineIdx = $('#cuisine-type').val();
 		console.log(allCriterias[searchTypeIdx]);
 		if(allCriterias[searchTypeIdx].length > 0) { 
@@ -152,6 +155,16 @@ $(document).ready(function() {
 			});
 		}
 		
+	});
+
+	$('#viewAll').click(function(e) {
+		$.ajax({
+			type: 'GET',
+			url: '/viewAll',
+            success: function(data) {
+            	displayResults(JSON.parse(data));
+            }
+		});
 	});
 
 	$('#criteriaMealTable, #criteriaItemTable').on('click', '.glyphicon-remove', function(e) {
@@ -243,10 +256,13 @@ $(document).ready(function() {
 				var selector = '#' + item.type + 'List';
 				var card = $(Item({item: item}));
 				var cardText = card.find('.card-block');
-				criteriaNames[data.searchTypeIdx].forEach(function(criteria) {
-					var t = item[criteria.toLowerCase()] || '--';
-					cardText.append('<p>' + criteria + ":   " + t + '</p>')
-				});
+				if(displayedSearchTypeIdx < 2) {
+					criteriaNames[data.searchTypeIdx].forEach(function(criteria) {
+						var t = item[criteria.toLowerCase()] || '--';
+						cardText.append('<p>' + criteria + ":   " + t + '</p>')
+					});
+				}
+				
 				$(selector).append(card);
 				$(card).data('item-info', item);
 			});
@@ -296,19 +312,21 @@ $(document).ready(function() {
 				$(selector).html('--');
 			}
 		}
-		criteriaNames[displayedSearchTypeIdx].forEach(function(criteria) {
-			var valid = '<i class="fa fa-check-circle" aria-hidden="true"></i>';
-			for(var i = 0; i < allCriterias[displayedSearchTypeIdx].length; i++) {
-				if(allCriterias[displayedSearchTypeIdx][i].name == criteria){
-					if(item[criteria.toLowerCase()] > allCriterias[displayedSearchTypeIdx][i].max || item[criteria.toLowerCase()] < allCriterias[displayedSearchTypeIdx][i].min) {
-						valid = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i>';
-						break;
+		if(displayedSearchTypeIdx < 2) {
+			criteriaNames[displayedSearchTypeIdx].forEach(function(criteria) {
+				var valid = '<i class="fa fa-check-circle" aria-hidden="true"></i>';
+				for(var i = 0; i < allCriterias[displayedSearchTypeIdx].length; i++) {
+					if(allCriterias[displayedSearchTypeIdx][i].name == criteria){
+						if(item[criteria.toLowerCase()] > allCriterias[displayedSearchTypeIdx][i].max || item[criteria.toLowerCase()] < allCriterias[displayedSearchTypeIdx][i].min) {
+							valid = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i>';
+							break;
+						}
 					}
 				}
-			}
-			var t = item[criteria.toLowerCase()] || '--'
-			$('#itemInfoCriteriaDesc').append('<p>' + criteria + ' (' + criteriaUnits[criteria] + '): ' + t + '</p>');
-		});
+				var t = item[criteria.toLowerCase()] || '--'
+				$('#itemInfoCriteriaDesc').append('<p>' + criteria + ' (' + criteriaUnits[criteria] + '): ' + t + '</p>');
+			});
+		}
 		
 
 		$('#itemModal').modal('show');

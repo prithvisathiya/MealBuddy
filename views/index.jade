@@ -107,9 +107,9 @@ block content
                     p.units2(hidden=true) mg
                   td
                     select.form-control.selectpicker.priority(data-width="130px")
-                      option(value='high', data-subtext="+/- 0%") High
+                      option(value='low', data-subtext="+/- 0%") Low
                       option(value='medium', selected='selected', data-subtext="+/- 10%") Medium
-                      option(value='low', data-subtext="+/- 20%") Low
+                      option(value='high', data-subtext="+/- 20%") High
 
                 tr.table-row.criteria-row
                   td
@@ -129,11 +129,11 @@ block content
                     p.units2(hidden=true) mg
                   td
                     select.form-control.selectpicker.priority(data-width="130px")
-                      option(value='high', selected='selected', data-subtext="+/- 0%") High
+                      option(value='low', selected='selected', data-subtext="+/- 0%") Low
                       option(value='medium', data-subtext="+/- 10%") Medium
-                      option(value='low', data-subtext="+/- 20%") Low
+                      option(value='high', data-subtext="+/- 20%") High
               
-    p C u i s i n e   P r e f e r e n c e ? 
+    p(style="font-weight:400;") C u i s i n e  &nbsp; P r e f e r e n c e ? 
     select#cuisine-type.form-control.selectpicker(type='text', data-live-search='true', data-width="200px")
       option(value='0') No Preference
       option(value='1') American
@@ -149,9 +149,10 @@ block content
       option(value='11') English  
     br
     br
-    button#add.btn.btn-success(type="button") Add Restriction
-    button#submit.btn.btn-primary(type="button") Get Suggestions
-      
+    button#add.btn.btn-warning(type="button") Add Restriction
+    button#submit.btn.btn-success(type="button") Get Suggestions
+    br
+    button#viewAll.btn.btn-secondary(style="margin-top:10px;", type="button") View All Items
 
 
   #suggestions.container-fluid(hidden=true)
@@ -352,7 +353,7 @@ block content
         .modal-footer
           button.btn.btn-danger.modalButtons(type='button', data-dismiss='modal') Close
           button#addMealCart.btn.btn-primary.modalButtons(type='button') Add To MealCart
-          p.modalButtons # of Servings
+          p.modalButtons # of Servings:
           input#countToAdd.form-control.modalButtons(type='number', size='1', min='1', value=1)
           .legend
             .status-symbols.fa.fa-check-circle Within you restrictions
