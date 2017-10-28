@@ -16,7 +16,7 @@ $(document).ready(function() {
 	var rangeTypes = {'lt': 'Less than', 'between': 'Between', 'gt': 'Greater than'};
 	// $('.selectpicker').selectpicker('mobile');
 
-	//set the tool bar to the right width of the screen
+	//Set the tool bar to the right width of the screen
 	var windowWidth = $(window).width();
 	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
 		// $('.selectpicker').selectpicker('mobile');
@@ -30,16 +30,17 @@ $(document).ready(function() {
 		$('.criteria-name').append('<option value="'+key+'">'+key+'</option>');
 	}
 
-	//Attach previous cart if exists
-	// if(sessionStorage.cartItems) {
-	// 	var attachCartItems = JSON.parse(sessionStorage.cartItems);
-	// 	var i = JSON.parse(sessionStorage.cartItemsNames);
-	// 	i.forEach(function(n) {
-	// 		addToMealCart(attachCartItems[n], true);
-	// 	});
-	// }
 
+	//Update Cart Count
 	countCart();
+
+	//Tutorial event handling
+	$('#how-it-works').click(function(e) {
+		$('#tutorial').fadeIn(800);
+	});
+	$('#closeTutorial').click(function(e) {
+		$('#tutorial').fadeOut(800);
+	});
 	$('#add').click(function(e) {
 		var tr = DOMcreator({name:'tr', classlist:['table-row', 'criteria-row']}); 
 		//Add remove button
@@ -161,6 +162,7 @@ $(document).ready(function() {
 		
 	});
 
+	//EVENT HANDLING
 	$('#viewAll').click(function(e) {
 		$.ajax({
 			type: 'GET',
@@ -170,7 +172,7 @@ $(document).ready(function() {
             }
 		});
 	});
-
+	//remove restriction
 	$('#criteriaMealTable, #criteriaItemTable').on('click', '.glyphicon-remove', function(e) {
 		console.log($(this).parents('tr').index());
 		var name = $(this).parents('tr').find('select.criteria-name').val();
@@ -180,20 +182,20 @@ $(document).ready(function() {
 		}
 		$(this).parents('tr').remove();
 	});
-
+	//remove cart item
 	$('#cartItems').on('click', '.glyphicon-remove', function(e) {
 		var item = $(this).data('item-info');
 		console.log(item);
 		$(this).parents('tr').remove();
 		removeFromMealCart(item.id);
 	});
-
+	//Click on card
 	$('body').on('click', '.card', function(e) {
 		//Get clicked item info
 		console.log($(this).data('item-info'));
 		displayInfo($(this).data('item-info'));
 	});
-
+	//lt, gt, or between
 	$('body').on('change', 'select.range-type', function(e) {
 		switch($(this).val()) {
 			case 'between':
@@ -206,16 +208,13 @@ $(document).ready(function() {
 
 		}
 	});
-
+	//Change units for input
 	$('body').on('change', 'select.criteria-name', function(e) {
 		var val = $(this).val();
 		$(this).parents('tr').find('p.units1').html(criteriaUnits[val]);
 		$(this).parents('tr').find('p.units2').html(criteriaUnits[val]);
 	});
-	$('#item-info-popup').click(function(e) {
-		$(this).css('display', 'none');
-	});
-
+	//Add item to Cart
 	$('#addMealCart').click(function(e) {
 		var count = $('#countToAdd').val();
 		if(count == "") {
@@ -230,15 +229,15 @@ $(document).ready(function() {
 			addToMealCart(currentItem);
 		}
 	});
-
+	//Show Cart
 	$('#mealCart').click(function(e) {
 		displayMealCart()
 	});
-
+	//Update Servings for cart items
 	$('#updateServBtn').click(function(e) {
 		updateCartServings();
 	})
-
+	//Cart Item on hover desc
 	$(document).on('mouseenter', '.n', function(e) {
 		var row = $(this);
 		var itemData = row.parents('tr').find('i').data('item-info');
@@ -348,6 +347,8 @@ $(document).ready(function() {
 				var t = item[criteria.toLowerCase()] || '--'
 				$('#itemInfoCriteriaDesc').append('<p>' + criteria + ' (' + criteriaUnits[criteria] + '): ' + t + '</p>');
 			});
+		} else {
+			$('#itemInfoCriteriaDesc').append('<p>None</p>');
 		}
 		
 
@@ -467,7 +468,6 @@ $(document).ready(function() {
 			$('#cartCriteriaDesc').html("");
 			criteriaNames[0].forEach(function(name) {
 				var selector = '#cart' + name.toUpperCase();
-				// var total = parseFloat($(selector).html());
 				var total = $(selector).html();
 
 				var valid;
@@ -501,8 +501,6 @@ $(document).ready(function() {
 		if(sessionStorage.cartItems) {
 			var items = JSON.parse(sessionStorage.cartItems);
 			$('#cartItems').html('');
-			// var tr = DOMcreator({name:'tr', inner:'<td></td><td># of Servings</td><td>Name</td>'});
-			// $('#cartItems').append(tr);
 			for(var id in items) {
 				var item = items[id];
 				tr = DOMcreator({name:'tr', classlist:['cart-item'],

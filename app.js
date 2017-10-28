@@ -6,10 +6,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var helmet = require('helmet');
 var http = require('http');
-setInterval(function() {
-	console.log('pinging');
-	http.get('http://meal--buddy.herokuapp.com');
-}, 15*60*1000);
+if(process.env.NODE_ENV == 'production') {
+  setInterval(function() {
+    console.log('pinging');
+    http.get('http://meal--buddy.herokuapp.com');
+  }, 15*60*1000);
+}
 
 
 

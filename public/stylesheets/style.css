@@ -319,7 +319,7 @@ ul {
 	position: fixed;
 	width: 300px;
 	padding: 15px;
-	top:50%;
+	top:15%;
 	left: 50%;
 	margin-top: -100px;  /*Negative half of height. */
 	margin-left: -150px;
@@ -331,4 +331,24 @@ ul {
 	/*border: 2px solid darkorange;*/
 	border-radius: 15px;
 }
+
+#tutorial {
+	position: fixed;
+	width: 70%;
+	padding: 15px;
+	/*height: 400px;*/
+	top:90px;
+	left: 50%;
+	margin-top: 0%;  /*Negative half of height. */
+	margin-left: -35%;
+	text-align: center;
+	vertical-align: middle !important;
+	background-color: white;
+	color: black;
+	z-index: 2000;
+	/*border: 2px solid darkorange;*/
+	border-radius: 15px;
+	border: 2px solid darkorange;
+	display: none;
+} 
 
