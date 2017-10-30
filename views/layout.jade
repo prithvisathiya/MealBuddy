@@ -10,5 +10,13 @@ html
     script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js')
     script(src="https://use.fontawesome.com/a06e622be8.js")
     //- meta(name="viewport" content="width=device-width, initial-scale=1")
+    script(async src="https://www.googletagmanager.com/gtag/js?id=UA-48497412-2")
+    script.
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-48497412-2');
+
   body
     block content

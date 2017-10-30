@@ -38,17 +38,17 @@ block content
                   td
                     span.glyphicon.glyphicon-remove
                   td
-                    select.form-control.selectpicker.criteria-name(type='text', title='fat, sugar, etc...', data-live-search='true', data-width="200px", data-size="10")
+                    select.form-control.selectpicker.criteria-name(type='text', title='Fat, Sugar, etc...', data-live-search='true', data-width="200px", data-size="10")
                   td
                     select.form-control.selectpicker.range-type(data-width="200px")
                       option(value='lt') Less than
                       option(value='between') Between
                       option(value='gt') Greater than
                   td(nowrap='true')
-                    input.form-control.range1(type='number', maxlength='5', value=30)
+                    input.form-control.range1(type='number', maxlength='5')
                     p.units1 mg
                   td(nowrap='true')
-                    input.form-control.range2(type='number', maxlength='5', value=50, hidden=true)
+                    input.form-control.range2(type='number', maxlength='5', hidden=true)
                     p.units2(hidden=true) mg
                   td
                     select.form-control.selectpicker.priority(data-width="200px")
@@ -56,27 +56,6 @@ block content
                       option(value='medium', selected='selected', data-subtext="+/- 10%") Medium
                       option(value='high', data-subtext="+/- 20%") High
 
-                tr.table-row.criteria-row
-                  td
-                    span.glyphicon.glyphicon-remove
-                  td
-                    select.form-control.selectpicker.criteria-name(type='text', title='fat, sugar, etc...', data-live-search='true', data-width="200px", data-size="10")
-                  td
-                    select.form-control.selectpicker.range-type(data-width="200px")
-                      option(value='lt') Less than
-                      option(value='between') Between
-                      option(value='gt') Greater than
-                  td(nowrap='true')
-                    input.form-control.range1(type='number', size='5', value=30)
-                    p.units1 mg
-                  td(nowrap='true')
-                    input.form-control.range2(type='number', size='5', value=30, hidden=true) 
-                    p.units2(hidden=true) mg
-                  td
-                    select.form-control.selectpicker.priority(data-width="200px")
-                      option(value='low', selected='selected', data-subtext="+/- 0%") Low
-                      option(value='medium', data-subtext="+/- 10%") Medium
-                      option(value='high', data-subtext="+/- 20%") High
       #itemPlan.tab-pane.fade.in
         .container-fluid
           .row
@@ -93,17 +72,17 @@ block content
                   td
                     span.glyphicon.glyphicon-remove
                   td
-                    select.form-control.selectpicker.criteria-name(type='text', title='fat, sugar, etc...', data-live-search='true', data-width="200px", data-size="10")
+                    select.form-control.selectpicker.criteria-name(type='text', title='Fat, Sugar, etc...', data-live-search='true', data-width="200px", data-size="10")
                   td
                     select.form-control.selectpicker.range-type(data-width="200px")
                       option(value='lt') Less than
                       option(value='between') Between
                       option(value='gt') Greater than
                   td(nowrap='true')
-                    input.form-control.range1(type='number', maxlength='5', value=30)
+                    input.form-control.range1(type='number', maxlength='5')
                     p.units1 mg
                   td(nowrap='true')
-                    input.form-control.range2(type='number', maxlength='5', value=50, hidden=true)
+                    input.form-control.range2(type='number', maxlength='5',hidden=true)
                     p.units2(hidden=true) mg
                   td
                     select.form-control.selectpicker.priority(data-width="200px")
@@ -111,27 +90,6 @@ block content
                       option(value='medium', selected='selected', data-subtext="+/- 10%") Medium
                       option(value='high', data-subtext="+/- 20%") High
 
-                tr.table-row.criteria-row
-                  td
-                    span.glyphicon.glyphicon-remove
-                  td
-                    select.form-control.selectpicker.criteria-name(type='text', title='fat, sugar, etc...', data-live-search='true', data-width="200px", data-size="10")
-                  td
-                    select.form-control.selectpicker.range-type(data-width="200px")
-                      option(value='lt') Less than
-                      option(value='between') Between
-                      option(value='gt') Greater than
-                  td(nowrap='true')
-                    input.form-control.range1(type='number', size='5', value=30)
-                    p.units1 mg
-                  td(nowrap='true')
-                    input.form-control.range2(type='number', size='5', value=30, hidden=true) 
-                    p.units2(hidden=true) mg
-                  td
-                    select.form-control.selectpicker.priority(data-width="200px")
-                      option(value='low', selected='selected', data-subtext="+/- 0%") Low
-                      option(value='medium', data-subtext="+/- 10%") Medium
-                      option(value='high', data-subtext="+/- 20%") High
               
     p(style="font-weight:400;") C u i s i n e  &nbsp; P r e f e r e n c e ? 
     select#cuisine-type.form-control.selectpicker(type='text', data-live-search='true', data-width="200px")

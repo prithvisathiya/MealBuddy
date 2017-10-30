@@ -63,7 +63,7 @@ hr {
 	background-color: rgba(0,0,0,0);
 	margin-top: 50px;
 	margin-bottom: 30px;
-	padding: 10px 20px 10px 20px;
+	padding: 20px 30px 20px 30px;
 	color: white;
 	font-size: 15px;
 }
@@ -123,17 +123,20 @@ ul {
 }
 #searchType {
 	margin-bottom: 30px;
+	font-size: 13px;
 }
 #searchType.nav-pills>li>a:hover {
     border-bottom: 3px solid white;
     border-top: 3px solid white;
     background-color: rgba(256,256,256,0);
+    /*font-size:20px;*/
 }
 
 #searchType.nav-pills>li.active>a, #searchType.nav-pills>li.active>a:focus,#searchType.nav-pills>li.active>a:hover {
     border-bottom: 3px solid darkorange;
     border-top: 3px solid darkorange;
     background-color: rgba(256,256,256,0);
+    font-size:20px;
 }
 #suggestions {
 	margin-top: 120px;

@@ -13,7 +13,7 @@ $(document).ready(function() {
 
 	var ddlCriteriaList = ['fat', 'sugar', 'potassium', 'calories'];
 	var priorityList = ['Low', 'Medium', 'High'];
-	var rangeTypes = {'lt': 'Less than', 'between': 'Between', 'gt': 'Greater than'};
+	var rangeTypes = {'lt': 'Less than', 'between': 'Between', 'gt': 'Greater than'}; 
 	// $('.selectpicker').selectpicker('mobile');
 
 	//Set the tool bar to the right width of the screen
@@ -50,7 +50,7 @@ $(document).ready(function() {
 		td = DOMcreator({name:'td'});
 		var select = DOMcreator({ name:'select',
 			classlist:['form-control','criteria-name', 'selectpicker'], 
-			attr:{"data-live-search":true, "data-width":"200px", "data-size":"10", "title":"fat, sugar, etc..."}
+			attr:{"data-live-search":true, "data-width":"200px", "data-size":"10", "title":"Fat, Sugar, etc..."}
 		});
 		for(var key in criteriaUnits) {
 			$(select).append('<option value="'+key+'">'+key+'</option>');
