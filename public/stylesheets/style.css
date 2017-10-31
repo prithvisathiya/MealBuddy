@@ -61,15 +61,16 @@ hr {
 #how-it-works {
 	border:2px solid darkorange;
 	background-color: rgba(0,0,0,0);
-	margin-top: 50px;
-	margin-bottom: 30px;
-	padding: 20px 30px 20px 30px;
+	margin-top: 30px;
+	margin-bottom: 15px;
+	padding: 20px 50px 20px 50px;
 	color: white;
 	font-size: 15px;
 }
 #how-it-works:hover {
 	color: black;
     background-color: rgb(255, 255, 255);
+    transition: background .3s ease-in;
 }
 #criteriaMealTable, #criteriaItemTable {
 	margin-left: auto;
@@ -109,7 +110,9 @@ hr {
 .btn {
 	margin-right: 5px;
 }
-
+.btn-warning {
+	background-color: darkorange !important;
+}
 a:hover {
 	cursor: pointer;
 	text-decoration: none;
@@ -120,10 +123,12 @@ ul {
 }
 #viewAll {
 	background-color: #7b7979;
+	margin-bottom: 20px;
 }
 #searchType {
 	margin-bottom: 30px;
 	font-size: 13px;
+
 }
 #searchType.nav-pills>li>a:hover {
     border-bottom: 3px solid white;
@@ -136,7 +141,7 @@ ul {
     border-bottom: 3px solid darkorange;
     border-top: 3px solid darkorange;
     background-color: rgba(256,256,256,0);
-    font-size:20px;
+    font-size:25px;
 }
 #suggestions {
 	margin-top: 120px;
@@ -161,7 +166,7 @@ ul {
 
 #suggestions .nav-tabs, #suggestions .nav-pills {
     text-align:center;
-    font-size: 11px;
+    font-size: 15px;
 }
 
 
@@ -235,7 +240,7 @@ ul {
 	color: green;
 }
 .fa-exclamation-circle {
-	color: orange;
+	color: darkorange;
 }
 .fa-times-circle {
 	color: red;
@@ -262,7 +267,7 @@ ul {
     overflow-y: initial !important
 }
 .modal-body{
-    height: 500px;
+    height: 450px;
     overflow-y: auto;
 }
 #cartModalBody {
@@ -334,6 +339,30 @@ ul {
 	/*border: 2px solid darkorange;*/
 	border-radius: 15px;
 }
+
+#notification-modal-events {
+	position: fixed;
+	width: 350px;
+	height: 200px;
+	padding: 15px;
+	top:50%;
+	left: 50%;
+	margin-top: -100px;  /*Negative half of height. */
+	margin-left: -175px;
+	text-align: center;
+	vertical-align: middle !important;
+	background-color: white;
+	color: darkorange;
+	z-index: 2000;
+	border: 5px solid darkorange;
+	border-radius: 15px;
+	display: none;
+}
+#notification-modal-events p {
+	font-size: 15px;
+	margin-bottom: 30px;
+}
+
 
 #tutorial {
 	position: fixed;

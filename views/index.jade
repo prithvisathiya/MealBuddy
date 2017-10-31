@@ -14,6 +14,8 @@ block content
     button#how-it-works H o w &nbsp; I t &nbsp; W o r k s
     div(style='text-align:left')
       h2.display-4.m-b-2 Requirements
+      hr(style='width:300px;')
+      br
 
     ul#searchType.nav.nav-pills
       li.active 
@@ -38,7 +40,7 @@ block content
                   td
                     span.glyphicon.glyphicon-remove
                   td
-                    select.form-control.selectpicker.criteria-name(type='text', title='Fat, Sugar, etc...', data-live-search='true', data-width="200px", data-size="10")
+                    select.form-control.selectpicker.criteria-name(type='text', title='Fat, Sugar, etc...', data-live-search='true', data-width="200px", data-size="7")
                   td
                     select.form-control.selectpicker.range-type(data-width="200px")
                       option(value='lt') Less than
@@ -72,7 +74,7 @@ block content
                   td
                     span.glyphicon.glyphicon-remove
                   td
-                    select.form-control.selectpicker.criteria-name(type='text', title='Fat, Sugar, etc...', data-live-search='true', data-width="200px", data-size="10")
+                    select.form-control.selectpicker.criteria-name(type='text', title='Fat, Sugar, etc...', data-live-search='true', data-width="200px", data-size="7")
                   td
                     select.form-control.selectpicker.range-type(data-width="200px")
                       option(value='lt') Less than
@@ -115,7 +117,8 @@ block content
 
   #suggestions.container-fluid(hidden=true)
     h2 Suggestions
-
+    hr(style='width:300px;')
+    br
     ul.nav.nav-pills
       li.active 
         a(href='#breakfastTab' name='Breakfast' data-toggle='pill') Breakfast
@@ -453,6 +456,9 @@ block content
             .status-symbols.fa.fa-times-circle Not good
   #notification-results(style='display:none;')
     p There were 61 matches for you restrictions
+  #notification-modal-events 
+    p#modalNotifyMsg Item <br>been added to your cart!!
+    i(style='font-size:70px;').fa.fa-check-circle
   #tutorial 
     h4 2 Options
     pre For Meal

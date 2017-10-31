@@ -50,7 +50,7 @@ $(document).ready(function() {
 		td = DOMcreator({name:'td'});
 		var select = DOMcreator({ name:'select',
 			classlist:['form-control','criteria-name', 'selectpicker'], 
-			attr:{"data-live-search":true, "data-width":"200px", "data-size":"10", "title":"Fat, Sugar, etc..."}
+			attr:{"data-live-search":true, "data-width":"200px", "data-size":"7", "title":"Fat, Sugar, etc..."}
 		});
 		for(var key in criteriaUnits) {
 			$(select).append('<option value="'+key+'">'+key+'</option>');
@@ -242,7 +242,8 @@ $(document).ready(function() {
 		var row = $(this);
 		var itemData = row.parents('tr').find('i').data('item-info');
 		$('#itemOnHoverDesc').html('');
-		$('#itemOnHoverDesc').append('<p style="color:darkorange;">Serving Size: ' + itemData.servingsize +'</p>');
+		$('#itemOnHoverDesc').append('<p style="color:darkorange;margin-bottom:0px;">Serving Size: ' + itemData.servingsize +'</p>');
+		$('#itemOnHoverDesc').append('<p style="color:darkorange;margin-top:0px;"># of Serv: ' + itemData.numServ +'</p>');
 		if(criteriaNames[0].length > 0) {
 			criteriaNames[0].forEach(function(name) {
 				var amt = itemData[name.toLowerCase()] * parseFloat(itemData.numServ);
@@ -302,7 +303,7 @@ $(document).ready(function() {
 
 
 			$('#suggestions').removeAttr('hidden');
-			$('#notification-results').find('p').html('Found ' + data.result.length + ' matches for your criteria');
+			$('#notification-results').find('p').html('Found ' + data.result.length + ' matches for your restrictions');
 			$('#notification-results').fadeIn(500);
 			setTimeout(function() {
 				$('#notification-results').fadeOut(500);
@@ -390,6 +391,11 @@ $(document).ready(function() {
 			cartItems[item.id] = item;
 		}
 		sessionStorage.cartItems = JSON.stringify(cartItems);
+		$('#modalNotifyMsg').html(item.name + '<br> added to MealCart.');
+		$('#notification-modal-events').fadeIn(300);
+		setTimeout(function() {
+			$('#notification-modal-events').fadeOut(300);
+		}, 1500);
 		$('#cartQuantity').html(countCart());
 	}
 
@@ -418,15 +424,18 @@ $(document).ready(function() {
 	}
 
 	function updateCartServings() {
+		var updated = true;
 		$('.cart-item').each(function(row) {
 			row = $(this);
 			var id = row.find('i').data('item-info').id; 
 			var numServ = parseFloat(row.find('input').val()).toFixed(1);
 			if(!isNumeric(numServ)) {
+				updated = false;
 				alert('Please Enter a Valid Number For Servings');
 				return false;
 			}
 			if(numServ < 0) {
+				updated = false;
 				alert('Please Enter a Non-Negative Number For Servings');
 				return false;
 			}
@@ -440,6 +449,14 @@ $(document).ready(function() {
 			newItemData.numServ = numServ;
 			row.find('i').data('item-info', newItemData);
 		});
+		if(updated) {
+			$('#modalNotifyMsg').html('Updated Servings in MealCart');
+			$('#notification-modal-events').fadeIn(300);
+			setTimeout(function() {
+				$('#notification-modal-events').fadeOut(300);
+			}, 1500);
+		}
+
 		computeMealCartTotal();
 	}
 
