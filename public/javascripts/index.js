@@ -38,9 +38,15 @@ $(document).ready(function() {
 	$('#how-it-works').click(function(e) {
 		$('#tutorial').fadeIn(800);
 	});
-	$('#closeTutorial').click(function(e) {
+	$('#closeTutorial, #tutorial .fa').click(function(e) {
 		$('#tutorial').fadeOut(800);
 	});
+	$('#splashContainer button').click(function(e) {
+		$('.blurBG').fadeOut(500);
+		$('#splashContainer').fadeOut(500);
+		$('.main').fadeIn(1000);
+	});
+
 	$('#add').click(function(e) {
 		var tr = DOMcreator({name:'tr', classlist:['table-row', 'criteria-row']}); 
 		//Add remove button

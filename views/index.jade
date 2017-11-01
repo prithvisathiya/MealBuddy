@@ -2,6 +2,7 @@ extends layout
 
 block content
   script(src="/javascripts/index.js")
+
   nav.navbar.navbar-default.navbar-fixed-top
     .container-fluid
       h1#MealBuddy MealBuddy
@@ -10,7 +11,11 @@ block content
         p#cartQuantity(style='display:inline-block;') 0  
   br
 
-  .main.container-fluid 
+  #splashContainer
+    h1#splashMsg Meal Planning For Your Specific Diet.
+    button.btn(type='button') E N T E R
+  .blurBG
+  .main.container-fluid(style='display:none;') 
     button#how-it-works H o w &nbsp; I t &nbsp; W o r k s
     div(style='text-align:left')
       h2.display-4.m-b-2 Requirements
@@ -460,6 +465,7 @@ block content
     p#modalNotifyMsg Item <br>been added to your cart!!
     i(style='font-size:70px;').fa.fa-check-circle
   #tutorial 
+    i.fa.fa-times-circle
     h4 2 Options
     pre For Meal
     p.

@@ -14,6 +14,27 @@ body {
 	font-size: 14px;
 	font-family: 'Roboto', sans-serif !important;
 	font-weight: 100 !important;
+
+
+}
+
+.blurBG {
+	filter        : blur(15px);
+    -moz-filter   : blur(15px);
+    -webkit-filter: blur(15px);
+    -o-filter     : blur(15px);
+
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top:0;
+    left: 0;
+    background-size: cover;        
+    background-image: url('../images/food3.jpg');
+	background-position: 0px 0px;              /* <------ */
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 nav {
@@ -39,6 +60,34 @@ nav {
 	margin: 0px 0px 0px 5px;
 	vertical-align: middle;
 }
+
+#splashContainer {
+	position: fixed;
+	text-align: center;
+	top: 150px;
+	left:50%;
+	margin-left: -25%;
+	z-index: 10000;
+} 
+#splashMsg {
+	font-weight: 100;
+}
+#splashContainer button {
+	border:2px solid darkorange;
+	background-color: rgba(0,0,0,0);
+	margin-top: 50px;
+	margin-bottom: 15px;
+	padding: 20px 50px 20px 50px;
+	color: white;
+	font-size: 20px;
+}
+
+#splashContainer button:hover {
+	color: black;
+    background-color: rgb(255, 255, 255);
+    transition: background .3s ease-in;
+}
+
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
@@ -383,4 +432,13 @@ ul {
 	border: 2px solid darkorange;
 	display: none;
 } 
+
+#tutorial .fa {
+	float: right;
+	font-size: 20px;
+}
+
+#tutorial .fa:hover {
+	cursor: pointer;
+}
 
