@@ -415,13 +415,13 @@ ul {
 
 #tutorial {
 	position: fixed;
-	width: 70%;
+	width: 80%;
 	padding: 15px;
 	/*height: 400px;*/
-	top:90px;
+	top:85px;
 	left: 50%;
 	margin-top: 0%;  /*Negative half of height. */
-	margin-left: -35%;
+	margin-left: -40%;
 	text-align: center;
 	vertical-align: middle !important;
 	background-color: white;
@@ -435,7 +435,9 @@ ul {
 
 #tutorial .fa {
 	float: right;
-	font-size: 20px;
+	font-size: 25px;
+	position: absolute;
+	right: 10px;
 }
 
 #tutorial .fa:hover {
