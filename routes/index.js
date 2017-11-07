@@ -1,15 +1,26 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
-// var pg = require('pg');
+var MongoClient = require('mongodb').MongoClient;
 const { Client } = require('pg');
 var mongoose = require('mongoose');
 var format = require('string-format');
-var pgConnString = process.env.DATABASE_URL || 'postgres://localhost:5432/prithvisathiya';
 
+var mongoConnString = process.env.MONGO_URL || 'mongodb://localhost:27017/Ingredients';
+var pgConnString = process.env.DATABASE_URL || 'postgres://localhost:5432/prithvisathiya';
 var cuisines = ['none', 'American', 'Italian', 'Indian', 'Japanese', 'Chinese', 'Korean', 'Mexican', 'Vietnamese', 'Thai', 'French', 'English'];
 
-console.log(pgConnString);
+
+
+MongoClient.connect(mongoConnString, function(err, db) {
+	if (err) throw err;
+	db.collection("ingredients").findOne({}, function(err, result) {
+		if (err) throw err;
+		console.log(result);
+		db.close();
+	});
+});
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) { 
