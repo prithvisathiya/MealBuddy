@@ -331,6 +331,20 @@ $(document).ready(function() {
 		$('#itemInfoCriteriaDesc').html("");
 		$('#countToAdd').val(1);
 		$('#item-modal-title').text(item.name);
+
+		//Get Ingredients if any
+		$.ajax({
+			type: 'POST',
+			url: '/getIngredients/'+item.ndbno,
+			success: function(data) {
+				data = JSON.parse(data);
+				if(data.success) {
+					$('#itemIng').html(data.ing);
+				}else {
+					console.log(data.error);
+				}
+			}
+		});
 		for(var key in item) {
 			if(key == 'name' || key == 'id') continue;
 			var selector = '#item' + key.toUpperCase();

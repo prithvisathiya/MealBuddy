@@ -301,7 +301,7 @@ ul {
 	margin-right: auto;
 	margin-left: auto;
 }
-#itemInfoDesc h4, #cartNutritionCount h4 {
+#itemInfoDesc table h4, #cartNutritionCount table h4 {
 	text-align:center;
 	border-bottom: 2px solid orange;
 }

@@ -6,20 +6,10 @@ const { Client } = require('pg');
 var mongoose = require('mongoose');
 var format = require('string-format');
 
-var mongoConnString = process.env.MONGO_URL || 'mongodb://localhost:27017/Ingredients';
+var mongoConnString = process.env.MONGODB_URI || 'mongodb://localhost:27017/Ingredients';
 var pgConnString = process.env.DATABASE_URL || 'postgres://localhost:5432/prithvisathiya';
 var cuisines = ['none', 'American', 'Italian', 'Indian', 'Japanese', 'Chinese', 'Korean', 'Mexican', 'Vietnamese', 'Thai', 'French', 'English'];
 
-
-
-MongoClient.connect(mongoConnString, function(err, db) {
-	if (err) throw err;
-	db.collection("ingredients").findOne({}, function(err, result) {
-		if (err) throw err;
-		console.log(result);
-		db.close();
-	});
-});
 
 
 /* GET home page. */
@@ -49,7 +39,7 @@ function getReqQuery(req, idx) {
 
 router.post('/submit', function(req, res, next) {
 	var all = req.body.data;
-	var query = "Select id, Name, coalesce(servingsize,null) as servingsize, " +
+	var query = "Select id, ndbno, Name, coalesce(servingsize,null) as servingsize, " +
 	"coalesce(type, null) as Type, " +
 	"coalesce(cuisine, null) as Cuisine, " +
 	"coalesce(calories, null) as Calories, " +
@@ -110,7 +100,7 @@ router.post('/submit', function(req, res, next) {
 });
 
 router.get('/viewAll', function(req, res, next) {
-	var query = "Select id, Name, coalesce(servingsize,null) as servingsize, " +
+	var query = "Select id, ndbno, Name, coalesce(servingsize,null) as servingsize, " +
 	"coalesce(type, null) as Type, " +
 	"coalesce(cuisine, null) as Cuisine, " +
 	"coalesce(calories, null) as Calories, " +
@@ -160,7 +150,36 @@ router.get('/viewAll', function(req, res, next) {
 	});
 });
 
+router.post('/getIngredients/:ndbno', function(req, res, next) {
+	var ndbno = req.params.ndbno;
+	MongoClient.connect(mongoConnString, function(err, db) {
+		if (err) {
+			console.log('Error connecting to  mongoDB');
+			console.log(err);
+			res.write(JSON.stringify({"success": false, "error": err}));
+			res.end();
+		}else {
+			var query = { ndbno: ndbno};
+			db.collection("ingredients").find(query).toArray(function(err, result) {
+				if(err) {
+					console.log(err);
+					console.log('mongoDB: Error retrieving from ingredients');
+					res.write(JSON.stringify({"success": false, "error": err}));
+				}else if(result.length > 0) {
+					console.log('Ingredients found'); 
+					res.write(JSON.stringify({"success": true, "ing": result[0].ing}));
+				}else {
+					console.log('Ingredients not found');
+					res.write(JSON.stringify({"success": true, "ing": "N/A"}));
+				} 
+				res.end();
+			});
+		}
+		db.close();
+	});
+});
 
+ 
 
 
 module.exports = router;
