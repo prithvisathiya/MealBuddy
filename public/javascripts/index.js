@@ -141,16 +141,20 @@ $(document).ready(function() {
 			}
 		});
 		var set = new Set(criteriaNames[searchTypeIdx]);
+		if(set.size == 0) {
+			alert('No Requirements Set. Please select at least one requirement from the drop down list.');
+			return;
+		}
 		if(set.size != criteriaNames[searchTypeIdx].length) {
 			allCriterias[searchTypeIdx] = [];
 			criteriaNames[searchTypeIdx] = [];
-			alert('You have duplicate restrictions. Please remove the duplicate.');
+			alert('You have duplicate requirements. Please remove the duplicate.');
 			return;
 		}
 		if( incomplete ) {
 			allCriterias[searchTypeIdx] = [];
 			criteriaNames[searchTypeIdx] = [];
-			alert('One or more of your restriction\'s value is incomplete.');
+			alert('One or more of your requirements\'s value is incomplete.');
 			return;
 		}
 		var cuisineIdx = $('#cuisine-type').val();

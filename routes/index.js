@@ -157,7 +157,7 @@ router.post('/getIngredients/:ndbno', function(req, res, next) {
 			console.log('Error connecting to  mongoDB');
 			console.log(err);
 			res.write(JSON.stringify({"success": false, "error": err}));
-			res.end();
+			res.end();  
 		}else {
 			var query = { ndbno: ndbno};
 			db.collection("ingredients").find(query).toArray(function(err, result) {
@@ -166,10 +166,8 @@ router.post('/getIngredients/:ndbno', function(req, res, next) {
 					console.log('mongoDB: Error retrieving from ingredients');
 					res.write(JSON.stringify({"success": false, "error": err}));
 				}else if(result.length > 0) {
-					console.log('Ingredients found'); 
 					res.write(JSON.stringify({"success": true, "ing": result[0].ing}));
 				}else {
-					console.log('Ingredients not found');
 					res.write(JSON.stringify({"success": true, "ing": "N/A"}));
 				} 
 				res.end();
