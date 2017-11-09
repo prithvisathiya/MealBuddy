@@ -16,6 +16,7 @@ $(document).ready(function() {
 	var rangeTypes = {'lt': 'Less than', 'between': 'Between', 'gt': 'Greater than'}; 
 	// $('.selectpicker').selectpicker('mobile');
 
+
 	//Set the tool bar to the right width of the screen
 	var windowWidth = $(window).width();
 	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
@@ -266,7 +267,7 @@ $(document).ready(function() {
 		$('#itemOnHoverDesc').css('display', 'none');
 	});
 
-	const Item = ({item}) => `
+	const Item = function({item}) { return `
 		<div class="card">
 		   <img src="images/${item.type}/${item.imagepath}">
 		   <div class="card-block">
@@ -274,7 +275,7 @@ $(document).ready(function() {
 		      <hr><br>
 		   </div>
 		</div>
-	`;
+	`};
 
 	
 
