@@ -169,12 +169,21 @@ $(document).ready(function() {
 	            	displayResults(JSON.parse(data));
 	            }
 			});
+
+			var len = criteriaNames[searchTypeIdx].length;
+			var mpSearchType = (searchTypeIdx == 0) ? 'Meal' : 'Item';
+			var mpData = { numReq: len, searchType: mpSearchType, names: criteriaNames[searchTypeIdx] };
+			if($('#env').html == 'production')
+				mixpanel.track('Get Suggestions', mpData);
+
 		}
 		
 	});
 
 	//EVENT HANDLING
 	$('#viewAll').click(function(e) {
+		if($('#env').html == 'production')
+			mixpanel.track('View All');
 		$.ajax({
 			type: 'GET',
 			url: '/viewAll',
@@ -236,12 +245,21 @@ $(document).ready(function() {
 			return;
 		}else {
 			$('#itemModal').modal('hide');
+			if($('#env').html == 'production') {
+				mixpanel.track('Add Item To Cart', {
+					"ndbno": parseInt(currentItem.ndbno),
+					"itemName": currentItem.name
+				});
+			}
+			
 			currentItem.numServ = parseFloat(count).toFixed(1);
 			addToMealCart(currentItem);
 		}
 	});
 	//Show Cart
 	$('#mealCart').click(function(e) {
+		if($('#env').html == 'production')
+			mixpanel.track('View Meal Cart');
 		displayMealCart()
 	});
 	//Update Servings for cart items
@@ -320,6 +338,14 @@ $(document).ready(function() {
 				$('#notification-results').fadeOut(500);
 			}, 3000);
 
+			var mpSearchType = (displayedSearchTypeIdx == 0) ? 'Meal': 'Item';
+			if($('#env').html == 'production') {
+				mixpanel.track('Search Results', {
+					searchType: mpSearchType,
+					numResults: data.result.length
+				});
+			}
+			
 
 			$('#suggestions a:first').tab('show');
 		    $('html, body').animate({

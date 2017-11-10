@@ -15,7 +15,8 @@ var cuisines = ['none', 'American', 'Italian', 'Indian', 'Japanese', 'Chinese', 
 /* GET home page. */
 router.get('/', function(req, res, next) { 
 	console.log(req.ip);
-	res.render('index', { title: 'MealBuddy' }); 
+	var env = process.env.NODE_ENV || 'dev';
+	res.render('index', { title: 'MealBuddy' , env: env}); 
 }); 
 
 function getReqQuery(req, idx) {
