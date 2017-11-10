@@ -182,7 +182,7 @@ $(document).ready(function() {
 
 	//EVENT HANDLING
 	$('#viewAll').click(function(e) {
-		if($('#env').html == 'production')
+		if($('#env').html() == 'production')
 			mixpanel.track('View All');
 		$.ajax({
 			type: 'GET',
