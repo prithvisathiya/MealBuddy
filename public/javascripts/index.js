@@ -173,7 +173,7 @@ $(document).ready(function() {
 			var len = criteriaNames[searchTypeIdx].length;
 			var mpSearchType = (searchTypeIdx == 0) ? 'Meal' : 'Item';
 			var mpData = { numReq: len, searchType: mpSearchType, names: criteriaNames[searchTypeIdx] };
-			if($('#env').html == 'production')
+			if($('#env').html() == 'production')
 				mixpanel.track('Get Suggestions', mpData);
 
 		}
@@ -245,7 +245,7 @@ $(document).ready(function() {
 			return;
 		}else {
 			$('#itemModal').modal('hide');
-			if($('#env').html == 'production') {
+			if($('#env').html() == 'production') {
 				mixpanel.track('Add Item To Cart', {
 					"ndbno": parseInt(currentItem.ndbno),
 					"itemName": currentItem.name
@@ -258,7 +258,7 @@ $(document).ready(function() {
 	});
 	//Show Cart
 	$('#mealCart').click(function(e) {
-		if($('#env').html == 'production')
+		if($('#env').html() == 'production')
 			mixpanel.track('View Meal Cart');
 		displayMealCart()
 	});
@@ -339,7 +339,7 @@ $(document).ready(function() {
 			}, 3000);
 
 			var mpSearchType = (displayedSearchTypeIdx == 0) ? 'Meal': 'Item';
-			if($('#env').html == 'production') {
+			if($('#env').html() == 'production') {
 				mixpanel.track('Search Results', {
 					searchType: mpSearchType,
 					numResults: data.result.length
