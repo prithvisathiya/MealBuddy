@@ -170,6 +170,10 @@ a:hover {
 ul {
 	list-style-type: none;
 }
+
+input[type="checkbox"] {
+	zoom:1.01;
+}
 #viewAll {
 	background-color: #7b7979;
 	margin-bottom: 20px;

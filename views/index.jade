@@ -97,9 +97,11 @@ block content
                       option(value='medium', selected='selected', data-subtext="+/- 10%") Medium
                       option(value='high', data-subtext="+/- 20%") High
 
-              
+    #hideProcessContainer(hidden=true)
+      input#hideProcessFood.form-control(type="checkbox",style="display:inline-block;width:40px;box-shadow:none;")
+      p(style="display:inline-block;margin-top:11px;vertical-align:top;font-size:16px;") Hide Processed Foods
     p(style="font-weight:400;") C u i s i n e  &nbsp; P r e f e r e n c e ? 
-    select#cuisine-type.form-control.selectpicker(type='text', data-live-search='true', data-width="200px")
+    select#cuisine-type.form-control.selectpicker(type='text', data-live-search='true', data-width="260px", style="margin-left:-4px;")
       option(value='0') No Preference
       option(value='1') American
       option(value='2') Italian

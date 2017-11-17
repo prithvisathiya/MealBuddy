@@ -69,6 +69,9 @@ router.post('/submit', function(req, res, next) {
 		// query += "and cuisine in ('none','" + cuisines[cuisineIdx] + "') ";
 		query += "and (cuisine like '%" + cuisines[cuisineIdx] + "%' or cuisine like '%none%') ";
 	}
+	if(req.body.hideProcessFood == "true") {
+		query += "and processed = false "
+	}
 	query += "order by group1, group2, group3"
 	console.log(query);
 	const client = new Client({
@@ -100,7 +103,7 @@ router.post('/submit', function(req, res, next) {
 	});
 });
 
-router.get('/viewAll', function(req, res, next) {
+router.post('/viewAll', function(req, res, next) {
 	var query = "Select id, ndbno, Name, coalesce(servingsize,null) as servingsize, " +
 	"coalesce(type, null) as Type, " +
 	"coalesce(cuisine, null) as Cuisine, " +
@@ -119,8 +122,11 @@ router.get('/viewAll', function(req, res, next) {
 	"SaturatedFat, MonoUnsaturatedFat, PolyUnsaturatedFat, " +
 	"Cholesterol, Caffeine, " +
 	"imagePath " + 
-	"from items_table where 1=1 " +
-	"order by group1, group2, group3 " 
+	"from items_table where 1=1 ";
+	if(req.body.hideProcessFood == 'true') {
+		query += "and processed = false ";
+	}
+	query += "order by group1, group2, group3 " 
 	console.log(query);
 	const client = new Client({
 		connectionString: pgConnString

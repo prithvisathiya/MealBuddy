@@ -158,13 +158,19 @@ $(document).ready(function() {
 			alert('One or more of your requirements\'s value is incomplete.');
 			return;
 		}
+
 		var cuisineIdx = $('#cuisine-type').val();
 		console.log(allCriterias[searchTypeIdx]);
 		if(allCriterias[searchTypeIdx].length > 0) { 
 			$.ajax({
 				type: 'POST',
 				url: '/submit',
-				data: {data: allCriterias[searchTypeIdx], idx: cuisineIdx, searchTypeIdx: searchTypeIdx},
+				data: {
+					data: allCriterias[searchTypeIdx], 
+					idx: cuisineIdx, 
+					searchTypeIdx: searchTypeIdx, 
+					hideProcessFood: $('#hideProcessFood').is(':checked')
+				},
 	            success: function(data) {
 	            	displayResults(JSON.parse(data));
 	            }
@@ -185,8 +191,11 @@ $(document).ready(function() {
 		if($('#env').html() == 'production')
 			mixpanel.track('View All');
 		$.ajax({
-			type: 'GET',
+			type: 'POST',
 			url: '/viewAll',
+			data: {
+				hideProcessFood: $('#hideProcessFood').is(':checked')
+			},
             success: function(data) {
             	displayResults(JSON.parse(data));
             }
